@@ -9,4 +9,10 @@ class Location:
     def get_y(self):
         return self.get_y
     
+    def set_x(self, new_x):
+        self.__x = new_x
+
+    def set_y(self, new_y):
+        self.__y = new_y
+    
         
