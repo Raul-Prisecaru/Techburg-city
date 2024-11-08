@@ -1,5 +1,8 @@
 from location import Location
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from city import City
 
 class Agent:
     def __init__(self, location: Location) -> None:
@@ -12,5 +15,5 @@ class Agent:
         self.__location = new_location
 
     @abstractmethod
-    def act(self):
+    def act(self, city: "City"):
         pass
