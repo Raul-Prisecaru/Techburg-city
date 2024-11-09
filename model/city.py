@@ -21,6 +21,7 @@ class City(Environment, ABC):
         self.__malfunctioning_drone_nearby = []
         self.__scavenger_swarm_nearby = []
         self.__spare_part_nearby = []
+        self.__height = height
 
         for _ in range(height):
             self.__environment.append([None] * width)
@@ -62,4 +63,9 @@ class City(Environment, ABC):
 
         # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
         return self.__free_spots
+
+
+    def display_environment(self):
+        for row in range(self.__height):
+            print(self.__environment[row])
 
