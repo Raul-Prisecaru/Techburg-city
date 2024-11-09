@@ -60,6 +60,6 @@ class City(Environment, ABC):
                 self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
 
 
-        return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
-
+        # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
+        return self.__free_spots
 
