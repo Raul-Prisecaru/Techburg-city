@@ -18,7 +18,7 @@ class City(Environment, ABC):
         return self.__environment[location.get_x()][location.get_y()]
 
     def set_agent(self, agent: Agent, location: Location) -> None:
-        pass
+        self.__environment[location.get_x()][location.get_y()] = agent
 
 
 
