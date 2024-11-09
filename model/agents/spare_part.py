@@ -25,7 +25,7 @@ class SparePart(Agent):
         spare_parts_locations = []
         while len(spare_parts_locations) != 10:
             location = Location(randint(10, 20), randint(10, 20))
-
+            # Should probably include another check to avoid duplicate locations
             if city.check_space(location):
                 spare_parts_locations.append(location)
             else:
