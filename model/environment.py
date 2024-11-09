@@ -5,7 +5,7 @@ from typing import Optional
 
 
 class Environment(ABC):
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int) -> None:
         self.__width = width
         self.__height = height
 
