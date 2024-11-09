@@ -23,7 +23,7 @@ class SparePart(Agent):
     # Get width and height and subtract 10 from each
     def __randomly_scatter(self, city: City):
         spare_parts_locations = []
-        for _ in range(10):
+        while len(spare_parts_locations) != 10:
             location = Location(randint(10, 20), randint(10, 20))
 
             if city.check_space(location):
