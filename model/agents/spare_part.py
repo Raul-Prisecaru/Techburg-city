@@ -1,3 +1,5 @@
+from random import random, randint
+
 from model.agent import Agent
 from model.location import Location
 from model.city import City
@@ -14,8 +16,20 @@ class SparePart(Agent):
 
 
     def act(self, city: City):
-        pass
+        self.__randomly_scatter(city)
 
     # Scatter between coordinates 10 - 20
+    # Later to dynamically adapt
+    # Get width and height and subtract 10 from each
     def __randomly_scatter(self, city: City):
-        pass
+        spare_parts_locations = []
+        for _ in range(10):
+            location = Location(randint(10, 20), randint(10, 20))
+
+            if city.check_space(location):
+                spare_parts_locations.append(location)
+            else:
+                continue
+
+
+
