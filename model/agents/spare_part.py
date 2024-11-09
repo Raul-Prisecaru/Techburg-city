@@ -6,7 +6,7 @@ from model.city import City
 
 class SparePart(Agent):
 
-    def __init__(self, location: Location):
+    def __init__(self, location: Location) -> None:
         super().__init__(location)
 
     # For Set Location:: IDEA
@@ -15,13 +15,13 @@ class SparePart(Agent):
     # E.g Location: Recharge Station 1 // coords: (x : y)
 
 
-    def act(self, city: City):
+    def act(self, city: City) -> None:
         self.__randomly_scatter(city)
 
     # Scatter between coordinates 10 - 20
     # Later to dynamically adapt
     # Get width and height and subtract 10 from each
-    def __randomly_scatter(self, city: City):
+    def __randomly_scatter(self, city: City) -> None:
         spare_parts_locations = []
         while len(spare_parts_locations) != 10:
             location = Location(randint(10, 20), randint(10, 20))
