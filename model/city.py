@@ -87,3 +87,10 @@ class City(Environment, ABC):
         for row in range(self.__height):
             print(self.__environment[row])
 
+
+    def check_space(self, location: Location) -> int:
+        if self.__environment[location.get_x()][location.get_y()] is None:
+            return 1
+        else:
+            return 0
+
