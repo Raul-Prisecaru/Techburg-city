@@ -46,7 +46,7 @@ class City(Environment, ABC):
         self.__environment[location.get_x()][location.get_y()] = agent
 
     # Function to Find free available spots around the location provided
-    def find_free_spot(self, location: Location):
+    def find_free_spot(self, location: Location) -> List[Location]:
         # "Coordinates" to indicate where to search for free spots
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
