@@ -15,15 +15,15 @@ class SparePart(Agent):
     # E.g Location: Recharge Station 1 // coords: (x : y)
 
 
-    def act(self, city: City) -> None:
-        self.__randomly_scatter(city)
+    def act(self, city: City, number_spare_parts: int) -> None:
+        self.__randomly_scatter(city, number_spare_parts)
 
     # Scatter between coordinates 10 - 20
     # Later to dynamically adapt
     # Get width and height and subtract 10 from each
-    def __randomly_scatter(self, city: City) -> None:
+    def __randomly_scatter(self, city: City, number_spare_parts: int) -> None:
         spare_parts_locations = []
-        while len(spare_parts_locations) != 10:
+        while len(spare_parts_locations) != number_spare_parts:
             location = Location(randint(10, 20), randint(10, 20))
             # Should probably include another check to avoid duplicate locations
             if city.check_space(location):
