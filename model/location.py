@@ -7,7 +7,7 @@ class Location:
         return self.__x
     
     def get_y(self) -> int:
-        return self.get_y
+        return self.__y
     
     def set_x(self, new_x: int) -> None:
         self.__x = new_x
