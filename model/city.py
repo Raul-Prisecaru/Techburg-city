@@ -5,6 +5,8 @@ from location import Location
 from agent import Agent
 from typing import override, Optional, List
 from agents.survivor_bot import SurvivorBot
+from agents.malfunctioning_drone import MalfunctioningDrone
+from agents.scavenger_swarm import ScavengerSwarm
 
 
 class City(Environment, ABC):
@@ -44,5 +46,11 @@ class City(Environment, ABC):
 
             if self.__environment[new_offset_x][new_offset_y] is SurvivorBot:
                 self.__robot_nearby.append(Location(new_offset_x, new_offset_y))
+
+            if self.__environment[new_offset_x][new_offset_y] is MalfunctioningDrone:
+                self.__drones_nearby.append(Location(new_offset_x, new_offset_y))
+
+            if self.__environment[new_offset_x][new_offset_y] is ScavengerSwarm:
+                self.__nanobots_nearby.append(Location(new_offset_x, new_offset_y))
 
 
