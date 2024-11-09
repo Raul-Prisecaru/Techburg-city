@@ -94,3 +94,8 @@ class City(Environment, ABC):
         else:
             return False
 
+
+    def add_objects_to_map(self, list_Location: List[Location], object_toAdd: Agent):
+        for location in list_Location:
+            self.__environment[location.get_x()][location.get_y()] = object_toAdd
+
