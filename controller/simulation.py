@@ -2,6 +2,7 @@ from model.city import City
 from model.location import  Location
 from model.agents.survivor_bot import SurvivorBot
 from model.agents.malfunctioning_drone import MalfunctioningDrone
+from model.agents.spare_part import SparePart
 import time
 
 
@@ -15,6 +16,12 @@ class Simulation:
         city_environment = City(self.__width, self.__height)
         city_environment.display_environment()
         print("----")
+
+        sparepart = SparePart(Location(0,0))
+
+        sparepart.act(city_environment)
+        city_environment.display_environment()
+
 
 
         # Creating SurvivorBot Agent and setting a location as start
