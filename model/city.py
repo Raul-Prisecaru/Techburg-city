@@ -7,6 +7,7 @@ from typing import override, Optional, List
 from agents.survivor_bot import SurvivorBot
 from agents.malfunctioning_drone import MalfunctioningDrone
 from agents.scavenger_swarm import ScavengerSwarm
+from agents.spare_part import SparePart
 
 
 class City(Environment, ABC):
@@ -53,6 +54,8 @@ class City(Environment, ABC):
             if self.__environment[new_offset_x][new_offset_y] is ScavengerSwarm:
                 self.__scavenger_swarm_nearby.append(Location(new_offset_x, new_offset_y))
 
+            if self.__environment[new_offset_x][new_offset_y] is SparePart:
+                self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
 
 
 
