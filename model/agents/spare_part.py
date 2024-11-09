@@ -27,9 +27,18 @@ class SparePart(Agent):
             location = Location(randint(10, 20), randint(10, 20))
             # Should probably include another check to avoid duplicate locations
             if city.check_space(location):
+                for spare_location in spare_parts_locations:
+                    if location == spare_location:
+                        continue
+
                 spare_parts_locations.append(location)
             else:
                 continue
+
+        city.add_objects_to_map(spare_parts_locations, "Spare_part")
+
+
+
 
 
 
