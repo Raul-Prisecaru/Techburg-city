@@ -1,0 +1,2 @@
+class SurvivorBot:
+    pass
