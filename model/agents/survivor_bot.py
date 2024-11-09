@@ -1,6 +1,7 @@
 import os
 
 from abc import ABC
+import random
 from model.city import City
 from model.agent import Agent
 from model.location import Location
@@ -14,10 +15,18 @@ class SurvivorBot(Agent):
 
 
     def act(self, city: City):
-        pass
+        self.__move(city)
 
     def __move(self, city: City):
-        pass
+        current_location = self.get_location()
+        next_position_list = city.find_free_spot(current_location)
+        next_position = random.choice(next_position_list)
+
+        city.set_agent(self, next_position)
+
+        self.set_location(next_position)
+
+        city.set_agent(None, current_location)
 
 
 
