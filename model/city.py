@@ -3,13 +3,18 @@ from abc import ABC
 from environment import Environment
 from location import Location
 from agent import Agent
-from typing import override, Optional
+from typing import override, Optional, List
 
 
 class City(Environment, ABC):
     def __init__(self, width: int, height: int) -> None:
         super().__init__(width, height)
         self.__environment = []
+        self.__free_spots = []
+        self.__robot_nearby = []
+        self.__drones_nearby = []
+        self.__nanobots_nearby = []
+        self.__spare_part_nearby = []
 
         for _ in range(height):
             self.__environment.append([None] * width)
@@ -21,5 +26,6 @@ class City(Environment, ABC):
         self.__environment[location.get_x()][location.get_y()] = agent
 
 
+    def find_free_spot(self, location: Location) -> List[Location]:
+        pass
 
-    
