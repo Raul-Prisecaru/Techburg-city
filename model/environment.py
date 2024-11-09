@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
-from location import Location
-from agent import Agent
+from model.location import Location
+from model.agent import Agent
 from typing import Optional
 
 

@@ -1,13 +1,15 @@
 from abc import ABC
 
-from environment import Environment
-from location import Location
-from agent import Agent
-from typing import override, Optional, List
-from agents.survivor_bot import SurvivorBot
-from agents.malfunctioning_drone import MalfunctioningDrone
-from agents.scavenger_swarm import ScavengerSwarm
-from agents.spare_part import SparePart
+from model.environment import Environment
+from model.location import Location
+from model.agent import Agent
+from typing import override, Optional, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from agents.survivor_bot import SurvivorBot
+    from agents.malfunctioning_drone import MalfunctioningDrone
+    from agents.scavenger_swarm import ScavengerSwarm
+    from agents.spare_part import SparePart
 
 
 class City(Environment, ABC):
