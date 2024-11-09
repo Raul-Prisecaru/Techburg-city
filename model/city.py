@@ -90,7 +90,7 @@ class City(Environment, ABC):
 
     def check_space(self, location: Location) -> int:
         if self.__environment[location.get_x()][location.get_y()] is None:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
