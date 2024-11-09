@@ -1,6 +1,7 @@
 from model.city import City
 from model.location import  Location
 from model.agents.survivor_bot import SurvivorBot
+import time
 
 
 class Simulation:
@@ -16,18 +17,35 @@ class Simulation:
 
 
         # Creating SurvivorBot Agent and setting it to center location as start
-        bot = SurvivorBot(Location(int(self.__width / 2), int(self.__height / 2)))
+        survivor_bot1 = SurvivorBot(Location(15, 15))
+        survivor_bot2 = SurvivorBot(Location(14, 14))
+        survivor_bot3 = SurvivorBot(Location(13, 13))
+        survivor_bot4 = SurvivorBot(Location(12, 12))
 
         # Placing Agent in the Agents' set location
-        city_environment.set_agent("Bot", bot.get_location())
-        city_environment.display_environment()
-        print("----")
-        bot.act(city_environment)
-        print("----")
+        city_environment.set_agent(survivor_bot1, survivor_bot1.get_location())
+        city_environment.set_agent(survivor_bot2, survivor_bot2.get_location())
+        city_environment.set_agent(survivor_bot3, survivor_bot3.get_location())
+        city_environment.set_agent(survivor_bot4, survivor_bot4.get_location())
 
-        city_environment.display_environment()
+        while True:
+            survivor_bot1.act(city_environment)
+            survivor_bot2.act(city_environment)
+            survivor_bot3.act(city_environment)
+            survivor_bot4.act(city_environment)
+            city_environment.set_agent(survivor_bot1, survivor_bot1.get_location())
+            city_environment.set_agent(survivor_bot2, survivor_bot2.get_location())
+            city_environment.set_agent(survivor_bot3, survivor_bot3.get_location())
+            city_environment.set_agent(survivor_bot4, survivor_bot4.get_location())
+            print("---")
+            city_environment.display_environment()
+            time.sleep(1)
+
+
+
+
 
 
 # Running the Simulation
-Simulation(10, 10).run()
+Simulation(20, 20).run()
 
