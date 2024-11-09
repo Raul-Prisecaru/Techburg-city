@@ -14,9 +14,9 @@ class City(Environment, ABC):
         super().__init__(width, height)
         self.__environment = []
         self.__free_spots = []
-        self.__robot_nearby = []
-        self.__drones_nearby = []
-        self.__nanobots_nearby = []
+        self.__survivor_bot_nearby = []
+        self.__malfunctioning_drone_nearby = []
+        self.__scavenger_swarm_nearby = []
         self.__spare_part_nearby = []
 
         for _ in range(height):
@@ -45,12 +45,14 @@ class City(Environment, ABC):
                 self.__free_spots.append(Location(new_offset_x, new_offset_y))
 
             if self.__environment[new_offset_x][new_offset_y] is SurvivorBot:
-                self.__robot_nearby.append(Location(new_offset_x, new_offset_y))
+                self.__survivor_bot_nearby.append(Location(new_offset_x, new_offset_y))
 
             if self.__environment[new_offset_x][new_offset_y] is MalfunctioningDrone:
-                self.__drones_nearby.append(Location(new_offset_x, new_offset_y))
+                self.__malfunctioning_drone_nearby.append(Location(new_offset_x, new_offset_y))
 
             if self.__environment[new_offset_x][new_offset_y] is ScavengerSwarm:
-                self.__nanobots_nearby.append(Location(new_offset_x, new_offset_y))
+                self.__scavenger_swarm_nearby.append(Location(new_offset_x, new_offset_y))
+
+
 
 
