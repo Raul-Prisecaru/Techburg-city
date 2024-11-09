@@ -15,7 +15,8 @@ class City(Environment, ABC):
             self.__environment.append([None] * width)
 
     def get_agent(self, location: Location) -> Optional[Agent]:
-        pass
+        return self.__environment[location.get_x()][location.get_y()]
+
     def set_agent(self, agent: Agent, location: Location) -> None:
         pass
 
