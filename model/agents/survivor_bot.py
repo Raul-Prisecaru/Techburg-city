@@ -16,10 +16,20 @@ class SurvivorBot(Agent):
         self.__inventory = []
 
 
+    # This will basically act like a priority List
+    # In will do the most important thing first to last
+    # e.g First check for enemies around, second check for spare part
+    # Might be something like this in order:
+    """
+    Priority list (In order)
+    - Check for enemies (drones / nanobots) around -> Run away to nearest recharge station
+    - Check for spare part around -> Pick up and go to nearest recharge station
+    """
     def act(self, city: City) -> None:
-        self.__move(city)
 
-    def __move(self, city: City) -> None:
+        self.__move_to_free_spot(city)
+
+    def __move_to_free_spot(self, city: City) -> None:
         current_location = self.get_location()
         next_position_list = city.find_free_spot(current_location)
         next_position = random.choice(next_position_list)
@@ -31,6 +41,10 @@ class SurvivorBot(Agent):
         city.set_agent(None, current_location)
 
     def __pick_up(self):
+        # See if there is a spare part in your view
+        # Go to the spare part (Replace Spare Part grid with Survivor_bot)
+        # Add Spare part to the inventory
+        # go to the nearest Recharge Station
         pass
 
 
