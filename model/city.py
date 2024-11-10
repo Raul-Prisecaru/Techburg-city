@@ -4,6 +4,7 @@ from model.environment import Environment
 from model.location import Location
 from model.agent import Agent
 from typing import override, Optional, List, TYPE_CHECKING
+from model.agents.spare_part import SparePart
 
 # Importing these files if they are being used for Type_checking
 # Helps to avoid circular Imports
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
     from agents.survivor_bot import SurvivorBot
     from agents.malfunctioning_drone import MalfunctioningDrone
     from agents.scavenger_swarm import ScavengerSwarm
-    from agents.spare_part import SparePart
+
 
 
 class City(Environment, ABC):
@@ -92,6 +93,7 @@ class City(Environment, ABC):
             (1, -1),  (1, 0),  (1, 1)
         ]
 
+
         # For Loop to check for Free Space
         for offset_x, offset_y in normal_offsets:
 
@@ -100,8 +102,14 @@ class City(Environment, ABC):
             new_offset_x = location.get_x() + offset_x
             new_offset_y = location.get_y() + offset_y
 
-
+            print("---")
+            print("coordinates: ", (new_offset_x,new_offset_y))
+            print("found: ", self.__environment[new_offset_x][new_offset_y])
+            print("Expect:", SparePart)
+            print("is it the same? ", isinstance(self.__environment[new_offset_x][new_offset_y], SparePart))
+            print("---")
             if self.__environment[new_offset_x][new_offset_y] is SparePart:
+                print("There is a spare part in my radius")
                 self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
 
 
