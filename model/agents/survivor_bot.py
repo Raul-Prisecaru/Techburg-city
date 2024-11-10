@@ -14,7 +14,10 @@ class SurvivorBot(Agent):
         super().__init__(location)
         # Inventory System. Only one slot available
         self.__inventory = []
-
+    # Implement a function to act as a enchacement status of the bot
+    # Perhaps use a Dict to have the enchancment name : percentage?
+    # e.g speed : 50%
+    # TODO: As a reminder to see this above
 
     # This will basically act like a priority List
     # In will do the most important thing first to last
@@ -28,7 +31,7 @@ class SurvivorBot(Agent):
     - Go to an explorered cell if all cells were explored around it -> Pick random if multiple
     """
     def act(self, city: City) -> None:
-
+        self.__pick_up_spare_part(city)
         self.__move_to_free_spot(city)
 
     def __move_to_free_spot(self, city: City) -> None:
@@ -42,12 +45,21 @@ class SurvivorBot(Agent):
 
         city.set_agent(None, current_location)
 
-    def __pick_up(self):
+    def __pick_up_spare_part(self, city: City) -> None:
         # See if there is a spare part in your view
+        current_location = self.get_location()
+        spare_part_nearby_list = city.find_spare_part(current_location)
+
         # Go to the spare part (Replace Spare Part grid with Survivor_bot)
-        # Add Spare part to the inventory
+        if len(spare_part_nearby_list) != 0:
+            random_part = random.choice(spare_part_nearby_list)
+            city.set_agent(self, random_part)
+            # Add Spare part to the inventory
+            self.__inventory.append(city.get_agent(random_part))
+
+
         # go to the nearest Recharge Station
-        pass
+
 
 
 
