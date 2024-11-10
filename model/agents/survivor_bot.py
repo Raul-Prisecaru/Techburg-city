@@ -24,6 +24,8 @@ class SurvivorBot(Agent):
     Priority list (In order)
     - Check for enemies (drones / nanobots) around -> Run away to nearest recharge station
     - Check for spare part around -> Pick up and go to nearest recharge station
+    - Go to unexplored cell -> Pick random if multiple
+    - Go to an explorered cell if all cells were explored around it -> Pick random if multiple
     """
     def act(self, city: City) -> None:
 
