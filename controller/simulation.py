@@ -19,7 +19,7 @@ class Simulation:
 
         sparepart = SparePart(Location(0,0))
 
-        sparepart.act(city_environment, 10)
+        sparepart.act(city_environment, 10, 5, 15)
         # city_environment.display_environment()
 
 
