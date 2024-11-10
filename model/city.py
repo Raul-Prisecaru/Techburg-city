@@ -108,7 +108,7 @@ class City(Environment, ABC):
             print("Expect:", SparePart)
             print("is it the same? ", isinstance(self.__environment[new_offset_x][new_offset_y], SparePart))
             print("---")
-            if self.__environment[new_offset_x][new_offset_y] is SparePart:
+            if isinstance(self.__environment[new_offset_x][new_offset_y], SparePart):
                 print("There is a spare part in my radius")
                 self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
 
