@@ -105,7 +105,7 @@ class City(Environment, ABC):
                 self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
 
 
-        return self.__free_spots
+        return self.__spare_part_nearby
 
     # Display Environment
     def display_environment(self):
