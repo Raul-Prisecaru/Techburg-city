@@ -22,7 +22,7 @@ class SurvivorBot(Agent):
         next_position_list = city.find_free_spot(current_location)
         next_position = random.choice(next_position_list)
 
-        city.set_agent(self, next_position)
+        city.set_agent("SurviviorBot", next_position)
 
         self.set_location(next_position)
 
