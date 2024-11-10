@@ -15,15 +15,15 @@ class SparePart(Agent):
     # E.g Location: Recharge Station 1 // coords: (x : y)
 
 
-    def act(self, city: City, number_spare_parts: int) -> None:
-        self.__randomly_scatter(city, number_spare_parts)
+    def act(self, city: City, number_spare_parts: int, start_location: int, end_location: int) -> None:
+        self.__randomly_scatter(city, number_spare_parts, start_location, end_location)
 
     # IDEA:
     # Scatter between coordinates 10 - 20
     # Later to dynamically adapt
     # Get width and height and subtract 10 from each
 
-    def __randomly_scatter(self, city: City, number_spare_parts: int) -> None:
+    def __randomly_scatter(self, city: City, number_spare_parts: int, start_location: int, end_location: int) -> None:
         # List to store locations to plot the Spare Parts
         spare_parts_locations = []
 
@@ -32,7 +32,7 @@ class SparePart(Agent):
         while len(spare_parts_locations) != number_spare_parts:
             # Randomly generate int value for X and Y between 10 and 20
             # Which will be provided to the Location Class
-            location = Location(randint(10, 20), randint(10, 20))
+            location = Location(randint(start_location, end_location), randint(start_location, end_location))
 
             # Checking if there is an empty space at that specific Location
             if city.check_space(location):
