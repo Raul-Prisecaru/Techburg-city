@@ -48,6 +48,7 @@ class City(Environment, ABC):
     # Function to Find free available spots around the location provided
     def find_free_spot(self, location: Location) -> List[Location]:
         # "Coordinates" to indicate where to search for free spots
+        # Implement logic to check for bot's status and apply appropriate offsets
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
             (0, -1),  (0, 0),  (0, 1),
@@ -80,6 +81,30 @@ class City(Environment, ABC):
 
 
         # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
+        return self.__free_spots
+
+    def find_spare_part(self, location: Location) -> List[Location]:
+        # "Coordinates" to indicate where to search for free spots
+        # Implement logic to check for bot's status and apply appropriate offsets
+        normal_offsets = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1),  (0, 0),  (0, 1),
+            (1, -1),  (1, 0),  (1, 1)
+        ]
+
+        # For Loop to check for Free Space
+        for offset_x, offset_y in normal_offsets:
+
+            # Getting coordinates that reflect the position of the Agent
+            # E.g coordinates that are around the current Agent position
+            new_offset_x = location.get_x() + offset_x
+            new_offset_y = location.get_y() + offset_y
+
+
+            if self.__environment[new_offset_x][new_offset_y] is SparePart:
+                self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
+
+
         return self.__free_spots
 
     # Display Environment
