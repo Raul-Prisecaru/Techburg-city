@@ -17,15 +17,15 @@ class Simulation:
         # city_environment.display_environment()
         # print("----")
 
-        sparepart = SparePart(Location(0,0))
+        sparepart = SparePart(Location(5,5))
 
-        sparepart.act(city_environment, 10, 5, 15)
+        sparepart.act(city_environment, 1, 5, 5)
         # city_environment.display_environment()
 
 
 
         # Creating SurvivorBot Agent and setting a location as start
-        survivor_bot1 = SurvivorBot(Location(15, 15))
+        survivor_bot1 = SurvivorBot(Location(4, 5))
         survivor_bot2 = SurvivorBot(Location(14, 14))
         survivor_bot3 = SurvivorBot(Location(13, 13))
         survivor_bot4 = SurvivorBot(Location(12, 12))
@@ -61,7 +61,7 @@ class Simulation:
             # malfunctioning_drone4.act(city_environment)
             print("---")
             city_environment.display_environment()
-            time.sleep(10)
+            time.sleep(0.5)
 
 
 
