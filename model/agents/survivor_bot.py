@@ -31,6 +31,7 @@ class SurvivorBot(Agent):
     - Go to an explorered cell if all cells were explored around it -> Pick random if multiple
     """
     def act(self, city: City) -> None:
+        # If this returns True
         if self.__pick_up_spare_part(city):
             # Code to go to the nearest Recharge Station
             pass
@@ -54,16 +55,24 @@ class SurvivorBot(Agent):
 
         # Go to the spare part (Replace Spare Part grid with Survivor_bot)
         if len(spare_part_nearby_list) != 0:
-            random_part = random.choice(spare_part_nearby_list)
-            city.set_agent(self, random_part)
-            # Add Spare part to the inventory
-            self.__inventory.append(city.get_agent(random_part))
-            return True
+            if len(self.__inventory) == 0:
+                random_part = random.choice(spare_part_nearby_list)
+                city.set_agent(self, random_part)
+                # Add Spare part to the inventory
+                self.__inventory.append(city.get_agent(random_part))
+                print("I have picked up an Spare Part!")
+                print("This is now my inventory: ",  self.__inventory)
+                return True
+
+            else:
+                return False
         else:
             return False
 
 
-        # go to the nearest Recharge Station
+
+    def __go_to_recharge_station(self):
+        pass
 
 
 
