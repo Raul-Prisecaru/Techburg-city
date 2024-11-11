@@ -1,8 +1,11 @@
 from random import random, randint
+from typing import TYPE_CHECKING
 
 from model.agent import Agent
 from model.location import Location
-from model.city import City
+
+if TYPE_CHECKING:
+    from model.city import City
 
 class SparePart(Agent):
 
@@ -15,7 +18,7 @@ class SparePart(Agent):
     # E.g Location: Recharge Station 1 // coords: (x : y)
 
 
-    def act(self, city: City, number_spare_parts: int, start_location: int, end_location: int) -> None:
+    def act(self, city: "City", number_spare_parts: int, start_location: int, end_location: int) -> None:
         self.__randomly_scatter(city, number_spare_parts, start_location, end_location)
 
     # IDEA:
@@ -23,7 +26,7 @@ class SparePart(Agent):
     # Later to dynamically adapt
     # Get width and height and subtract 10 from each
 
-    def __randomly_scatter(self, city: City, number_spare_parts: int, start_location: int, end_location: int) -> None:
+    def __randomly_scatter(self, city: "City", number_spare_parts: int, start_location: int, end_location: int) -> None:
         # List to store locations to plot the Spare Parts
         spare_parts_locations = []
 
@@ -53,7 +56,7 @@ class SparePart(Agent):
 
         # After Breaking out of the Loop,
         # Call the city function to loop through the list and add to the environment
-        city.add_objects_to_map(spare_parts_locations, "Spare_part")
+        city.add_objects_to_map(spare_parts_locations, self)
 
 
 
