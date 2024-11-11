@@ -7,7 +7,7 @@ from model.city import City
 from model.location import Location
 
 
-class MyTestCase(unittest.TestCase):
+class TestCity(unittest.TestCase):
 
     def test_width(self):
         city = City(20, 30)
