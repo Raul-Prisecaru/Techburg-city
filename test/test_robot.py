@@ -16,17 +16,27 @@ class TestRobotAgent(unittest.TestCase):
 
     def test_pickUp_spare_part(self):
         city = City(10, 10)
-        spare_part_place = Location(5, 6)
-        sparePart = SparePart(spare_part_place)
+        survivor_bot = SurvivorBot(Location(5,5))
 
-        city.set_agent(sparePart, sparePart.get_location())
-        start_location = Location(5,5)
-        survivor_bot = SurvivorBot(start_location)
+        spare_part = SparePart(Location(5,4))
+
+        city.set_agent(survivor_bot, survivor_bot.get_location())
+
+        city.set_agent(spare_part, spare_part.get_location())
+
+        print(survivor_bot.get_inventory())
+
         survivor_bot.act(city)
 
-        # Checking if bot went to the Items Location
-        self.assertEqual(survivor_bot.get_location(), spare_part_place, "Survivor bot did not go to the Spare Part Location to pick it up")
+        city.display_environment()
 
 
+        self.assertEqual(survivor_bot.get_location().get_x(), spare_part.get_location().get_x(), "Survivor bot did not go to the Spare Part X Location")
+        self.assertEqual(survivor_bot.get_location().get_y(), spare_part.get_location().get_y(), "Survivor bot did not go to the Spare Part Y Location")
+
+        # bot_inventory = survivor_bot.get_inventory()
+        # print(len(bot_inventory))
+        #
+        # self.assertNotEqual(len(bot_inventory), 0, "Survivor bot did not pick up the Spare Part")
 
 
