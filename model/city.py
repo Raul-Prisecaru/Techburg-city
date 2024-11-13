@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC
 
 from model.environment import Environment
@@ -68,19 +70,6 @@ class City(Environment, ABC):
             if self.__environment[new_offset_x][new_offset_y] is None:
                 self.__free_spots.append(Location(new_offset_x, new_offset_y))
 
-            # if self.__environment[new_offset_x][new_offset_y] is SurvivorBot:
-            #     self.__survivor_bot_nearby.append(Location(new_offset_x, new_offset_y))
-            #
-            # if self.__environment[new_offset_x][new_offset_y] is MalfunctioningDrone:
-            #     self.__malfunctioning_drone_nearby.append(Location(new_offset_x, new_offset_y))
-            #
-            # if self.__environment[new_offset_x][new_offset_y] is ScavengerSwarm:
-            #     self.__scavenger_swarm_nearby.append(Location(new_offset_x, new_offset_y))
-            #
-            # if self.__environment[new_offset_x][new_offset_y] is SparePart:
-            #     self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
-
-
         # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
         return self.__free_spots
 
@@ -94,6 +83,7 @@ class City(Environment, ABC):
         ]
 
 
+
         # For Loop to check for Free Space
         for offset_x, offset_y in normal_offsets:
 
@@ -102,12 +92,6 @@ class City(Environment, ABC):
             new_offset_x = location.get_x() + offset_x
             new_offset_y = location.get_y() + offset_y
 
-            print("---")
-            print("coordinates: ", (new_offset_x,new_offset_y))
-            print("found: ", self.__environment[new_offset_x][new_offset_y])
-            print("Expect:", SparePart)
-            print("is it the same? ", isinstance(self.__environment[new_offset_x][new_offset_y], SparePart))
-            print("---")
             if isinstance(self.__environment[new_offset_x][new_offset_y], SparePart):
                 print("There is a spare part in my radius")
                 self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
