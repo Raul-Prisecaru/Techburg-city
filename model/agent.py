@@ -1,3 +1,4 @@
+from __future__ import annotations
 from model.location import Location
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
@@ -23,5 +24,8 @@ class Agent:
     # Abstract used to define what Act does for different Agent
     # Takes City Class to define which environment to execute different Acts on
     @abstractmethod
-    def act(self, city: "City"):
+    def act(self, city: City):
         pass
+
+
+    # TODO: Add the move here. Every Agent moves
