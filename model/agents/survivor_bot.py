@@ -42,7 +42,7 @@ class SurvivorBot(Agent):
         next_position_list = city.find_free_spot(current_location)
         next_position = random.choice(next_position_list)
 
-        city.set_agent("SurviviorBot", next_position)
+        city.set_agent(self, next_position)
 
         self.set_location(next_position)
 
@@ -73,6 +73,9 @@ class SurvivorBot(Agent):
 
     def __go_to_recharge_station(self):
         pass
+
+    def get_inventory(self):
+        return self.__inventory
 
 
 
