@@ -34,9 +34,6 @@ class TestRobotAgent(unittest.TestCase):
         self.assertEqual(survivor_bot.get_location().get_x(), spare_part.get_location().get_x(), "Survivor bot did not go to the Spare Part X Location")
         self.assertEqual(survivor_bot.get_location().get_y(), spare_part.get_location().get_y(), "Survivor bot did not go to the Spare Part Y Location")
 
-        # bot_inventory = survivor_bot.get_inventory()
-        # print(len(bot_inventory))
-        #
-        # self.assertNotEqual(len(bot_inventory), 0, "Survivor bot did not pick up the Spare Part")
-
+        inventory = survivor_bot.get_inventory()
+        self.assertIn(spare_part, inventory, "spare part was not corrected added to the inventory")
 
