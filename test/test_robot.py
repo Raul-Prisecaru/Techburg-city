@@ -24,11 +24,9 @@ class TestRobotAgent(unittest.TestCase):
 
         city.set_agent(spare_part, spare_part.get_location())
 
-        print(survivor_bot.get_inventory())
 
         survivor_bot.act(city)
 
-        city.display_environment()
 
 
         self.assertEqual(survivor_bot.get_location().get_x(), spare_part.get_location().get_x(), "Survivor bot did not go to the Spare Part X Location")
