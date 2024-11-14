@@ -11,7 +11,9 @@ if TYPE_CHECKING:
 class RechargeStation:
     def __init__(self):
         self.__station_location = []
+        self.__spare_part = []
 
+        self.__agents = []
 
     def add_location(self, location: Location) -> None:
         self.__station_location.append(location)
@@ -19,3 +21,5 @@ class RechargeStation:
 
     def return_location(self) -> List[Location]:
         return self.__station_location
+
+
