@@ -28,6 +28,9 @@ class RechargeStation:
     def add_spare_part(self, sparePart: SparePart) -> None:
         self.__spare_part.append(sparePart)
 
+    def get_spare_part(self):
+        return self.__spare_part
+
     def remove_spare_part(self) -> None:
         self.__spare_part.pop()
 
