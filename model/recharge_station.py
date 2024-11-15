@@ -11,19 +11,14 @@ if TYPE_CHECKING:
 
 
 class RechargeStation:
-    def __init__(self):
-        self.__station_location = []
+    def __init__(self, location: Location):
+        self.__location = location
         self.__spare_part = []
 
         self.__survivor_bot = []
 
-    def add_location(self, location: Location) -> None:
-        self.__station_location.append(location)
-
-
-    def return_location(self) -> List[Location]:
-        return self.__station_location
-
+    def get_location(self) -> Location:
+        return self.__location
 
     def add_spare_part(self, sparePart: SparePart) -> None:
         self.__spare_part.append(sparePart)
@@ -32,13 +27,20 @@ class RechargeStation:
         return self.__spare_part
 
     def remove_spare_part(self) -> None:
-        self.__spare_part.pop()
+        if len(self.__spare_part) != 0:
+            self.__spare_part.pop()
+        else:
+            print("Recharge Stations holds no Survivor Bots")
+
 
     def add_survivor_bot(self, survivor_bot: SurvivorBot) -> None:
         self.__survivor_bot.append(survivor_bot)
 
-    def remove_survivor_bot(self) -> None:
-        pass
+    def remove_survivor_bot(self, survivor_bot: SurvivorBot) -> None:
+        if len(self.__survivor_bot) != 0:
+            self.__survivor_bot.remove(survivor_bot)
 
+        else:
+            print("Recharge Stations holds no Survivor Bots")
 
 
