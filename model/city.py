@@ -63,7 +63,7 @@ class City(Environment, ABC):
 
             # Getting coordinates that reflect the position of the Agent
             # E.g coordinates that are around the current Agent position
-            new_offset_x = location.get_x() + offset_x/
+            new_offset_x = location.get_x() + offset_x
             new_offset_y = location.get_y() + offset_y
 
             # Checking if there is something at those new coordinates
