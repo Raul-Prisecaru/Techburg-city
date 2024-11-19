@@ -1,6 +1,6 @@
 class Location:
     # Class Takes X and Y. Used as coordinates for Grid
-    def __init__(self, x: int, y: int) -> None:
+    def __init__(self, y: int, x: int) -> None:
         self.__x = x
         self.__y = y
 
