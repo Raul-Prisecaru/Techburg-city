@@ -42,11 +42,11 @@ class City(Environment, ABC):
 
     # Returns an Agent if found at provided location else None
     def get_agent(self, location: Location) -> Optional[Agent]:
-        return self.__environment[location.get_x()][location.get_y()]
+        return self.__environment[location.get_y()][location.get_x()]
 
     # Sets an Agent at provided location.
-    def set_agent(self, agent: Agent, location: Location) -> None:
-        self.__environment[location.get_x()][location.get_y()] = agent
+    def set_agent(self, agent: Optional[Agent], location: Location) -> None:
+        self.__environment[location.get_y()][location.get_x()] = agent
 
     # Function to Find free available spots around the location provided
     def find_free_spot(self, location: Location) -> List[Location]:
@@ -63,12 +63,12 @@ class City(Environment, ABC):
 
             # Getting coordinates that reflect the position of the Agent
             # E.g coordinates that are around the current Agent position
-            new_offset_x = location.get_x() + offset_x
+            new_offset_x = location.get_x() + offset_x/
             new_offset_y = location.get_y() + offset_y
 
             # Checking if there is something at those new coordinates
-            if self.__environment[new_offset_x][new_offset_y] is None:
-                self.__free_spots.append(Location(new_offset_x, new_offset_y))
+            if self.__environment[new_offset_y][new_offset_x] is None:
+                self.__free_spots.append(Location(new_offset_y, new_offset_x))
 
         # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
         return self.__free_spots
@@ -92,9 +92,9 @@ class City(Environment, ABC):
             new_offset_x = location.get_x() + offset_x
             new_offset_y = location.get_y() + offset_y
 
-            if isinstance(self.__environment[new_offset_x][new_offset_y], SparePart):
+            if isinstance(self.__environment[new_offset_y][new_offset_x], SparePart):
                 print("There is a spare part in my radius")
-                self.__spare_part_nearby.append(Location(new_offset_x, new_offset_y))
+                self.__spare_part_nearby.append(Location(new_offset_y, new_offset_x))
 
 
         return self.__spare_part_nearby
@@ -114,5 +114,5 @@ class City(Environment, ABC):
 
     def add_objects_to_map(self, list_Location: List[Location], object_toAdd: Agent):
         for location in list_Location:
-            self.__environment[location.get_x()][location.get_y()] = object_toAdd
+            self.__environment[location.get_y()][location.get_x()] = object_toAdd
 
