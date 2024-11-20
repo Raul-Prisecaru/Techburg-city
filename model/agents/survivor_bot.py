@@ -80,7 +80,7 @@ class SurvivorBot(Agent):
 
 
     def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location):
-        if next_move == Location(15, 29):
+        if next_move.get_x() == Location(15, 29).get_x() and next_move.get_y() == Location(15, 29).get_y():
             city.set_agent(None, current_location)
             RechargeStation().add_survivor_bot(self)
             RechargeStation().add_spare_part(self.__inventory[0])
