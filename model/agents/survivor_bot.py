@@ -32,7 +32,7 @@ class SurvivorBot(Agent):
     - Go to unexplored cell -> Pick random if multiple
     - Go to an explorered cell if all cells were explored around it -> Pick random if multiple
     """
-    def act(self, city: City) -> None:
+    def act(self, city: City, recharge_station: RechargeStation) -> None:
         current_location = self.get_location()
 
         sparePart_list = city.find_spare_part(current_location)
@@ -42,7 +42,7 @@ class SurvivorBot(Agent):
 
         while True:
             if len(self.__inventory) > 0:
-                self.__go_to_recharge_station(city, current_location, next_move_station)
+                self.__go_to_recharge_station(city, current_location, next_move_station, recharge_station)
                 break
 
             if len(sparePart_list) != 0:
@@ -79,13 +79,13 @@ class SurvivorBot(Agent):
 
 
 
-    def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location):
+    def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location, recharge_station: RechargeStation):
         if next_move.get_x() == Location(15, 29).get_x() and next_move.get_y() == Location(15, 29).get_y():
             city.set_agent(None, current_location)
-            RechargeStation().add_survivor_bot(self)
-            RechargeStation().add_spare_part(self.__inventory[0])
-            RechargeStation().get_survivor_bot()
-            RechargeStation().get_spare_part()
+            recharge_station.add_survivor_bot(self)
+            recharge_station.add_spare_part(self.__inventory[0])
+            print(recharge_station.get_survivor_bot())
+            print(recharge_station.get_spare_part())
 
             self.__inventory.clear()
 
