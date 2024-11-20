@@ -63,6 +63,7 @@ class SurvivorBot(Agent):
             self.set_location(next_position)
 
             city.set_agent(None, current_location)
+            self.__energy -= 5
 
         elif self.__energy == 0:
             city.set_agent(self, current_location)
