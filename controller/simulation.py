@@ -11,8 +11,8 @@ class Simulation:
     def __init__(self, width: int, height: int) -> None:
         self.__width = width
         self.__height = height
-
-        self.__rechargeStation = RechargeStation(Location(15, 29))
+        self.__rechargeStation = RechargeStation()
+        self.__rechargeStation.set_location(Location(15,29))
         self.__sparePart = SparePart(Location(15, 27))
         self.__survivorBot = SurvivorBot(Location(15, 28))
 
@@ -28,7 +28,7 @@ class Simulation:
         while True:
             print("---")
             city_environment.display_environment()
-            self.__survivorBot.act(city_environment)
+            self.__survivorBot.act(city_environment, self.__rechargeStation)
             time.sleep(2)
 
 
