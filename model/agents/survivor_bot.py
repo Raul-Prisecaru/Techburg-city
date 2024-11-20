@@ -16,6 +16,7 @@ class SurvivorBot(Agent):
         super().__init__(location)
         # Inventory System. Only one slot available
         self.__inventory = []
+        self.__energy = 100
     # Implement a function to act as a enchacement status of the bot
     # Perhaps use a Dict to have the enchancment name : percentage?
     # e.g speed : 50%
@@ -54,13 +55,18 @@ class SurvivorBot(Agent):
                 break
 
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
-        next_position = random.choice(location_list)
+        if self.__energy > 0:
+            next_position = random.choice(location_list)
 
-        city.set_agent(self, next_position)
+            city.set_agent(self, next_position)
 
-        self.set_location(next_position)
+            self.set_location(next_position)
 
-        city.set_agent(None, current_location)
+            city.set_agent(None, current_location)
+
+        elif self.__energy == 0:
+            city.set_agent(self, current_location)
+            print("I have no energy left")
 
     def __pick_up_spare_part(self, city: City, current_location: Location, location_list: List[Location]) -> None:
         # Go to the spare part (Replace Spare Part grid with Survivor_bot)
@@ -98,6 +104,9 @@ class SurvivorBot(Agent):
     def get_inventory(self):
         return self.__inventory
 
+
+    def get_energy(self):
+        return self.__energy
 
 
 
