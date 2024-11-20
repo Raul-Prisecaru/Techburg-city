@@ -99,6 +99,34 @@ class City(Environment, ABC):
 
         return self.__spare_part_nearby
 
+    def find_next_move_recharge_station(self, current_location: Location, recharge_location: Location) -> Location:
+        next_move_x = None
+        next_move_y = None
+
+        if current_location.get_x() > recharge_location.get_x():
+            next_move_x = -1
+        if current_location.get_x() == recharge_location.get_x():
+            next_move_x = 0
+        if current_location.get_x() < recharge_location.get_x():
+            next_move_x = 1
+
+        if current_location.get_y() > recharge_location.get_y():
+            next_move_y = -1
+        if current_location.get_y() == recharge_location.get_y():
+            next_move_y = 0
+        if current_location.get_y() < recharge_location.get_y():
+            next_move_y = 1
+
+        return Location(next_move_y, next_move_x)
+
+
+
+
+
+
+
+
+
     # Display Environment
     def display_environment(self):
         for row in range(self.__height):
