@@ -104,18 +104,20 @@ class City(Environment, ABC):
         next_move_y = None
 
         if current_location.get_x() > recharge_location.get_x():
-            next_move_x = -1
-        if current_location.get_x() == recharge_location.get_x():
-            next_move_x = 0
+            next_move_x = current_location.get_x() - 1
+
         if current_location.get_x() < recharge_location.get_x():
-            next_move_x = 1
+            next_move_x = current_location.get_x() + 1
+
+        else: next_move_x = current_location.get_x()
 
         if current_location.get_y() > recharge_location.get_y():
-            next_move_y = -1
-        if current_location.get_y() == recharge_location.get_y():
-            next_move_y = 0
+            next_move_y = current_location.get_y() - 1
+
         if current_location.get_y() < recharge_location.get_y():
-            next_move_y = 1
+            next_move_y = current_location.get_y() + 1
+
+        else: next_move_y = current_location.get_y()
 
         return Location(next_move_y, next_move_x)
 
