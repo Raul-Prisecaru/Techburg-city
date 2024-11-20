@@ -12,16 +12,23 @@ class Simulation:
         self.__width = width
         self.__height = height
 
-
+        self.__rechargeStation = RechargeStation(Location(15, 29))
+        self.__sparePart = SparePart(Location(15, 27))
+        self.__survivorBot = SurvivorBot(Location(15, 28))
 
     def run(self):
 
         # Creating and displaying City Environment
         city_environment = City(self.__width, self.__height)
+        city_environment.set_agent(self.__rechargeStation, self.__rechargeStation.get_location())
+        city_environment.set_agent(self.__sparePart, self.__sparePart.get_location())
+        city_environment.set_agent(self.__survivorBot, self.__survivorBot.get_location())
+
 
         while True:
             print("---")
             city_environment.display_environment()
+            self.__survivorBot.act(city_environment)
             time.sleep(5)
 
 
