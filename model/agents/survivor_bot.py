@@ -37,13 +37,13 @@ class SurvivorBot(Agent):
 
         sparePart_list = city.find_spare_part(current_location)
         freeSpot_list = city.find_free_spot(current_location)
-        next_move_station = city.find_next_move_recharge_station(current_location, RechargeStation.get_location())
+        next_move_station = city.find_next_move_recharge_station(current_location, Location(15, 29))
 
 
         while True:
 
             if len(self.__inventory) > 0:
-                self.__go_to_recharge_station(city, next_move_station)
+                self.__go_to_recharge_station(city, current_location, next_move_station)
                 break
 
             if len(sparePart_list) != 0:
