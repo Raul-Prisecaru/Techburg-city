@@ -3,6 +3,7 @@ import os
 from abc import ABC
 import random
 from typing import List
+from model.recharge_station import RechargeStation
 from model.city import City
 from model.agent import Agent
 from model.location import Location
@@ -36,8 +37,15 @@ class SurvivorBot(Agent):
 
         sparePart_list = city.find_spare_part(current_location)
         freeSpot_list = city.find_free_spot(current_location)
+        next_move_station = city.find_next_move_recharge_station(current_location, RechargeStation.get_location())
+
 
         while True:
+
+            if len(self.__inventory) > 0:
+                self.__go_to_recharge_station(city, next_move_station)
+                break
+
             if len(sparePart_list) != 0:
                 self.__pick_up_spare_part(city, current_location, sparePart_list)
                 break
@@ -45,16 +53,6 @@ class SurvivorBot(Agent):
             if len(freeSpot_list) != 0:
                 self.__move_to_free_spot(city, current_location, freeSpot_list)
                 break
-
-
-        # while True:
-        #     # If this returns True
-        #     # Changed System so it trurns True if Completed
-        #     if self.__pick_up_spare_part(city):
-        #         # Code to go to the nearest Recharge Station
-        #         continue
-        #     elif self.__move_to_free_spot(city):
-        #         break
 
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
         next_position = random.choice(location_list)
@@ -79,12 +77,14 @@ class SurvivorBot(Agent):
 
             # Add Spare part to the inventory
             print("I have picked up an Spare Part!")
-            print("This is now my inventory: ",  self.__inventory)
 
 
 
-    def __go_to_recharge_station(self):
-        pass
+    def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location):
+        city.set_agent(self, next_move)
+        self.set_location(next_move)
+        city.set_agent(None, current_location)
+
 
     def get_inventory(self):
         return self.__inventory
