@@ -41,7 +41,6 @@ class SurvivorBot(Agent):
 
 
         while True:
-
             if len(self.__inventory) > 0:
                 self.__go_to_recharge_station(city, current_location, next_move_station)
                 break
@@ -81,9 +80,19 @@ class SurvivorBot(Agent):
 
 
     def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location):
-        city.set_agent(self, next_move)
-        self.set_location(next_move)
-        city.set_agent(None, current_location)
+        if next_move == Location(15, 29):
+            city.set_agent(None, current_location)
+            RechargeStation().add_survivor_bot(self)
+            RechargeStation().add_spare_part(self.__inventory[0])
+            RechargeStation().get_survivor_bot()
+            RechargeStation().get_spare_part()
+
+            self.__inventory.clear()
+
+        else:
+            city.set_agent(self, next_move)
+            self.set_location(next_move)
+            city.set_agent(None, current_location)
 
 
     def get_inventory(self):
