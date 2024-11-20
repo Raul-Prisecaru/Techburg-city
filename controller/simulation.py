@@ -29,7 +29,7 @@ class Simulation:
             print("---")
             city_environment.display_environment()
             self.__survivorBot.act(city_environment)
-            time.sleep(5)
+            time.sleep(2)
 
 
 
