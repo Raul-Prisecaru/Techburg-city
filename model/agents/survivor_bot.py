@@ -61,7 +61,7 @@ class SurvivorBot(Agent):
                 self.__No_energy_turn += 1
 
                 if self.__No_energy_turn >= 10:
-                    self.__removedFromGrid(city, current_location)
+                    self.__removed_from_grid(city, current_location)
 
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
             next_position = random.choice(location_list)
@@ -116,8 +116,18 @@ class SurvivorBot(Agent):
         return self.__energy
 
 
-    def __removedFromGrid(self, city: City, current_location: Location):
+    def __removed_from_grid(self, city: City, current_location: Location):
         city.set_agent(None, current_location)
+
+
+    def __calculate_distance_energy(self, city: City, current_location: Location, recharge_location: Location):
+        total_distance_station = abs(current_location.get_x() - recharge_location.get_x()) + abs(current_location.get_y() - recharge_location.get_y())
+
+        total_distance = total_distance_station * 2
+
+        total_energy_required = total_distance * 5
+
+
 
 
 
