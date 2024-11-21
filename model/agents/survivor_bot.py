@@ -17,6 +17,7 @@ class SurvivorBot(Agent):
         # Inventory System. Only one slot available
         self.__inventory = []
         self.__energy = 100
+        self.__No_energy_turn = 0
     # Implement a function to act as a enchacement status of the bot
     # Perhaps use a Dict to have the enchancment name : percentage?
     # e.g speed : 50%
@@ -42,20 +43,27 @@ class SurvivorBot(Agent):
 
 
         while True:
-            if len(self.__inventory) > 0:
-                self.__go_to_recharge_station(city, current_location, next_move_station, recharge_station)
-                break
+            if self.__energy > 0:
+                if len(self.__inventory) > 0:
+                    self.__go_to_recharge_station(city, current_location, next_move_station, recharge_station)
+                    break
 
-            if len(sparePart_list) != 0:
-                self.__pick_up_spare_part(city, current_location, sparePart_list)
-                break
+                if len(sparePart_list) != 0:
+                    self.__pick_up_spare_part(city, current_location, sparePart_list)
+                    break
 
-            if len(freeSpot_list) != 0:
-                self.__move_to_free_spot(city, current_location, freeSpot_list)
-                break
+                if len(freeSpot_list) != 0:
+                    self.__move_to_free_spot(city, current_location, freeSpot_list)
+                    break
+
+            else:
+                print("I have no energy left")
+                self.__No_energy_turn += 1
+
+                if self.__No_energy_turn >= 10:
+                    self.__removedFromGrid(city, current_location)
 
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
-        if self.__energy > 0:
             next_position = random.choice(location_list)
 
             city.set_agent(self, next_position)
@@ -65,9 +73,7 @@ class SurvivorBot(Agent):
             city.set_agent(None, current_location)
             self.__energy -= 5
 
-        elif self.__energy == 0:
-            city.set_agent(self, current_location)
-            print("I have no energy left")
+
 
     def __pick_up_spare_part(self, city: City, current_location: Location, location_list: List[Location]) -> None:
         # Go to the spare part (Replace Spare Part grid with Survivor_bot)
@@ -108,6 +114,10 @@ class SurvivorBot(Agent):
 
     def get_energy(self):
         return self.__energy
+
+
+    def __removedFromGrid(self, city: City, current_location: Location):
+        city.set_agent(None, current_location)
 
 
 
