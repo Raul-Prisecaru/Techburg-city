@@ -16,6 +16,7 @@ move_up_dir = os.path.dirname(current_dir)
 class SurvivorBot(Agent):
     def __init__(self, location: Location) -> None:
         """
+        Constructor to set the default values
 
         :param location --> Sets the location of the survivor bot
         :var self.__inventory --> Acts as an inventory system allowing survivor bot to hold spare parts
@@ -46,6 +47,7 @@ class SurvivorBot(Agent):
     """
     def act(self, city: City, recharge_station: RechargeStation) -> None:
         """
+        Function that allows the survivor bot to execute actions
 
         :param city --> city environment where survivor bot can execute actions on
         :param recharge_station --> recharge object used to get it's current location (Temporarily)
@@ -90,6 +92,8 @@ class SurvivorBot(Agent):
 
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
         """
+        Function that allows the survivor bot to move to a free spot
+
         :param city --> Used to move the survivor bot to the new location and remove from it's previous location
         :param current_location -->  Used to set it's previous location to None to avoid duplicates
         :param location_list --> List of Free Locations
@@ -108,6 +112,15 @@ class SurvivorBot(Agent):
 
 
     def __pick_up_spare_part(self, city: City, current_location: Location, location_list: List[Location]) -> None:
+        """
+        Function that allows the survivor bot to move to a spot where Spare Part is located
+
+        :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+        :param current_location --> Used to set it's previous location to None to avoid duplicates
+        :param location_list --> List of spare parts Locations
+
+        """
+
         # Go to the spare part (Replace Spare Part grid with Survivor_bot)
         if len(self.__inventory) == 0:
             random_part = random.choice(location_list)
