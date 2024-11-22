@@ -132,8 +132,10 @@ class SurvivorBot(Agent):
 
         return total_energy_required
 
-    def __consume_part(self, spare_part: SparePart):
-        pass
+    def __consume_part(self, spare_part: SparePart) -> None:
+        self.__inventory.pop()
+
+        self.__energy = 100
 
 
 
