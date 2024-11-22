@@ -15,6 +15,14 @@ move_up_dir = os.path.dirname(current_dir)
 
 class SurvivorBot(Agent):
     def __init__(self, location: Location) -> None:
+        """
+
+        :param location --> Sets the location of the survivor bot
+        :var self.__inventory --> Acts as an inventory system allowing survivor bot to hold spare parts
+        :var self.__energy --> Energy System determining how far survivor_bot can travel
+        :var self.__No_energy_turn --> Keeps track of how many turns has been when survivor bot has no energy
+
+        """
         super().__init__(location)
         # Inventory System. Only one slot available
         self.__inventory = []
@@ -37,11 +45,22 @@ class SurvivorBot(Agent):
     - Go to an explorered cell if all cells were explored around it -> Pick random if multiple
     """
     def act(self, city: City, recharge_station: RechargeStation) -> None:
+        """
+
+        :param city --> city environment where survivor bot can execute actions on
+        :param recharge_station --> recharge object used to get it's current location (Temporarily)
+
+        :var current_location --> Gets the current location of the survivor bot
+        :var sparePart_list --> Checks around for any spare part from the current location and returns a list of Locations if found
+        :var freeSpot_list --> Checks around for any free spots from the current location and returns a list of Locations if found
+        :var next_move_station --> finds best next coordinate to travel to the recharge station
+
+        """
         current_location = self.get_location()
 
         sparePart_list = city.find_spare_part(current_location)
         freeSpot_list = city.find_free_spot(current_location)
-        next_move_station = city.find_next_move_recharge_station(current_location, Location(15, 29))
+        next_move_station = city.find_next_move_recharge_station(current_location, recharge_station.get_location())
 
 
         while True:
@@ -70,14 +89,21 @@ class SurvivorBot(Agent):
                     self.__removed_from_grid(city, current_location)
 
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
-            next_position = random.choice(location_list)
+        """
+        :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+        :param current_location -->  Used to set it's previous location to None to avoid duplicates
+        :param location_list --> List of Free Locations
 
-            city.set_agent(self, next_position)
+        :var self.__energy --> Used to reduce survivor bot energy after moving
+        """
+        next_position = random.choice(location_list)
 
-            self.set_location(next_position)
+        city.set_agent(self, next_position)
 
-            city.set_agent(None, current_location)
-            self.__energy -= 5
+        self.set_location(next_position)
+
+        city.set_agent(None, current_location)
+        self.__energy -= 5
 
 
 
@@ -142,15 +168,7 @@ class SurvivorBot(Agent):
 
     def __attempt_consume_part(self, inventory: List[object]) -> None:
         if len(inventory) > 0:
-            self.__inventory.pop()
-
+            inventory.pop()
             self.__energy = 100
         else:
             print("I do not have spare part in my inventory to consume")
-
-
-
-
-
-
-
