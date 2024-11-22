@@ -3,6 +3,8 @@ import os
 from abc import ABC
 import random
 from typing import List
+
+from model.agents.spare_part import SparePart
 from model.recharge_station import RechargeStation
 from model.city import City
 from model.agent import Agent
@@ -121,6 +123,7 @@ class SurvivorBot(Agent):
 
 
     def __calculate_distance_energy(self, city: City, current_location: Location, recharge_location: Location) -> int:
+
         total_distance_station = abs(current_location.get_x() - recharge_location.get_x()) + abs(current_location.get_y() - recharge_location.get_y())
 
         total_distance = total_distance_station * 2
@@ -129,6 +132,8 @@ class SurvivorBot(Agent):
 
         return total_energy_required
 
+    def __consume_part(self, spare_part: SparePart):
+        pass
 
 
 
