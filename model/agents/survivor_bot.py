@@ -45,6 +45,9 @@ class SurvivorBot(Agent):
 
 
         while True:
+
+            if (self.__does_robot_enough_energy_back_(city, current_location, recharge_station) > 5) and
+                pass
             if self.__energy > 0:
                 if len(self.__inventory) > 0:
                     self.__go_to_recharge_station(city, current_location, next_move_station, recharge_station)
@@ -122,7 +125,7 @@ class SurvivorBot(Agent):
         city.set_agent(None, current_location)
 
 
-    def __calculate_distance_energy(self, city: City, current_location: Location, recharge_location: Location) -> int:
+    def __does_robot_enough_energy_back_(self, city: City, current_location: Location, recharge_location: Location) -> int:
 
         total_distance_station = abs(current_location.get_x() - recharge_location.get_x()) + abs(current_location.get_y() - recharge_location.get_y())
 
@@ -130,7 +133,11 @@ class SurvivorBot(Agent):
 
         total_energy_required = total_distance * 5
 
-        return total_energy_required
+        if self.__energy > total_energy_required:
+            return True
+
+        if self.__energy < total_energy_required:
+            return False
 
     def __consume_part(self, spare_part: SparePart) -> None:
         self.__inventory.pop()
