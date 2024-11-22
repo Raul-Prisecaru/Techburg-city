@@ -47,7 +47,7 @@ class SurvivorBot(Agent):
         while True:
 
             if (self.__does_robot_enough_energy_back_(city, current_location, recharge_station) == False) and self.__energy < 5:
-                self.__consume_part()
+                self.__attempt_consume_part(self.__inventory)
                 pass
             if self.__energy > 0:
                 if len(self.__inventory) > 0:
@@ -140,10 +140,13 @@ class SurvivorBot(Agent):
         if self.__energy < total_energy_required:
             return False
 
-    def __attempt_consume_part(self, spare_part: SparePart) -> None:
-        self.__inventory.pop()
+    def __attempt_consume_part(self, inventory: List[object]) -> None:
+        if len(inventory) > 0:
+            self.__inventory.pop()
 
-        self.__energy = 100
+            self.__energy = 100
+        else:
+            print("I do not have spare part in my inventory to consume")
 
 
 
