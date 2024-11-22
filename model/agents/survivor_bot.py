@@ -120,12 +120,17 @@ class SurvivorBot(Agent):
         city.set_agent(None, current_location)
 
 
-    def __calculate_distance_energy(self, city: City, current_location: Location, recharge_location: Location):
+    def __calculate_distance_energy(self, city: City, current_location: Location, recharge_location: Location) -> int:
         total_distance_station = abs(current_location.get_x() - recharge_location.get_x()) + abs(current_location.get_y() - recharge_location.get_y())
 
         total_distance = total_distance_station * 2
 
         total_energy_required = total_distance * 5
+
+        return total_energy_required
+
+
+
 
 
 
