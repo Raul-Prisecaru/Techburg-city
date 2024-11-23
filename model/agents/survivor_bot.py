@@ -244,10 +244,13 @@ class SurvivorBot(Agent):
 
 
     def increase_speed(self, increase_by: int) -> None:
-        pass
+        current_speed = self.__enhancements["speed"]
+        self.__enhancements.update({"speed": current_speed + increase_by})
 
     def increase_vision(self, increase_by: int) -> None:
-        pass
+        current_vision = self.__enhancements["vision"]
+        self.__enhancements.update({"vision": current_vision + increase_by})
 
     def increase_energy(self, increase_by) -> None:
-        pass
+        current_energy = self.__enhancements["energy"]
+        self.__enhancements.update({"energy": current_energy + increase_by})
