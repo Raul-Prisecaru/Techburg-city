@@ -32,6 +32,13 @@ class SurvivorBot(Agent):
         self.__inventory = []
         self.__energy = 100
         self.__No_energy_turn = 0
+        self.__enhancements = {
+            "speed":  0,
+            "vision": 0,
+            "energy": 0
+        }
+
+
 
     def act(self, city: City, recharge_station: RechargeStation) -> None:
         """
