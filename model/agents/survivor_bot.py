@@ -228,7 +228,7 @@ class SurvivorBot(Agent):
     def __attempt_consume_part(self, inventory: List[SparePart]) -> None:
         """
         function to allow the survivor bot to attempt at consuming a Spare Part
-        :param inventory --> test test
+        :param inventory --> Inventory of the survivor bot
         :return: --> Returns None
         """
 
