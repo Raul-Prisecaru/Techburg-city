@@ -32,22 +32,7 @@ class SurvivorBot(Agent):
         self.__inventory = []
         self.__energy = 100
         self.__No_energy_turn = 0
-    # Implement a function to act as a enchacement status of the bot
-    # Perhaps use a Dict to have the enchancment name : percentage?
-    # e.g speed : 50%
-    # TODO: As a reminder to see this above
 
-    # This will basically act like a priority List
-    # In will do the most important thing first to last
-    # e.g First check for enemies around, second check for spare part
-    # Might be something like this in order:
-    """
-    Priority list (In order)
-    - Check for enemies (drones / nanobots) around -> Run away to nearest recharge station
-    - Check for spare part around -> Pick up and go to nearest recharge station
-    - Go to unexplored cell -> Pick random if multiple
-    - Go to an explorered cell if all cells were explored around it -> Pick random if multiple
-    """
     def act(self, city: City, recharge_station: RechargeStation) -> None:
         """
         Function that allows the survivor bot to execute actions
