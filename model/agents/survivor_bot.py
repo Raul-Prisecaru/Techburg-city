@@ -19,8 +19,11 @@ class SurvivorBot(Agent):
         Constructor to set the default values
 
         :param location --> Sets the location of the survivor bot
+
         :var self.__inventory --> Acts as an inventory system allowing survivor bot to hold spare parts
+
         :var self.__energy --> Energy System determining how far survivor_bot can travel
+
         :var self.__No_energy_turn --> Keeps track of how many turns has been when survivor bot has no energy
 
         """
@@ -50,11 +53,15 @@ class SurvivorBot(Agent):
         Function that allows the survivor bot to execute actions
 
         :param city --> city environment where survivor bot can execute actions on
+
         :param recharge_station --> recharge object used to get it's current location (Temporarily)
 
         :var current_location --> Gets the current location of the survivor bot
+
         :var sparePart_list --> Checks around for any spare part from the current location and returns a list of Locations if found
+
         :var freeSpot_list --> Checks around for any free spots from the current location and returns a list of Locations if found
+
         :var next_move_station --> finds best next coordinate to travel to the recharge station
 
         """
@@ -67,7 +74,7 @@ class SurvivorBot(Agent):
 
         while True:
 
-            if (self.__does_robot_enough_energy_back_(city, current_location, recharge_station) == False) and self.__energy < 5:
+            if (self.__does_robot_enough_energy_back(city, current_location, recharge_station) == False) and self.__energy < 5:
                 self.__attempt_consume_part(self.__inventory)
                 pass
             if self.__energy > 0:
@@ -95,7 +102,9 @@ class SurvivorBot(Agent):
         Function that allows the survivor bot to move to a free spot
 
         :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+
         :param current_location -->  Used to set it's previous location to None to avoid duplicates
+
         :param location_list --> List of Free Locations
 
         :var self.__energy --> Used to reduce survivor bot energy after moving
@@ -116,7 +125,9 @@ class SurvivorBot(Agent):
         Function that allows the survivor bot to move to a spot where Spare Part is located
 
         :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+
         :param current_location --> Used to set it's previous location to None to avoid duplicates
+
         :param location_list --> List of spare parts Locations
 
         """
@@ -137,7 +148,22 @@ class SurvivorBot(Agent):
 
 
 
-    def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location, recharge_station: RechargeStation):
+    def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location, recharge_station: RechargeStation) -> None:
+        """
+        Function that is responsible for moving the survivor bot to the recharge station
+        and insert the survivor bot and spare part into the recharge station
+
+        :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+
+        :param current_location --> Used to set it's previous location to None to avoid duplicates
+
+        :param next_move --> Next closest position to the recharge station from survivor bot current position
+
+        :param recharge_station --> recharge station to go to and insert the survivor bot into alongside with it's spare part
+
+        """
+
+
         if next_move.get_x() == Location(15, 29).get_x() and next_move.get_y() == Location(15, 29).get_y():
             city.set_agent(None, current_location)
             recharge_station.add_survivor_bot(self)
@@ -153,21 +179,41 @@ class SurvivorBot(Agent):
             city.set_agent(None, current_location)
 
 
-    def get_inventory(self):
+    def get_inventory(self) -> List[SparePart]:
+        """
+        Function to retrieve the inventory of the survivor bot. May contain a singular spare part or be an empty list
+        :return: --> The current Inventory of the survivor bot
+        """
         return self.__inventory
 
 
-    def get_energy(self):
+    def get_energy(self) -> None:
+        """
+        Function to retrieve the current Energy Status of the survivor bot
+        :return: --> The current Energy Status of the survivor bot
+        """
         return self.__energy
 
 
-    def __removed_from_grid(self, city: City, current_location: Location):
+    def __removed_from_grid(self, city: City, current_location: Location) -> None:
+        """
+        Function to remove survivor bot from the environment if certain conditions meet
+        :param city: --> Environment to remove Survivor Bot from
+        :param current_location --> Current Location of the Survivor Bot
+        :return --> Returns None
+        """
         city.set_agent(None, current_location)
 
 
-    def __does_robot_enough_energy_back_(self, city: City, current_location: Location, recharge_location: Location) -> int:
+    def __does_robot_enough_energy_back(self, current_location: Location, go_back_location: Location) -> bool:
+        """
+        function to calculate if Survivor bot has enough energy to travel back to specified location (Typically used for Recharge Station)
 
-        total_distance_station = abs(current_location.get_x() - recharge_location.get_x()) + abs(current_location.get_y() - recharge_location.get_y())
+        :param current_location --> Current Location of the Survivor Bot
+        :param: go_back_location --> Location to calculate the distance between
+        :return: --> Returns True if Survivor bot has enough energy else Returns False if Survivor bot does not have enough energy
+        """
+        total_distance_station = abs(current_location.get_x() - go_back_location.get_x()) + abs(current_location.get_y() - go_back_location.get_y())
 
         total_distance = total_distance_station * 2
 
@@ -179,7 +225,13 @@ class SurvivorBot(Agent):
         if self.__energy < total_energy_required:
             return False
 
-    def __attempt_consume_part(self, inventory: List[object]) -> None:
+    def __attempt_consume_part(self, inventory: List[SparePart]) -> None:
+        """
+        function to allow the survivor bot to attempt at consuming a Spare Part
+        :param inventory --> test test
+        :return: --> Returns None
+        """
+
         if len(inventory) > 0:
             inventory.pop()
             self.__energy = 100
