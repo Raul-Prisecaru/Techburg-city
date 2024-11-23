@@ -233,13 +233,14 @@ class SurvivorBot(Agent):
 
 
     def get_speed_enhancement(self) -> int:
-        pass
+        return self.__enhancements["speed"]
 
     def get_vision_enhancement(self) -> int:
-        pass
+        return self.__enhancements["vision"]
 
     def get_energy_enhancement(self) -> int:
-        pass
+        return self.__enhancements["energy"]
+
 
 
     def increase_speed(self, increase_by: int) -> None:
