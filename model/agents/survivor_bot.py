@@ -229,3 +229,24 @@ class SurvivorBot(Agent):
             self.__energy = 100
         else:
             print("I do not have spare part in my inventory to consume")
+
+
+
+    def get_speed_enhancement(self) -> int:
+        pass
+
+    def get_vision_enhancement(self) -> int:
+        pass
+
+    def get_energy_enhancement(self) -> int:
+        pass
+
+
+    def increase_speed(self, increase_by: int) -> None:
+        pass
+
+    def increase_vision(self, increase_by: int) -> None:
+        pass
+
+    def increase_energy(self, increase_by) -> None:
+        pass
