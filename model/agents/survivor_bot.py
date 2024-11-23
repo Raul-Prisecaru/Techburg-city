@@ -2,6 +2,7 @@ import os
 
 from abc import ABC
 import random
+from logging import exception
 from typing import List
 
 from model.agents.spare_part import SparePart
@@ -26,16 +27,31 @@ class SurvivorBot(Agent):
 
         :var self.__No_energy_turn --> Keeps track of how many turns has been when survivor bot has no energy
 
+        :dict self.__enhancements --> Responsible for keeping track of any enhancement made
+
+        :dict self.__incident --> Responsible for keeping track of any incident to this survivor bot which will be used to better strategy on what enhancement to be made
         """
         super().__init__(location)
         # Inventory System. Only one slot available
         self.__inventory = []
         self.__energy = 100
         self.__No_energy_turn = 0
+
         self.__enhancements = {
             "speed":  0,
             "vision": 0,
             "energy": 0
+        }
+
+        self.__incident = {
+            # if Attacked, should probably focus on speed enhancement
+            "attacked": 0,
+
+            # if encountered drone, should probably focus on vision enhancement
+            "drone-encounter": 0,
+
+            # if ran out of energy in the field, should probably focus on energy enhancement
+            "out-of-energy": 0
         }
 
 
@@ -245,7 +261,7 @@ class SurvivorBot(Agent):
 
     def increase_speed(self, increase_by: int) -> None:
         current_speed = self.__enhancements["speed"]
-        self.__enhancements.update({"speed": current_speed + increase_by})
+        self.__enhancements.update({"speßed": current_speed + increase_by})
 
     def increase_vision(self, increase_by: int) -> None:
         current_vision = self.__enhancements["vision"]
