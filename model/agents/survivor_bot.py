@@ -82,9 +82,9 @@ class SurvivorBot(Agent):
 
         while True:
 
-            # if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
-            #     self.__attempt_consume_part(self.__inventory)
-            #     pass
+            if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
+                self.__attempt_consume_part(self.__inventory)
+                pass
             if self.__energy > 0:
                 if len(self.__inventory) > 0:
                     self.__go_to_recharge_station(city, current_location, next_move_station, self.__recharge_station)
@@ -104,7 +104,8 @@ class SurvivorBot(Agent):
 
                 if self.__No_energy_turn >= 10:
                     self.__removed_from_grid(city, current_location)
-
+                    break
+                break
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
         """
         Function that allows the survivor bot to move to a free spot
