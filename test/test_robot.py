@@ -110,11 +110,41 @@ class TestRobotAgent(unittest.TestCase):
 
 
     #
-    # def test_survivor_bot_death(self):
-    #     """
-    #     Simple test to verify survivor bot disappears from grid after a few turns of no energy
-    #     """
-    #     pass
+    def test_survivor_bot_death(self):
+        """
+        Simple test to verify survivor bot disappears from grid after a few turns of no energy
+        """
+        self.__recharge_Station = RechargeStation()
+        self.__recharge_Station.set_location(Location(5, 9))
+
+        city = City(10, 10)
+        start_location = Location(5, 8)
+        survivor_bot = SurvivorBot(start_location)
+        survivor_bot.set_primary_recharge_station(self.__recharge_Station)
+
+        spare_part = SparePart(Location(5,7))
+
+        city.set_agent(survivor_bot, survivor_bot.get_location())
+
+        # city.set_agent(spare_part, spare_part.get_location())
+        city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
+
+        survivor_bot.set_energy(0)
+        movements = []
+
+        for _ in range(5):
+            survivor_bot.act(city)
+            movements.append(survivor_bot.get_location())
+
+        print(survivor_bot.get_energy_turn())
+        self.assertEqual(start_location, movements[0], "Survivor Bot Moved during it's first turn of no energy")
+        self.assertEqual(start_location, movements[1], "Survivor Bot Moved during it's second turn of no energy")
+        self.assertEqual(start_location, movements[2], "Survivor Bot Moved during it's third turn of no energy")
+        self.assertEqual(start_location, movements[3], "Survivor Bot Moved during it's fourth turn of no energy")
+        self.assertEqual(start_location, movements[4], "Survivor Bot Moved during it's fifth turn of no energy")
+        self.assertEqual(city.check_space_if_None(start_location), True, "Survivor Bot has not been removed from the grid")
+
+
     #
     # def test_survivor_bot_not_enough_energy_travel_back(self):
     #     """
