@@ -18,9 +18,9 @@ class SurvivorBot(Agent):
         """
         Constructor to set the default values
 
-        :param location --> Sets the location of the survivor bot
+        :param location: Sets the location of the survivor bot
 
-        :var self.__inventory --> Acts as an inventory system allowing survivor bot to hold spare parts
+        :var self.__inventory: Acts as an inventory system allowing survivor bot to hold spare parts
 
         :var self.__energy --> Energy System determining how far survivor_bot can travel
 
@@ -53,9 +53,9 @@ class SurvivorBot(Agent):
             "out-of-energy": 0
         }
 
+        self.__recharge_station: RechargeStation = None
 
-
-    def act(self, city: City, recharge_station: RechargeStation) -> None:
+    def act(self, city: City) -> None:
         """
         Function that allows the survivor bot to execute actions
 
@@ -76,17 +76,18 @@ class SurvivorBot(Agent):
 
         sparePart_list = city.find_spare_part(current_location)
         freeSpot_list = city.find_free_spot(current_location)
-        next_move_station = city.find_next_move_recharge_station(current_location, recharge_station.get_location())
+        print("Recharge Station Location, ", self.__recharge_station.get_location())
+        next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
 
 
         while True:
 
-            if (self.__does_robot_enough_energy_back(city, current_location, recharge_station) == False) and self.__energy < 5:
+            if (self.__does_robot_enough_energy_back(city, current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
                 self.__attempt_consume_part(self.__inventory)
                 pass
             if self.__energy > 0:
                 if len(self.__inventory) > 0:
-                    self.__go_to_recharge_station(city, current_location, next_move_station, recharge_station)
+                    self.__go_to_recharge_station(city, current_location, next_move_station, self.__recharge_station)
                     break
 
                 if len(sparePart_list) != 0:
@@ -279,3 +280,6 @@ class SurvivorBot(Agent):
     def increase_energy(self, increase_by) -> None:
         current_energy = self.__enhancements["energy"]
         self.__enhancements.update({"energy": current_energy + increase_by})
+
+    def set_primary_recharge_station(self, recharge_station: RechargeStation):
+        self.__recharge_station = recharge_station
