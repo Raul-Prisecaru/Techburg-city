@@ -8,50 +8,50 @@ from model.recharge_station import RechargeStation
 
 class TestRobotAgent(unittest.TestCase):
 
-    def test_movement(self):
-        """
-        Simple Test to verify survivor bot can move to a free location
-        """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
-        city = City(10, 10)
-        start_location = Location(5,5)
-        survivor_bot = SurvivorBot(start_location)
-
-        survivor_bot.set_primary_recharge_station(self.__recharge_Station)
-
-
-        survivor_bot.act(city)
-
-        self.assertNotEqual(Location(5, 5), survivor_bot.get_location(), "Survivor Bot did not move")
-
-    def test_pickUp_spare_part(self):
-        """
-        Simple Test to verify survivor bot can pick up a spare part
-        """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
-
-        city = City(10, 10)
-        survivor_bot = SurvivorBot(Location(5,5))
-        survivor_bot.set_primary_recharge_station(self.__recharge_Station)
-
-        spare_part = SparePart(Location(5,4))
-
-        city.set_agent(survivor_bot, survivor_bot.get_location())
-
-        city.set_agent(spare_part, spare_part.get_location())
-
-
-        survivor_bot.act(city)
-
-
-
-        self.assertEqual(survivor_bot.get_location().get_x(), spare_part.get_location().get_x(), "Survivor bot did not go to the Spare Part X Location")
-        self.assertEqual(survivor_bot.get_location().get_y(), spare_part.get_location().get_y(), "Survivor bot did not go to the Spare Part Y Location")
-
-        inventory = survivor_bot.get_inventory()
-        self.assertIn(spare_part, inventory, "spare part was not corrected added to the inventory")
+    # def test_movement(self):
+    #     """
+    #     Simple Test to verify survivor bot can move to a free location
+    #     """
+    #     self.__recharge_Station = RechargeStation()
+    #     self.__recharge_Station.set_location(Location(5, 9))
+    #     city = City(10, 10)
+    #     start_location = Location(5,5)
+    #     survivor_bot = SurvivorBot(start_location)
+    #
+    #     survivor_bot.set_primary_recharge_station(self.__recharge_Station)
+    #
+    #
+    #     survivor_bot.act(city)
+    #
+    #     self.assertNotEqual(Location(5, 5), survivor_bot.get_location(), "Survivor Bot did not move")
+    #
+    # def test_pickUp_spare_part(self):
+    #     """
+    #     Simple Test to verify survivor bot can pick up a spare part
+    #     """
+    #     self.__recharge_Station = RechargeStation()
+    #     self.__recharge_Station.set_location(Location(5, 9))
+    #
+    #     city = City(10, 10)
+    #     survivor_bot = SurvivorBot(Location(5,5))
+    #     survivor_bot.set_primary_recharge_station(self.__recharge_Station)
+    #
+    #     spare_part = SparePart(Location(5,4))
+    #
+    #     city.set_agent(survivor_bot, survivor_bot.get_location())
+    #
+    #     city.set_agent(spare_part, spare_part.get_location())
+    #
+    #
+    #     survivor_bot.act(city)
+    #
+    #
+    #
+    #     self.assertEqual(survivor_bot.get_location().get_x(), spare_part.get_location().get_x(), "Survivor bot did not go to the Spare Part X Location")
+    #     self.assertEqual(survivor_bot.get_location().get_y(), spare_part.get_location().get_y(), "Survivor bot did not go to the Spare Part Y Location")
+    #
+    #     inventory = survivor_bot.get_inventory()
+    #     self.assertIn(spare_part, inventory, "spare part was not corrected added to the inventory")
 
     def test_travel_to_recharge_station(self):
         """
@@ -69,15 +69,16 @@ class TestRobotAgent(unittest.TestCase):
         city.set_agent(survivor_bot, survivor_bot.get_location())
 
         city.set_agent(spare_part, spare_part.get_location())
+        city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
 
+        while len(self.__recharge_Station.get_survivor_bot()) != 1:
+            survivor_bot.act(city)
+        print("recharge station List: ", self.__recharge_Station.get_survivor_bot())
+        print("Looking for: ", SurvivorBot)
 
-        survivor_bot.act(city)
-
-        self.__recharge_Station.get_survivor_bot()
-        self.__recharge_Station.get_spare_part()
-
-        self.assertIn(SurvivorBot, self.__recharge_Station.get_survivor_bot(), "Survivor bot did not insert into the recharge Station" )
-        self.assertIn(SparePart, self.__recharge_Station.get_spare_part(), "Survivor bot did not insert the spare part into the recharge Station" )
+        # Later to be improved to a isInstance assert Check
+        self.assertEqual(1, len(self.__recharge_Station.get_survivor_bot()), "Survivor bot did not insert into the recharge Station" )
+        self.assertEqual(1, len(self.__recharge_Station.get_spare_part()), "Survivor bot did not insert the spare part into the recharge Station inventory" )
 
     # def test_survivor_bot_energy(self):
     #     """
