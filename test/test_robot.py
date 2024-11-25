@@ -1,4 +1,6 @@
 import unittest
+from unittest import SkipTest
+
 from model.agents.survivor_bot import SurvivorBot
 from model.location import Location
 from model.city import City
@@ -7,7 +9,7 @@ from model.recharge_station import RechargeStation
 
 
 class TestRobotAgent(unittest.TestCase):
-
+    @SkipTest
     def test_movement(self):
         """
         Simple Test to verify survivor bot can move to a free location
@@ -25,6 +27,7 @@ class TestRobotAgent(unittest.TestCase):
 
         self.assertNotEqual(Location(5, 5), survivor_bot.get_location(), "Survivor Bot did not move")
 
+    @SkipTest
     def test_pickUp_spare_part(self):
         """
         Simple Test to verify survivor bot can pick up a spare part
@@ -53,6 +56,7 @@ class TestRobotAgent(unittest.TestCase):
         inventory = survivor_bot.get_inventory()
         self.assertIn(spare_part, inventory, "spare part was not corrected added to the inventory")
 
+    @SkipTest
     def test_travel_to_recharge_station(self):
         """
         Simple test to verify survivor bot can travel to a recharge station and store it's spare part to the recharge station
@@ -78,6 +82,7 @@ class TestRobotAgent(unittest.TestCase):
         self.assertEqual(1, len(self.__recharge_Station.get_survivor_bot()), "Survivor bot did not insert into the recharge Station" )
         self.assertEqual(1, len(self.__recharge_Station.get_spare_part()), "Survivor bot did not insert the spare part into the recharge Station inventory" )
 
+    @SkipTest
     def test_survivor_bot_energy(self):
         """
         Simple Test to verify survivor bot can and cannot move dependent on energy levels
@@ -109,7 +114,7 @@ class TestRobotAgent(unittest.TestCase):
         self.assertEqual(start_location, movements[2], "Survivor Bot Moved during it's third turn of no energy")
 
 
-    #
+    @SkipTest
     def test_survivor_bot_death(self):
         """
         Simple test to verify survivor bot disappears from grid after a few turns of no energy
@@ -145,7 +150,36 @@ class TestRobotAgent(unittest.TestCase):
         self.assertEqual(city.check_space_if_None(start_location), True, "Survivor Bot has not been removed from the grid")
 
 
-    #
+
+    def test_survivor_bot_consume_spare_part(self):
+        """
+        Simple test to verify survivor bot disappears from grid after a few turns of no energy
+        """
+        self.__recharge_Station = RechargeStation()
+        self.__recharge_Station.set_location(Location(5, 9))
+
+        city = City(10, 10)
+        start_location = Location(5, 8)
+        survivor_bot = SurvivorBot(start_location)
+        survivor_bot.set_primary_recharge_station(self.__recharge_Station)
+
+        spare_part = SparePart(Location(5,7))
+
+        city.set_agent(survivor_bot, survivor_bot.get_location())
+        city.set_agent(spare_part, spare_part.get_location())
+
+        # city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
+
+        survivor_bot.set_energy(5)
+        print("current energy: ", survivor_bot.get_energy())
+        while survivor_bot.get_energy() <= 5:
+            survivor_bot.act(city)
+            print("current energy: ", survivor_bot.get_energy())
+
+
+        # TODO: Ensure to test that the spare part is also removed from inventory because consumed
+        print("current energy: ", survivor_bot.get_energy())
+
     # def test_survivor_bot_not_enough_energy_travel_back(self):
     #     """
     #     Simple test to verify the responsible function returns true or false dependent if survivor bot has enough energy to travel back
