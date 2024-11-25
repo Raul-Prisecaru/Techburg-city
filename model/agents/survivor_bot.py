@@ -82,9 +82,9 @@ class SurvivorBot(Agent):
 
         while True:
 
-            if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
-                self.__attempt_consume_part(self.__inventory)
-                pass
+            # if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
+            #     self.__attempt_consume_part(self.__inventory)
+            #     pass
             if self.__energy > 0:
                 if len(self.__inventory) > 0:
                     self.__go_to_recharge_station(city, current_location, next_move_station, self.__recharge_station)
@@ -172,7 +172,7 @@ class SurvivorBot(Agent):
         """
 
 
-        if next_move.get_x() == Location(15, 29).get_x() and next_move.get_y() == Location(15, 29).get_y():
+        if next_move.get_x() == recharge_station.get_location().get_x() and next_move.get_y() == recharge_station.get_location().get_y():
             city.set_agent(None, current_location)
             recharge_station.add_survivor_bot(self)
             recharge_station.add_spare_part(self.__inventory[0])
