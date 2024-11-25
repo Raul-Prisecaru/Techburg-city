@@ -76,13 +76,13 @@ class SurvivorBot(Agent):
 
         sparePart_list = city.find_spare_part(current_location)
         freeSpot_list = city.find_free_spot(current_location)
-        print("Recharge Station Location, ", self.__recharge_station.get_location())
+        # print("Recharge Station Location, ", self.__recharge_station.get_location())
         next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
-
+        # recharge_station_location = self.__recharge_station.get_location()
 
         while True:
 
-            if (self.__does_robot_enough_energy_back(city, current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
+            if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
                 self.__attempt_consume_part(self.__inventory)
                 pass
             if self.__energy > 0:
