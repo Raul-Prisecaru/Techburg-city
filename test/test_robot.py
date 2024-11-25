@@ -9,6 +9,9 @@ from model.recharge_station import RechargeStation
 class TestRobotAgent(unittest.TestCase):
 
     def test_movement(self):
+        """
+        Simple Test to verify survivor bot can move to a free location
+        """
         self.__recharge_Station = RechargeStation()
         self.__recharge_Station.set_location(Location(5, 9))
         city = City(10, 10)
@@ -23,6 +26,9 @@ class TestRobotAgent(unittest.TestCase):
         self.assertNotEqual(Location(5, 5), survivor_bot.get_location(), "Survivor Bot did not move")
 
     def test_pickUp_spare_part(self):
+        """
+        Simple Test to verify survivor bot can pick up a spare part
+        """
         self.__recharge_Station = RechargeStation()
         self.__recharge_Station.set_location(Location(5, 9))
 
@@ -47,3 +53,26 @@ class TestRobotAgent(unittest.TestCase):
         inventory = survivor_bot.get_inventory()
         self.assertIn(spare_part, inventory, "spare part was not corrected added to the inventory")
 
+    def test_travel_to_recharge_station(self):
+        """
+        Simple test to verify survivor bot can travel to a recharge station and store it's spare part to the recharge station
+        """
+        pass
+
+    def test_survivor_bot_energy(self):
+        """
+        Simple Test to verify survivor bot can and cannot move dependent on energy levels
+        """
+        pass
+
+    def test_survivor_bot_death(self):
+        """
+        Simple test to verify survivor bot disappears from grid after a few turns of no energy
+        """
+        pass
+
+    def test_survivor_bot_not_enough_energy_travel_back(self):
+        """
+        Simple test to verify the responsible function returns true or false dependent if survivor bot has enough energy to travel back
+        """
+        pass
