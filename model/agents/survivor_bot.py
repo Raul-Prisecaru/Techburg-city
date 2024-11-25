@@ -2,7 +2,6 @@ import os
 
 from abc import ABC
 import random
-from logging import exception
 from typing import List
 
 from model.agents.spare_part import SparePart
@@ -195,12 +194,22 @@ class SurvivorBot(Agent):
         return self.__inventory
 
 
-    def get_energy(self) -> None:
+    def get_energy(self) -> int:
         """
         Function to retrieve the current Energy Status of the survivor bot
         :return: --> The current Energy Status of the survivor bot
         """
         return self.__energy
+
+
+    def set_energy(self, new_energy: int) -> None:
+        """
+
+        :param new_energy: Value to set the new energy
+        :return: None
+        """
+        self.__energy = new_energy
+
 
 
     def __removed_from_grid(self, city: City, current_location: Location) -> None:
@@ -261,7 +270,7 @@ class SurvivorBot(Agent):
 
     def increase_speed(self, increase_by: int) -> None:
         current_speed = self.__enhancements["speed"]
-        self.__enhancements.update({"speßed": current_speed + increase_by})
+        self.__enhancements.update({"speed": current_speed + increase_by})
 
     def increase_vision(self, increase_by: int) -> None:
         current_vision = self.__enhancements["vision"]
