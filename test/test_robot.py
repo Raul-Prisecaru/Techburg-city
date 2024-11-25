@@ -57,22 +57,42 @@ class TestRobotAgent(unittest.TestCase):
         """
         Simple test to verify survivor bot can travel to a recharge station and store it's spare part to the recharge station
         """
-        pass
+        self.__recharge_Station = RechargeStation()
+        self.__recharge_Station.set_location(Location(5, 9))
 
-    def test_survivor_bot_energy(self):
-        """
-        Simple Test to verify survivor bot can and cannot move dependent on energy levels
-        """
-        pass
+        city = City(10, 10)
+        survivor_bot = SurvivorBot(Location(5,8))
+        survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
-    def test_survivor_bot_death(self):
-        """
-        Simple test to verify survivor bot disappears from grid after a few turns of no energy
-        """
-        pass
+        spare_part = SparePart(Location(5,7))
 
-    def test_survivor_bot_not_enough_energy_travel_back(self):
-        """
-        Simple test to verify the responsible function returns true or false dependent if survivor bot has enough energy to travel back
-        """
-        pass
+        city.set_agent(survivor_bot, survivor_bot.get_location())
+
+        city.set_agent(spare_part, spare_part.get_location())
+
+
+        survivor_bot.act(city)
+
+        self.__recharge_Station.get_survivor_bot()
+        self.__recharge_Station.get_spare_part()
+
+        self.assertIn(SurvivorBot, self.__recharge_Station.get_survivor_bot(), "Survivor bot did not insert into the recharge Station" )
+        self.assertIn(SparePart, self.__recharge_Station.get_spare_part(), "Survivor bot did not insert the spare part into the recharge Station" )
+
+    # def test_survivor_bot_energy(self):
+    #     """
+    #     Simple Test to verify survivor bot can and cannot move dependent on energy levels
+    #     """
+    #     pass
+    #
+    # def test_survivor_bot_death(self):
+    #     """
+    #     Simple test to verify survivor bot disappears from grid after a few turns of no energy
+    #     """
+    #     pass
+    #
+    # def test_survivor_bot_not_enough_energy_travel_back(self):
+    #     """
+    #     Simple test to verify the responsible function returns true or false dependent if survivor bot has enough energy to travel back
+    #     """
+    #     pass
