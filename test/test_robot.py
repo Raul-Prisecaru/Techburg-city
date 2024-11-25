@@ -86,7 +86,8 @@ class TestRobotAgent(unittest.TestCase):
         self.__recharge_Station.set_location(Location(5, 9))
 
         city = City(10, 10)
-        survivor_bot = SurvivorBot(Location(5,8))
+        start_location = Location(5, 8)
+        survivor_bot = SurvivorBot(start_location)
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
         spare_part = SparePart(Location(5,7))
@@ -99,10 +100,13 @@ class TestRobotAgent(unittest.TestCase):
         survivor_bot.set_energy(0)
         movements = []
 
-        for _ in range(2):
+        for _ in range(3):
             survivor_bot.act(city)
-            movements.append((survivor_bot.get_location().get_y(), survivor_bot.get_location().get_x()))
-        print("movement Locations: ", movements)
+            movements.append(survivor_bot.get_location())
+
+        self.assertEqual(start_location, movements[0], "Survivor Bot Moved during it's first turn of no energy")
+        self.assertEqual(start_location, movements[1], "Survivor Bot Moved during it's second turn of no energy")
+        self.assertEqual(start_location, movements[2], "Survivor Bot Moved during it's third turn of no energy")
 
 
     #
