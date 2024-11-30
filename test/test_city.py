@@ -22,11 +22,11 @@ class TestCity(unittest.TestCase):
     def test_get_agent_none(self):
         city = City(width = 20, height = 20)
 
-        self.assertEqual(city.check_space(Location(5, 5)), True, f"The Space isn't Empty")
+        self.assertEqual(city.check_space_if_None(Location(5, 5)), True, f"The Space isn't Empty")
 
 
     def test_get_agent_agent(self):
         agent = Agent(Location(5,5))
         city = City(width = 20, height = 20)
         city.set_agent(agent, agent.get_location())
-        self.assertEqual(city.check_space(Location(5, 5)), False, f"The agent hasn't been placed properly")
+        self.assertEqual(city.check_space_if_None(Location(5, 5)), False, f"The agent hasn't been placed properly")
