@@ -66,9 +66,8 @@ class SurvivorBot(Agent):
         """
         current_location = self.get_location()
 
-
-        next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
-
+        available_free_spots = city.find_free_spot(current_location)
+        available_sparePart  = city.find_spare_part(current_location)
         danger_list = city.find_danger_nearby(current_location)
 
         while True:
@@ -80,14 +79,14 @@ class SurvivorBot(Agent):
                 if (len(danger_list)) > 0:
 
                     # Go back to Recharge Station
-                    self.__go_to_recharge_station()
+                    self.__move_to_recharge_station()
                     pass
 
                 # If you have a spare part in your inventory
                 if len(self.__inventory) > 0:
 
                     # Go To Recharge Station
-                    self.__go_to_recharge_station()
+                    self.__move_to_recharge_station()
                     pass
 
                 # if there is a spare part in your vision
@@ -155,7 +154,7 @@ class SurvivorBot(Agent):
             #         self.__removed_from_grid(city, current_location)
             #         break
             #     break
-    def __move_to_free_spot(self, city: City, current_location: Location) -> None:
+    def __move_to_free_spot(self, city: City, current_location: Location, available_freeSpots: List[Location]) -> None:
         """
         Function to allow Survivor bot to travel to a free available cell
 
@@ -168,9 +167,8 @@ class SurvivorBot(Agent):
                 None
 
         """
-        available_free_spots = city.find_free_spot(current_location)
 
-        next_position = random.choice(available_free_spots)
+        next_position = random.choice(available_freeSpots)
 
 
         city.set_agent(self, next_position)
@@ -183,7 +181,7 @@ class SurvivorBot(Agent):
 
 
 
-    def __pick_up_spare_part(self, city: City, current_location: Location, location_list: List[Location]) -> None:
+    def __pick_up_spare_part(self, city: City, current_location: Location, available_spareParts: List[Location]) -> None:
         """
         Function that allows the survivor bot to move to a spot where Spare Part is located
 
@@ -196,9 +194,8 @@ class SurvivorBot(Agent):
                 None
         """
 
-        available_sparePart  = city.find_spare_part(current_location)
 
-        next_position = random.choice(available_sparePart)
+        next_position = random.choice(available_spareParts)
 
         self.__inventory.append(city.get_agent(next_position))
 
@@ -211,37 +208,29 @@ class SurvivorBot(Agent):
         self.__energy -= 5
 
 
-
-
-    def __go_to_recharge_station(self, city: City, current_location: Location, next_move: Location, recharge_station: RechargeStation) -> None:
+    def __insert_into_recharge_station(self):
         """
-        Function that is responsible for moving the survivor bot to the recharge station
-        and insert the survivor bot and spare part into the recharge station
+        Function is resposible for handling logic of inserting the Survivor Bot into the recharge Station
+        :return:
+        """
+        pass
 
-        :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+    def __move_to_recharge_station(self, city: City, current_location: Location) -> None:
+        """
+        Function that is responsible for handling logic of moving the survivor bot closer towards the recharge Station
 
-        :param current_location --> Used to set it's previous location to None to avoid duplicates
+            Parameter:
+                city (City): Environment to execute movement
 
-        :param next_move --> Next closest position to the recharge station from survivor bot current position
-
-        :param recharge_station --> recharge station to go to and insert the survivor bot into alongside with it's spare part
+                current_Location (Location): Used to find the best location to the Recharge Station from it's current Location
 
         """
 
+        next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
 
-        if next_move.get_x() == recharge_station.get_location().get_x() and next_move.get_y() == recharge_station.get_location().get_y():
-            city.set_agent(None, current_location)
-            recharge_station.add_survivor_bot(self)
-            recharge_station.add_spare_part(self.__inventory[0])
-            print(recharge_station.get_survivor_bot())
-            print(recharge_station.get_spare_part())
-
-            self.__inventory.clear()
-
-        else:
-            city.set_agent(self, next_move)
-            self.set_location(next_move)
-            city.set_agent(None, current_location)
+        city.set_agent(self, next_move_station)
+        self.set_location(next_move_station)
+        city.set_agent(None, current_location)
 
 
     def get_inventory(self) -> List[SparePart]:
