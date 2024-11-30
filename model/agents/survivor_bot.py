@@ -63,49 +63,76 @@ class SurvivorBot(Agent):
 
         :param recharge_station --> recharge object used to get it's current location (Temporarily)
 
-        :var current_location --> Gets the current location of the survivor bot
-
-        :var sparePart_list --> Checks around for any spare part from the current location and returns a list of Locations if found
-
-        :var freeSpot_list --> Checks around for any free spots from the current location and returns a list of Locations if found
-
-        :var next_move_station --> finds best next coordinate to travel to the recharge station
-
         """
         current_location = self.get_location()
 
         sparePart_list = city.find_spare_part(current_location)
+
         freeSpot_list = city.find_free_spot(current_location)
-        # print("Recharge Station Location, ", self.__recharge_station.get_location())
+
         next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
-        # recharge_station_location = self.__recharge_station.get_location()
+
+        danger_list = city.find_danger_nearby(current_location)
 
         while True:
 
-            if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
-                self.__attempt_consume_part(self.__inventory)
-                pass
+            # If Survivor Bot has Energy
             if self.__energy > 0:
+
+                # If you are in danger
+                if (len(danger_list)) > 0:
+
+                    # Go back to Recharge Station
+                    pass
+
+                # If you have a spare part in your inventory
                 if len(self.__inventory) > 0:
-                    self.__go_to_recharge_station(city, current_location, next_move_station, self.__recharge_station)
-                    break
 
-                if len(sparePart_list) != 0:
-                    self.__pick_up_spare_part(city, current_location, sparePart_list)
-                    break
+                    # Go To Recharge Station
+                    pass
 
-                if len(freeSpot_list) != 0:
-                    self.__move_to_free_spot(city, current_location, freeSpot_list)
-                    break
+                # if there is a spare part in your vision
+                if len(sparePart_list) > 0:
 
-            elif self.__energy == 0:
-                print("I have no energy left")
-                self.__No_energy_turn += 1
+                    # Move Towards the Spare Part and Pick it up
+                    pass
 
-                if self.__No_energy_turn >= 5:
-                    self.__removed_from_grid(city, current_location)
-                    break
-                break
+                # if there is a free spot in your vision
+                if len(freeSpot_list):
+
+                    # Check Against the memory to see which location you haven't travelled
+
+                    # Move towards that free spot
+                    pass
+
+                # if the next move at the recharge station Location:
+                if ():
+                    pass
+
+            # if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
+            #     self.__attempt_consume_part(self.__inventory)
+            #     pass
+            # if self.__energy > 0:
+            #     if len(self.__inventory) > 0:
+            #         self.__go_to_recharge_station(city, current_location, next_move_station, self.__recharge_station)
+            #         break
+            #
+            #     if len(sparePart_list) != 0:
+            #         self.__pick_up_spare_part(city, current_location, sparePart_list)
+            #         break
+            #
+            #     if len(freeSpot_list) != 0:
+            #         self.__move_to_free_spot(city, current_location, freeSpot_list)
+            #         break
+            #
+            # elif self.__energy == 0:
+            #     print("I have no energy left")
+            #     self.__No_energy_turn += 1
+            #
+            #     if self.__No_energy_turn >= 5:
+            #         self.__removed_from_grid(city, current_location)
+            #         break
+            #     break
     def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
         """
         Function that allows the survivor bot to move to a free spot
@@ -214,7 +241,8 @@ class SurvivorBot(Agent):
         """
         self.__energy = new_energy
 
-
+    def __danger_nearby(self):
+        pass
 
     def __removed_from_grid(self, city: City, current_location: Location) -> None:
         """
