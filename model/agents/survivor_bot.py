@@ -24,7 +24,7 @@ class SurvivorBot(Agent):
 
         :var self.__energy --> Energy System determining how far survivor_bot can travel
 
-        :var self.__No_energy_turn --> Keeps track of how many turns has been when survivor bot has no energy
+        :var self.__no_energy_turn --> Keeps track of how many turns has been when survivor bot has no energy
 
         :dict self.__enhancements --> Responsible for keeping track of any enhancement made
 
@@ -34,7 +34,7 @@ class SurvivorBot(Agent):
         # Inventory System. Only one slot available
         self.__inventory = []
         self.__energy = 100
-        self.__No_energy_turn = 0
+        self.__no_energy_turn = 0
 
         self.__enhancements = {
             "speed":  0,
@@ -83,18 +83,21 @@ class SurvivorBot(Agent):
                 if (len(danger_list)) > 0:
 
                     # Go back to Recharge Station
+                    self.__go_to_recharge_station()
                     pass
 
                 # If you have a spare part in your inventory
                 if len(self.__inventory) > 0:
 
                     # Go To Recharge Station
+                    self.__go_to_recharge_station()
                     pass
 
                 # if there is a spare part in your vision
                 if len(sparePart_list) > 0:
 
                     # Move Towards the Spare Part and Pick it up
+                    self.__pick_up_spare_part()
                     pass
 
                 # if there is a free spot in your vision
@@ -103,11 +106,33 @@ class SurvivorBot(Agent):
                     # Check Against the memory to see which location you haven't travelled
 
                     # Move towards that free spot
+                    self.__move_to_free_spot()
                     pass
 
                 # if the next move at the recharge station Location:
                 if ():
                     pass
+
+            # If energy is lower or equals to 0
+            if self.__energy <= 0:
+                # Check inventory if there is a spare part
+                if len(self.__inventory):
+
+                    # Consume Spare Part
+                    self.__attempt_consume_part()
+
+                else:
+                    # If no energy turns is less than 10
+                    if self.__no_energy_turn < 9:
+                        # Tracking amount of turns of no energy
+                        self.__no_energy_turn += 1
+                        pass
+
+                    else:
+                        self.__removed_from_grid()
+                pass
+
+
 
             # if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
             #     self.__attempt_consume_part(self.__inventory)
@@ -127,9 +152,9 @@ class SurvivorBot(Agent):
             #
             # elif self.__energy == 0:
             #     print("I have no energy left")
-            #     self.__No_energy_turn += 1
+            #     self.__no_energy_turn += 1
             #
-            #     if self.__No_energy_turn >= 5:
+            #     if self.__no_energy_turn >= 5:
             #         self.__removed_from_grid(city, current_location)
             #         break
             #     break
@@ -289,7 +314,7 @@ class SurvivorBot(Agent):
 
 
     def get_energy_turn(self) -> int:
-        return self.__No_energy_turn
+        return self.__no_energy_turn
 
     def get_speed_enhancement(self) -> int:
         return self.__enhancements["speed"]
