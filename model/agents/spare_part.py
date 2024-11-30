@@ -39,7 +39,7 @@ class SparePart(Agent):
             location = Location(randint(start_location, end_location), randint(start_location, end_location))
 
             # Checking if there is an empty space at that specific Location
-            if city.check_space(location):
+            if city.check_space_if_None(location):
                 # Looping through the List to see if there is a duplicate
                 # Probably worth looking for much efficient route
 
