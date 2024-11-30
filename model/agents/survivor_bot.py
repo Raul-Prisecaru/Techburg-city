@@ -68,7 +68,6 @@ class SurvivorBot(Agent):
 
         sparePart_list = city.find_spare_part(current_location)
 
-        freeSpot_list = city.find_free_spot(current_location)
 
         next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
 
@@ -158,25 +157,36 @@ class SurvivorBot(Agent):
             #         self.__removed_from_grid(city, current_location)
             #         break
             #     break
-    def __move_to_free_spot(self, city: City, current_location: Location, location_list: List[Location]) -> None:
+    def __move_to_free_spot(self, city: City, current_location: Location) -> None:
         """
-        Function that allows the survivor bot to move to a free spot
+        Function to allow Survivor bot to travel to a free available cell
 
-        :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+            Parameters:
+                city (City): Environment to execute movement
+
+                currentLocation (Location): Used to find nearby free spots
+
+            Returns:
+                None
+
+        :param city Used to move the survivor bot to the new location and remove from it's previous location
 
         :param current_location -->  Used to set it's previous location to None to avoid duplicates
 
         :param location_list --> List of Free Locations
 
-        :var self.__energy --> Used to reduce survivor bot energy after moving
         """
-        next_position = random.choice(location_list)
+        available_free_spots = city.find_free_spot(current_location)
+
+        next_position = random.choice(available_free_spots)
+
 
         city.set_agent(self, next_position)
 
         self.set_location(next_position)
 
         city.set_agent(None, current_location)
+
         self.__energy -= 5
 
 
