@@ -26,10 +26,8 @@ class City(Environment, ABC):
         self.__free_spots = []
         # Storing the coordinates of nearby Survivor Bot
         self.__survivor_bot_nearby = []
-        # Storing the coordinates of nearby Drones
-        self.__malfunctioning_drone_nearby = []
-        # Storing the coordinates of nearby Scavenger Swarms
-        self.__scavenger_swarm_nearby = []
+        # Storing the coordinates of nearby danger
+        self.__danger_nearby = []
         # Storing the coordinates of nearby Spare Part
         self.__spare_part_nearby = []
 
@@ -121,11 +119,32 @@ class City(Environment, ABC):
 
         return Location(next_move_y, next_move_x)
 
+    def find_danger_nearby(self, location: Location) -> List[Location]:
+        # "Coordinates" to indicate where to search for free spots
+        # Implement logic to check for bot's status and apply appropriate offsets
+        normal_offsets = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1),  (0, 0),  (0, 1),
+            (1, -1),  (1, 0),  (1, 1)
+        ]
 
+        # For Loop to check for Free Space
+        for offset_x, offset_y in normal_offsets:
 
+            # Getting coordinates that reflect the position of the Agent
+            # E.g coordinates that are around the current Agent position
+            new_offset_x = location.get_x() + offset_x
+            new_offset_y = location.get_y() + offset_y
 
+            # Checking if there is something at those new coordinates
+            if self.__environment[new_offset_y][new_offset_x] is MalfunctioningDrone:
+                self.__danger_nearby.append(Location(new_offset_y, new_offset_x))
 
+            if self.__environment[new_offset_y][new_offset_x] is MalfunctioningDrone:
+                self.__danger_nearby.append(Location(new_offset_y, new_offset_x))
 
+        # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
+        return self.__danger_nearby
 
 
 
