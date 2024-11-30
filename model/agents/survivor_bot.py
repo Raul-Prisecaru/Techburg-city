@@ -98,11 +98,11 @@ class SurvivorBot(Agent):
                     self.__move_to_free_spot(city, current_location, freeSpot_list)
                     break
 
-            else:
+            elif self.__energy == 0:
                 print("I have no energy left")
                 self.__No_energy_turn += 1
 
-                if self.__No_energy_turn >= 10:
+                if self.__No_energy_turn >= 5:
                     self.__removed_from_grid(city, current_location)
                     break
                 break
@@ -143,6 +143,7 @@ class SurvivorBot(Agent):
 
         # Go to the spare part (Replace Spare Part grid with Survivor_bot)
         if len(self.__inventory) == 0:
+            self.__energy -= 5
             random_part = random.choice(location_list)
             self.__inventory.append(city.get_agent(random_part))
 
@@ -151,6 +152,7 @@ class SurvivorBot(Agent):
             self.set_location(random_part)
 
             city.set_agent(None, current_location)
+
 
             # Add Spare part to the inventory
             print("I have picked up an Spare Part!")
@@ -252,12 +254,14 @@ class SurvivorBot(Agent):
         """
 
         if len(inventory) > 0:
-            inventory.pop()
+            inventory.clear()
             self.__energy = 100
         else:
             print("I do not have spare part in my inventory to consume")
 
 
+    def get_energy_turn(self) -> int:
+        return self.__No_energy_turn
 
     def get_speed_enhancement(self) -> int:
         return self.__enhancements["speed"]
@@ -284,3 +288,9 @@ class SurvivorBot(Agent):
 
     def set_primary_recharge_station(self, recharge_station: RechargeStation):
         self.__recharge_station = recharge_station
+
+
+
+
+# Use Genetic Algorithm to determine how many Agents should be added by seeing which longest simulation is running
+# ^^ Advanced
