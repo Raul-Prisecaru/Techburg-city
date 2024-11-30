@@ -66,8 +66,6 @@ class SurvivorBot(Agent):
         """
         current_location = self.get_location()
 
-        sparePart_list = city.find_spare_part(current_location)
-
 
         next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
 
@@ -169,12 +167,6 @@ class SurvivorBot(Agent):
             Returns:
                 None
 
-        :param city Used to move the survivor bot to the new location and remove from it's previous location
-
-        :param current_location -->  Used to set it's previous location to None to avoid duplicates
-
-        :param location_list --> List of Free Locations
-
         """
         available_free_spots = city.find_free_spot(current_location)
 
@@ -195,29 +187,29 @@ class SurvivorBot(Agent):
         """
         Function that allows the survivor bot to move to a spot where Spare Part is located
 
-        :param city --> Used to move the survivor bot to the new location and remove from it's previous location
+            Parameter:
+                city (City): Environment to execute movement
 
-        :param current_location --> Used to set it's previous location to None to avoid duplicates
+                currentLocation (Location): Used to find nearby Spare Part
 
-        :param location_list --> List of spare parts Locations
-
+            Returns:
+                None
         """
 
-        # Go to the spare part (Replace Spare Part grid with Survivor_bot)
-        if len(self.__inventory) == 0:
-            self.__energy -= 5
-            random_part = random.choice(location_list)
-            self.__inventory.append(city.get_agent(random_part))
+        available_sparePart  = city.find_spare_part(current_location)
 
-            city.set_agent(self, random_part)
+        next_position = random.choice(available_sparePart)
 
-            self.set_location(random_part)
+        self.__inventory.append(city.get_agent(next_position))
 
-            city.set_agent(None, current_location)
+        city.set_agent(self, next_position)
 
+        self.set_location(next_position)
 
-            # Add Spare part to the inventory
-            print("I have picked up an Spare Part!")
+        city.set_agent(None, current_location)
+
+        self.__energy -= 5
+
 
 
 
