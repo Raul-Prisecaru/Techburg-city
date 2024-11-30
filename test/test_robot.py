@@ -168,17 +168,16 @@ class TestRobotAgent(unittest.TestCase):
         city.set_agent(survivor_bot, survivor_bot.get_location())
         city.set_agent(spare_part, spare_part.get_location())
 
-        # city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
-
         survivor_bot.set_energy(5)
-        print("current energy: ", survivor_bot.get_energy())
+
         while survivor_bot.get_energy() <= 5:
             survivor_bot.act(city)
-            print("current energy: ", survivor_bot.get_energy())
+
 
 
         # TODO: Ensure to test that the spare part is also removed from inventory because consumed
-        print("current energy: ", survivor_bot.get_energy())
+        self.assertGreater(survivor_bot.get_energy(), 0, "Energy has not increased after consuming part")
+        self.assertEqual(len(survivor_bot.get_inventory()), 0, "Spare Part has not been properly removed from inventory")
 
     # def test_survivor_bot_not_enough_energy_travel_back(self):
     #     """
