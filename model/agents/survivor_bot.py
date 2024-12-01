@@ -70,6 +70,7 @@ class SurvivorBot(Agent):
         available_sparePart  = city.find_spare_part(current_location)
         danger_list = city.find_danger_nearby(current_location)
 
+
         while True:
 
             # If Survivor Bot has Energy
@@ -79,22 +80,21 @@ class SurvivorBot(Agent):
                 if (len(danger_list)) > 0:
 
                     # Go back to Recharge Station
-                    self.__move_to_recharge_station()
+                    self.__move_to_recharge_station(city, current_location)
                     pass
 
                 # If you have a spare part in your inventory
                 if len(self.__inventory) > 0:
 
                     # Go To Recharge Station
-                    self.__move_to_recharge_station()
-                    pass
+                    self.__move_to_recharge_station(city, current_location)
+                    break
 
                 # if there is a spare part in your vision
-                if len(sparePart_list) > 0:
+                if len(available_sparePart) > 0:
 
                     # Move Towards the Spare Part and Pick it up
-                    self.__pick_up_spare_part()
-                    pass
+                    self.__pick_up_spare_part(city, current_location, available_sparePart)
 
                 # if there is a free spot in your vision
                 if len(freeSpot_list):
@@ -118,7 +118,7 @@ class SurvivorBot(Agent):
                     self.__attempt_consume_part()
 
                 else:
-                    # If no energy turns is less than 10
+                    # If no energy turns is less than 9
                     if self.__no_energy_turn < 9:
                         # Tracking amount of turns of no energy
                         self.__no_energy_turn += 1
@@ -208,13 +208,6 @@ class SurvivorBot(Agent):
         self.__energy -= 5
 
 
-    def __insert_into_recharge_station(self):
-        """
-        Function is resposible for handling logic of inserting the Survivor Bot into the recharge Station
-        :return:
-        """
-        pass
-
     def __move_to_recharge_station(self, city: City, current_location: Location) -> None:
         """
         Function that is responsible for handling logic of moving the survivor bot closer towards the recharge Station
@@ -228,9 +221,19 @@ class SurvivorBot(Agent):
 
         next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
 
-        city.set_agent(self, next_move_station)
-        self.set_location(next_move_station)
-        city.set_agent(None, current_location)
+
+        # Checking if the next move is at the Recharge Station Location
+        if next_move_station == self.__recharge_station.get_location():
+            city.set_agent(None, current_location)
+            self.__recharge_station.add_survivor_bot(self)
+
+            if len(self.__inventory) > 0:
+                self.__recharge_station.add_spare_part(self.__inventory[0])
+
+        else:
+            city.set_agent(self, next_move_station)
+            self.set_location(next_move_station)
+            city.set_agent(None, current_location)
 
 
     def get_inventory(self) -> List[SparePart]:
