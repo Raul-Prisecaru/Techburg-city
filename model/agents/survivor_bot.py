@@ -128,32 +128,6 @@ class SurvivorBot(Agent):
                         self.__removed_from_grid()
                 pass
 
-
-
-            # if (self.__does_robot_enough_energy_back(current_location, self.__recharge_station.get_location()) == False) and self.__energy < 5:
-            #     self.__attempt_consume_part(self.__inventory)
-            #     pass
-            # if self.__energy > 0:
-            #     if len(self.__inventory) > 0:
-            #         self.__go_to_recharge_station(city, current_location, next_move_station, self.__recharge_station)
-            #         break
-            #
-            #     if len(sparePart_list) != 0:
-            #         self.__pick_up_spare_part(city, current_location, sparePart_list)
-            #         break
-            #
-            #     if len(freeSpot_list) != 0:
-            #         self.__move_to_free_spot(city, current_location, freeSpot_list)
-            #         break
-            #
-            # elif self.__energy == 0:
-            #     print("I have no energy left")
-            #     self.__no_energy_turn += 1
-            #
-            #     if self.__no_energy_turn >= 5:
-            #         self.__removed_from_grid(city, current_location)
-            #         break
-            #     break
     def __move_to_free_spot(self, city: City, current_location: Location, available_freeSpots: List[Location]) -> None:
         """
         Function to allow Survivor bot to travel to a free available cell
