@@ -97,17 +97,12 @@ class SurvivorBot(Agent):
                     self.__pick_up_spare_part(city, current_location, available_sparePart)
 
                 # if there is a free spot in your vision
-                if len(freeSpot_list):
+                if len(available_free_spots):
 
                     # Check Against the memory to see which location you haven't travelled
 
                     # Move towards that free spot
-                    self.__move_to_free_spot()
-                    pass
-
-                # if the next move at the recharge station Location:
-                if ():
-                    pass
+                    self.__move_to_free_spot(city, current_location, available_free_spots)
 
             # If energy is lower or equals to 0
             if self.__energy <= 0:
@@ -115,7 +110,7 @@ class SurvivorBot(Agent):
                 if len(self.__inventory):
 
                     # Consume Spare Part
-                    self.__attempt_consume_part()
+                    self.__attempt_consume_part(self.__inventory)
 
                 else:
                     # If no energy turns is less than 9
@@ -125,7 +120,7 @@ class SurvivorBot(Agent):
                         pass
 
                     else:
-                        self.__removed_from_grid()
+                        self.__removed_from_grid(city, current_location)
                 pass
 
     def __move_to_free_spot(self, city: City, current_location: Location, available_freeSpots: List[Location]) -> None:
