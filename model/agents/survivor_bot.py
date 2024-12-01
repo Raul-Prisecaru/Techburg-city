@@ -110,7 +110,7 @@ class SurvivorBot(Agent):
                 if len(self.__inventory):
 
                     # Consume Spare Part
-                    self.__attempt_consume_part(self.__inventory)
+                    self.__consume_spare_part(self.__inventory)
 
                 else:
                     # If no energy turns is less than 9
@@ -262,18 +262,18 @@ class SurvivorBot(Agent):
         if self.__energy < total_energy_required:
             return False
 
-    def __attempt_consume_part(self, inventory: List[SparePart]) -> None:
+    def __consume_spare_part(self, inventory: List[SparePart]) -> None:
         """
-        function to allow the survivor bot to attempt at consuming a Spare Part
-        :param inventory --> Inventory of the survivor bot
-        :return: --> Returns None
+        function responsible managing survivor bot consuming Spare Parts from inventory
+            Parameters:
+                inventory (List[SparePart]): Inventory to take out spare part if available
+
+            Return:
+                None
         """
 
-        if len(inventory) > 0:
-            inventory.clear()
-            self.__energy = 100
-        else:
-            print("I do not have spare part in my inventory to consume")
+        inventory.clear()
+        self.__energy = 100
 
 
     def get_energy_turn(self) -> int:
