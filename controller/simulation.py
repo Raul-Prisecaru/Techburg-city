@@ -14,9 +14,13 @@ class Simulation:
     def __init__(self, width: int, height: int) -> None:
         self.__width = width
         self.__height = height
+        self.__sparePart = []
+        self.__survivorBots = []
+        self.__MalfunctioningDrones = []
+        self.__ScavengerSwarms = []
         self.__rechargeStation = RechargeStation()
-        self.__sparePart = SparePart(Location(15, 27))
-        self.__survivorBot = SurvivorBot(Location(15, 28))
+        self.__city_environment = City(self.__width, self.__height)
+
 
     def recharge_station_config(self):
         """
@@ -41,6 +45,12 @@ class Simulation:
 
         """
 
+        for number in range(total):
+            self.__survivorBots.append(SurvivorBot(Location((15 - number), 28)))
+
+        return self.__survivorBots
+
+
     def survivor_bots_config(self):
         """
         Function responsible for configuring Survivor Bots
@@ -50,7 +60,16 @@ class Simulation:
             Return:
                 None
         """
-        self.__survivorBot.set_primary_recharge_station(self.__rechargeStation)
+        # self.__survivorBot.set_primary_recharge_station(self.__rechargeStation)
+
+        for survivorBot in self.__survivorBots:
+
+            self.__city_environment.set_agent(survivorBot, survivorBot.get_location())
+            print(f"""
+            Survivor Bot: {survivorBot}
+            Location X: {survivorBot.get_location().get_x()}            
+            Location Y: {survivorBot.get_location().get_y()}            
+            """)
 
     def create_malfunctioning_drones(self, total: int) -> List[MalfunctioningDrone]:
         """
@@ -110,19 +129,21 @@ class Simulation:
     def run(self):
 
         # Creating
-        city_environment = City(self.__width, self.__height)
+        self.create_survivor_bots(5)
+        self.survivor_bots_config()
+        self.__city_environment.display_environment()
 
-        # Adding To the environment
-        city_environment.set_agent(self.__rechargeStation, self.__rechargeStation.get_location())
-        city_environment.set_agent(self.__sparePart, self.__sparePart.get_location())
-        city_environment.set_agent(self.__survivorBot, self.__survivorBot.get_location())
-
-
-        while True:
-            print("---")
-            city_environment.display_environment()
-            self.__survivorBot.act(city_environment)
-            time.sleep(2)
+        # # Adding To the environment
+        # city_environment.set_agent(self.__rechargeStation, self.__rechargeStation.get_location())
+        # city_environment.set_agent(self.__sparePart, self.__sparePart.get_location())
+        # city_environment.set_agent(self.__survivorBot, self.__survivorBot.get_location())
+        #
+        #
+        # while True:
+        #     print("---")
+        #     city_environment.display_environment()
+        #     self.__survivorBot.act(city_environment)
+        #     time.sleep(2)
 
 
 
