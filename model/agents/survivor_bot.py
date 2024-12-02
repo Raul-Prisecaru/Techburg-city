@@ -74,7 +74,7 @@ class SurvivorBot(Agent):
 
                     # Go back to Recharge Station
                     self.__move_to_recharge_station(city)
-                    pass
+                    break
 
                 # If you have a spare part in your inventory
                 if len(self.__inventory) > 0:
@@ -88,6 +88,7 @@ class SurvivorBot(Agent):
 
                     # Move Towards the Spare Part and Pick it up
                     self.__pick_up_spare_part(city, available_sparePart)
+                    break
 
                 # if there is a free spot in your vision
                 if len(available_free_spots):
@@ -96,6 +97,7 @@ class SurvivorBot(Agent):
 
                     # Move towards that free spot
                     self.__move_to_free_spot(city, available_free_spots)
+                    break
 
             # If energy is lower or equals to 0
             if self.__energy <= 0:
@@ -104,6 +106,7 @@ class SurvivorBot(Agent):
 
                     # Consume Spare Part
                     self.__consume_spare_part(self.__inventory)
+                    break
 
                 else:
                     # If no energy turns is less than 9
