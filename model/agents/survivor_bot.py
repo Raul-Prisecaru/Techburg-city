@@ -73,21 +73,21 @@ class SurvivorBot(Agent):
                 if (len(danger_list)) > 0:
 
                     # Go back to Recharge Station
-                    self.__move_to_recharge_station(city, current_location)
+                    self.__move_to_recharge_station(city)
                     pass
 
                 # If you have a spare part in your inventory
                 if len(self.__inventory) > 0:
 
                     # Go To Recharge Station
-                    self.__move_to_recharge_station(city, current_location)
+                    self.__move_to_recharge_station(city)
                     break
 
                 # if there is a spare part in your vision
                 if len(available_sparePart) > 0:
 
                     # Move Towards the Spare Part and Pick it up
-                    self.__pick_up_spare_part(city, current_location, available_sparePart)
+                    self.__pick_up_spare_part(city, available_sparePart)
 
                 # if there is a free spot in your vision
                 if len(available_free_spots):
@@ -95,7 +95,7 @@ class SurvivorBot(Agent):
                     # Check Against the memory to see which location you haven't travelled
 
                     # Move towards that free spot
-                    self.__move_to_free_spot(city, current_location, available_free_spots)
+                    self.__move_to_free_spot(city, available_free_spots)
 
             # If energy is lower or equals to 0
             if self.__energy <= 0:
@@ -113,7 +113,7 @@ class SurvivorBot(Agent):
                         pass
 
                     else:
-                        self.__removed_from_grid(city, current_location)
+                        self.__removed_from_grid(city)
                 pass
 
     def __move_to_free_spot(self, city: City, available_freeSpots: List[Location]) -> None:
