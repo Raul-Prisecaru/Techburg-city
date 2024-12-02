@@ -1,3 +1,6 @@
+from typing import List
+
+from model.agents.scavenger_swarm import ScavengerSwarm
 from model.city import City
 from model.location import  Location
 from model.agents.survivor_bot import SurvivorBot
@@ -27,6 +30,17 @@ class Simulation:
         self.__rechargeStation.set_location(Location(15,29))
         pass
 
+    def create_survivor_bots(self, total: int) -> List[SurvivorBot]:
+        """
+        Function responsible for creating survivor bots for the environment
+            Parameter:
+                total (int): Number of Survivor Bots to be created
+
+            Return:
+                 List[SurvivorBot]: List containing specified number of Survivor Bots
+
+        """
+
     def survivor_bots_config(self):
         """
         Function responsible for configuring Survivor Bots
@@ -38,6 +52,16 @@ class Simulation:
         """
         self.__survivorBot.set_primary_recharge_station(self.__rechargeStation)
 
+    def create_malfunctioning_drones(self, total: int) -> List[MalfunctioningDrone]:
+        """
+         Function responsible for creating Malfunctioning Drones for the environment
+             Parameter:
+                 total (int): Number of Malfunctioning Drones to be created
+
+             Return:
+                 List[MalfunctioningDrone]: List containing specified number of Malfunctioning Drones
+        """
+        pass
 
     def malfunctioning_drones_config(self):
         """
@@ -47,6 +71,17 @@ class Simulation:
 
             Return:
                 None
+        """
+        pass
+
+    def create_scavenger_swarms(self) -> List[ScavengerSwarm]:
+        """
+         Function responsible for creating Scavenger Swarms for the environment
+             Parameter:
+                 total (int): Number of Scavenger Swarms to be created
+
+             Return:
+                 List[MalfunctioningDrone]: List containing specified number of Scavenger Swarms
         """
         pass
 
