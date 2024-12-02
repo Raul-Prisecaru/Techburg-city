@@ -110,7 +110,7 @@ class SurvivorBot(Agent):
 
                 else:
                     # If no energy turns is less than 9
-                    if self.__no_energy_turn < 9:
+                    if self.__no_energy_turn < 4:
                         # Tracking amount of turns of no energy
                         self.__no_energy_turn += 1
                         break
