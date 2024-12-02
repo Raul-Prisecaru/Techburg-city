@@ -184,7 +184,7 @@ class SurvivorBot(Agent):
 
 
         # Checking if the next move is at the Recharge Station Location
-        if next_move_station == self.__recharge_station.get_location():
+        if next_move_station.get_x() == self.__recharge_station.get_location().get_x() and next_move_station.get_y() == self.__recharge_station.get_location().get_y():
             city.set_agent(None, self.get_location())
             self.__recharge_station.add_survivor_bot(self)
 
