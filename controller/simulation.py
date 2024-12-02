@@ -64,12 +64,23 @@ class Simulation:
 
         for survivorBot in self.__survivorBots:
 
+            survivorBot.set_primary_recharge_station(self.__rechargeStation)
+
             self.__city_environment.set_agent(survivorBot, survivorBot.get_location())
-            print(f"""
-            Survivor Bot: {survivorBot}
-            Location X: {survivorBot.get_location().get_x()}            
-            Location Y: {survivorBot.get_location().get_y()}            
-            """)
+
+    def survivor_bots_execute(self):
+        """
+        Function responsible for allowing the survivor bot to execute actions
+
+            Parameter:
+                None
+
+            Result:
+                None
+        """
+
+        for survivorBot in self.__survivorBots:
+            survivorBot.act(self.__city_environment)
 
     def create_malfunctioning_drones(self, total: int) -> List[MalfunctioningDrone]:
         """
@@ -133,17 +144,11 @@ class Simulation:
         self.survivor_bots_config()
         self.__city_environment.display_environment()
 
-        # # Adding To the environment
-        # city_environment.set_agent(self.__rechargeStation, self.__rechargeStation.get_location())
-        # city_environment.set_agent(self.__sparePart, self.__sparePart.get_location())
-        # city_environment.set_agent(self.__survivorBot, self.__survivorBot.get_location())
-        #
-        #
-        # while True:
-        #     print("---")
-        #     city_environment.display_environment()
-        #     self.__survivorBot.act(city_environment)
-        #     time.sleep(2)
+        while True:
+            print("---")
+            self.__city_environment.display_environment()
+            self.survivor_bots_execute()
+            time.sleep(1)
 
 
 
