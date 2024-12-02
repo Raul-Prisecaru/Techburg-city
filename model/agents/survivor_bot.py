@@ -113,11 +113,11 @@ class SurvivorBot(Agent):
                     if self.__no_energy_turn < 9:
                         # Tracking amount of turns of no energy
                         self.__no_energy_turn += 1
-                        pass
+                        break
 
                     else:
                         self.__removed_from_grid(city)
-                pass
+                        break
 
     def __move_to_free_spot(self, city: City, available_freeSpots: List[Location]) -> None:
         """
