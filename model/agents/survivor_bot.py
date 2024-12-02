@@ -58,11 +58,10 @@ class SurvivorBot(Agent):
                 None
 
         """
-        current_location = self.get_location()
 
-        available_free_spots = city.find_free_spot(current_location)
-        available_sparePart  = city.find_spare_part(current_location)
-        danger_list = city.find_danger_nearby(current_location)
+        available_free_spots = city.find_free_spot(self.get_location())
+        available_sparePart  = city.find_spare_part(self.get_location())
+        danger_list = city.find_danger_nearby(self.get_location())
 
 
         while True:
@@ -117,14 +116,12 @@ class SurvivorBot(Agent):
                         self.__removed_from_grid(city, current_location)
                 pass
 
-    def __move_to_free_spot(self, city: City, current_location: Location, available_freeSpots: List[Location]) -> None:
+    def __move_to_free_spot(self, city: City, available_freeSpots: List[Location]) -> None:
         """
         Function to allow Survivor bot to travel to a free available cell
 
             Parameters:
                 city (City): Environment to execute movement
-
-                currentLocation (Location): Used to find nearby free spots
 
             Returns:
                 None
@@ -138,20 +135,18 @@ class SurvivorBot(Agent):
 
         self.set_location(next_position)
 
-        city.set_agent(None, current_location)
+        city.set_agent(None, self.get_location())
 
         self.__energy -= 5
 
 
 
-    def __pick_up_spare_part(self, city: City, current_location: Location, available_spareParts: List[Location]) -> None:
+    def __pick_up_spare_part(self, city: City, available_spareParts: List[Location]) -> None:
         """
         Function that allows the survivor bot to move to a spot where Spare Part is located
 
             Parameter:
                 city (City): Environment to execute movement
-
-                currentLocation (Location): Used to find nearby Spare Part
 
             Returns:
                 None
@@ -166,28 +161,28 @@ class SurvivorBot(Agent):
 
         self.set_location(next_position)
 
-        city.set_agent(None, current_location)
+        city.set_agent(None, self.get_location())
 
         self.__energy -= 5
 
 
-    def __move_to_recharge_station(self, city: City, current_location: Location) -> None:
+    def __move_to_recharge_station(self, city: City) -> None:
         """
         Function that is responsible for handling logic of moving the survivor bot closer towards the recharge Station
 
             Parameter:
                 city (City): Environment to execute movement
 
-                current_Location (Location): Used to find the best location to the Recharge Station from it's current Location
-
+            Return:
+                None
         """
 
-        next_move_station = city.find_next_move_recharge_station(current_location, self.__recharge_station.get_location())
+        next_move_station = city.find_next_move_recharge_station(self.get_location(), self.__recharge_station.get_location())
 
 
         # Checking if the next move is at the Recharge Station Location
         if next_move_station == self.__recharge_station.get_location():
-            city.set_agent(None, current_location)
+            city.set_agent(None, self.get_location())
             self.__recharge_station.add_survivor_bot(self)
 
             if len(self.__inventory) > 0:
@@ -196,7 +191,7 @@ class SurvivorBot(Agent):
         else:
             city.set_agent(self, next_move_station)
             self.set_location(next_move_station)
-            city.set_agent(None, current_location)
+            city.set_agent(None, self.get_location())
 
 
     def get_inventory(self) -> Optional[List[SparePart]]:
@@ -241,33 +236,31 @@ class SurvivorBot(Agent):
     def __danger_nearby(self):
         pass
 
-    def __removed_from_grid(self, city: City, current_location: Location) -> None:
+    def __removed_from_grid(self, city: City) -> None:
         """
         Function responsible for removing the survivor bot from the environment
 
             Parameter:
                 city (City): Environment to remove survivor bot
-                current_location (Location): Current Position of the survivor bot to remove from
 
             Return:
                 None
 
         """
-        city.set_agent(None, current_location)
+        city.set_agent(None, self.get_location())
 
 
-    def __does_robot_enough_energy_back(self, current_location: Location, go_back_location: Location) -> bool:
+    def __does_robot_enough_energy_back(self, go_back_location: Location) -> bool:
         """
         Function responsible for calculating if survivor bot has enough energy to a specified Location
 
             Parameter:
-                current_location (Location): Current Location of the Survivor Bot
                 go_back_location (Location): Location to compare against
 
             Return:
                 bool: Returns TRUE if survivor can make it back between two location else returns FALSE
         """
-        total_distance_station = abs(current_location.get_x() - go_back_location.get_x()) + abs(current_location.get_y() - go_back_location.get_y())
+        total_distance_station = abs(self.get_location().get_x() - go_back_location.get_x()) + abs(self.get_location().get_y() - go_back_location.get_y())
 
         total_distance = total_distance_station * 2
 
