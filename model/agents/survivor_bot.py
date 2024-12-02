@@ -2,7 +2,7 @@ import os
 
 from abc import ABC
 import random
-from typing import List
+from typing import List, Optional
 
 from model.agents.spare_part import SparePart
 from model.recharge_station import RechargeStation
@@ -16,19 +16,11 @@ move_up_dir = os.path.dirname(current_dir)
 class SurvivorBot(Agent):
     def __init__(self, location: Location) -> None:
         """
-        Constructor to set the default values
+        Constructor to configure default values upon created
 
-        :param location: Sets the location of the survivor bot
+            Parameter:
+                location (Location): Starting Location of the Survivor Bot
 
-        :var self.__inventory: Acts as an inventory system allowing survivor bot to hold spare parts
-
-        :var self.__energy --> Energy System determining how far survivor_bot can travel
-
-        :var self.__no_energy_turn --> Keeps track of how many turns has been when survivor bot has no energy
-
-        :dict self.__enhancements --> Responsible for keeping track of any enhancement made
-
-        :dict self.__incident --> Responsible for keeping track of any incident to this survivor bot which will be used to better strategy on what enhancement to be made
         """
         super().__init__(location)
         # Inventory System. Only one slot available
@@ -57,11 +49,13 @@ class SurvivorBot(Agent):
 
     def act(self, city: City) -> None:
         """
-        Function that allows the survivor bot to execute actions
+        Function responsible for handling the logic of actions the survivor bot can execute
 
-        :param city --> city environment where survivor bot can execute actions on
+            Parameter:
+                city (City): Environment where actions can be executed
 
-        :param recharge_station --> recharge object used to get it's current location (Temporarily)
+            Return:
+                None
 
         """
         current_location = self.get_location()
@@ -205,28 +199,43 @@ class SurvivorBot(Agent):
             city.set_agent(None, current_location)
 
 
-    def get_inventory(self) -> List[SparePart]:
+    def get_inventory(self) -> Optional[List[SparePart]]:
         """
-        Function to retrieve the inventory of the survivor bot. May contain a singular spare part or be an empty list
-        :return: --> The current Inventory of the survivor bot
+        Function responsible for retrieving the inventory of the survivor bot
+
+            Parameter:
+                None
+
+            Return:
+                Optional[List[SparePart]] -> Returns the inventory which may contain a singular Spare Part or None
         """
         return self.__inventory
 
 
     def get_energy(self) -> int:
         """
-        Function to retrieve the current Energy Status of the survivor bot
-        :return: --> The current Energy Status of the survivor bot
+        Function responsible for retrieving the current Energy Status of the Survivor Bot
+
+            Parameter:
+                None
+
+            Return:
+                int: Current Percentage remaining of the survivor bot's energy
         """
         return self.__energy
 
 
     def set_energy(self, new_energy: int) -> None:
         """
+        Function responsible for overriding the current Energy Status of the survivor bot
 
-        :param new_energy: Value to set the new energy
-        :return: None
+            Parameter:
+                new_energy (int): New energy value to override the current energy status with
+
+            Return:
+                None
         """
+
         self.__energy = new_energy
 
     def __danger_nearby(self):
@@ -234,21 +243,29 @@ class SurvivorBot(Agent):
 
     def __removed_from_grid(self, city: City, current_location: Location) -> None:
         """
-        Function to remove survivor bot from the environment if certain conditions meet
-        :param city: --> Environment to remove Survivor Bot from
-        :param current_location --> Current Location of the Survivor Bot
-        :return --> Returns None
+        Function responsible for removing the survivor bot from the environment
+
+            Parameter:
+                city (City): Environment to remove survivor bot
+                current_location (Location): Current Position of the survivor bot to remove from
+
+            Return:
+                None
+
         """
         city.set_agent(None, current_location)
 
 
     def __does_robot_enough_energy_back(self, current_location: Location, go_back_location: Location) -> bool:
         """
-        function to calculate if Survivor bot has enough energy to travel back to specified location (Typically used for Recharge Station)
+        Function responsible for calculating if survivor bot has enough energy to a specified Location
 
-        :param current_location --> Current Location of the Survivor Bot
-        :param: go_back_location --> Location to calculate the distance between
-        :return: --> Returns True if Survivor bot has enough energy else Returns False if Survivor bot does not have enough energy
+            Parameter:
+                current_location (Location): Current Location of the Survivor Bot
+                go_back_location (Location): Location to compare against
+
+            Return:
+                bool: Returns TRUE if survivor can make it back between two location else returns FALSE
         """
         total_distance_station = abs(current_location.get_x() - go_back_location.get_x()) + abs(current_location.get_y() - go_back_location.get_y())
 
@@ -273,40 +290,112 @@ class SurvivorBot(Agent):
         """
 
         inventory.clear()
+
+        # TODO: Improve this so instead of setting to 100, it takes into consideration it's enhancement.
         self.__energy = 100
 
 
     def get_energy_turn(self) -> int:
+        """
+        Function responsible for retrieving the number of turns survivor bot went without energy
+
+            Parameter:
+                None
+
+            Return:
+                int: Number of turns survivor bot went without energy
+        """
         return self.__no_energy_turn
 
     def get_speed_enhancement(self) -> int:
+        """
+        Function responsible for retrieving the survivor bot current Speed enhancement percentage
+
+            Parameter:
+                None
+
+            Return:
+                int: Survivor Bot's current Speed enhancement Percentage
+        """
         return self.__enhancements["speed"]
 
     def get_vision_enhancement(self) -> int:
+        """
+        Function responsible for retrieving the survivor bot current Vision enhancement percentage
+
+            Parameter:
+                None
+
+            Return:
+                int: Survivor Bot's current Vision enhancement Percentage
+        """
         return self.__enhancements["vision"]
 
     def get_energy_enhancement(self) -> int:
+        """
+        Function responsible for retrieving the survivor bot current energy enhancement percentage
+
+        Parameter:
+            None
+
+        Return:
+            int: Survivor Bot's current energy enhancement Percentage
+        """
         return self.__enhancements["energy"]
 
 
 
     def increase_speed(self, increase_by: int) -> None:
+        """
+        Function responsible for increasing the survivor bot current speed enchantment
+            Parameter:
+                increase_by (int): Increase survivor bot current speed by
+
+            Return:
+                None
+        """
         current_speed = self.__enhancements["speed"]
         self.__enhancements.update({"speed": current_speed + increase_by})
 
     def increase_vision(self, increase_by: int) -> None:
+        """
+        Function responsible for increasing the survivor bot current vision enchantment
+            Parameter:
+                increase_by (int): Increase survivor bot current vision by
+
+            Return:
+                None
+        """
         current_vision = self.__enhancements["vision"]
         self.__enhancements.update({"vision": current_vision + increase_by})
 
     def increase_energy(self, increase_by) -> None:
+        """
+        Function responsible for increasing the survivor bot current energy enchantment
+            Parameter:
+                increase_by (int): Increase survivor bot current energy by
+
+        Return:
+            None
+        """
         current_energy = self.__enhancements["energy"]
         self.__enhancements.update({"energy": current_energy + increase_by})
 
     def set_primary_recharge_station(self, recharge_station: RechargeStation):
+        """
+        Function responsible for setting the default recharge station for the survivor bot
+
+            Parameter:
+                recharge_station (RechargeStation): default Recharge Station for the Survivor Bot
+
+            Return:
+                None
+        """
         self.__recharge_station = recharge_station
 
 
 
 
 # Use Genetic Algorithm to determine how many Agents should be added by seeing which longest simulation is running
+# Measured in Steps ^^
 # ^^ Advanced
