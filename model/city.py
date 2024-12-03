@@ -8,11 +8,11 @@ from model.agent import Agent
 from typing import override, Optional, List, TYPE_CHECKING
 from model.agents.spare_part import SparePart
 
+from model.agents.malfunctioning_drone import MalfunctioningDrone
 # Importing these files if they are being used for Type_checking
 # Helps to avoid circular Imports
 if TYPE_CHECKING:
     from agents.survivor_bot import SurvivorBot
-    from agents.malfunctioning_drone import MalfunctioningDrone
     from agents.scavenger_swarm import ScavengerSwarm
 
 
@@ -52,7 +52,7 @@ class City(Environment, ABC):
         # Implement logic to check for bot's status and apply appropriate offsets
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),  (0, 0),  (0, 1),
+            (0, -1),            (0, 1),
             (1, -1),  (1, 0),  (1, 1)
         ]
 
@@ -61,14 +61,13 @@ class City(Environment, ABC):
 
             # Getting coordinates that reflect the position of the Agent
             # E.g coordinates that are around the current Agent position
-            new_offset_x = location.get_x() + offset_x
-            new_offset_y = location.get_y() + offset_y
+            new_offset_x = (location.get_x() + offset_x) % self.__width
+            new_offset_y = (location.get_y() + offset_y) % self.__height
 
             # Checking if there is something at those new coordinates
             if self.__environment[new_offset_y][new_offset_x] is None:
                 self.__free_spots.append(Location(new_offset_y, new_offset_x))
 
-        # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
         return self.__free_spots
 
     def find_spare_part(self, location: Location) -> List[Location]:
@@ -76,7 +75,7 @@ class City(Environment, ABC):
         # Implement logic to check for bot's status and apply appropriate offsets
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),  (0, 0),  (0, 1),
+            (0, -1),            (0, 1),
             (1, -1),  (1, 0),  (1, 1)
         ]
 
@@ -87,11 +86,10 @@ class City(Environment, ABC):
 
             # Getting coordinates that reflect the position of the Agent
             # E.g coordinates that are around the current Agent position
-            new_offset_x = location.get_x() + offset_x
-            new_offset_y = location.get_y() + offset_y
+            new_offset_x = (location.get_x() + offset_x) % self.__width
+            new_offset_y = (location.get_y() + offset_y) % self.__height
 
             if isinstance(self.__environment[new_offset_y][new_offset_x], SparePart):
-                print("There is a spare part in my radius")
                 self.__spare_part_nearby.append(Location(new_offset_y, new_offset_x))
 
 
@@ -119,12 +117,13 @@ class City(Environment, ABC):
 
         return Location(next_move_y, next_move_x)
 
+    # TODO: Fix: MalfunctioningDrone is not undefined
     def find_danger_nearby(self, location: Location) -> List[Location]:
         # "Coordinates" to indicate where to search for free spots
         # Implement logic to check for bot's status and apply appropriate offsets
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),  (0, 0),  (0, 1),
+            (0, -1),            (0, 1),
             (1, -1),  (1, 0),  (1, 1)
         ]
 
@@ -133,13 +132,10 @@ class City(Environment, ABC):
 
             # Getting coordinates that reflect the position of the Agent
             # E.g coordinates that are around the current Agent position
-            new_offset_x = location.get_x() + offset_x
-            new_offset_y = location.get_y() + offset_y
+            new_offset_x = (location.get_x() + offset_x) % self.__width
+            new_offset_y = (location.get_y() + offset_y) % self.__height
 
             # Checking if there is something at those new coordinates
-            if self.__environment[new_offset_y][new_offset_x] is MalfunctioningDrone:
-                self.__danger_nearby.append(Location(new_offset_y, new_offset_x))
-
             if self.__environment[new_offset_y][new_offset_x] is MalfunctioningDrone:
                 self.__danger_nearby.append(Location(new_offset_y, new_offset_x))
 
@@ -155,7 +151,7 @@ class City(Environment, ABC):
 
 
     def check_space_if_None(self, location: Location) -> bool:
-        if self.__environment[location.get_x()][location.get_y()] is None:
+        if self.__environment[location.get_y()][location.get_x()] is None:
             return True
         else:
             return False
