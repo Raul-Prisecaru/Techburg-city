@@ -1,6 +1,6 @@
 from __future__ import annotations
 from random import random, randint
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 from model.agent import Agent
 from model.location import Location
@@ -8,56 +8,41 @@ from model.location import Location
 if TYPE_CHECKING:
     from model.city import City
 
-class SparePart(Agent):
+class SparePart:
 
-    def __init__(self, location: Location) -> None:
-        super().__init__(location)
+    def __init__(self, city: City):
+        self.__city = city
 
-    # For Set Location:: IDEA
-    #     Check if the position matches with one of the
-    #     Recharge Stations and display that
-    # E.g Location: Recharge Station 1 // coords: (x : y)
+    def randomly_scatter(self, number_spare_parts: int, start_location: int, end_location: int) -> None:
+        """
+        Function responsible for randomly scattering Spare Part's Around the environment
+            Parameter:
+                number_spareParts (int): Total Number of Spare Parts to be scattered around
+                startLocation (int): Minimum width to add Spare Parts to
+                endLocation (int): Maximum width to add Spare Parts to
 
+            Return:
+                None
+        """
 
-    def act(self, city: "City", number_spare_parts: int, start_location: int, end_location: int) -> None:
-        self.__randomly_scatter(city, number_spare_parts, start_location, end_location)
+        spare_parts_locations: List[Location] = []
 
-    # IDEA:
-    # Scatter between coordinates 10 - 20
-    # Later to dynamically adapt
-    # Get width and height and subtract 10 from each
-
-    def __randomly_scatter(self, city: "City", number_spare_parts: int, start_location: int, end_location: int) -> None:
-        # List to store locations to plot the Spare Parts
-        spare_parts_locations = []
-
-        # While loop to continue generating Locations to store Spare Part until
-        # We get the desired amount of locations
         while len(spare_parts_locations) != number_spare_parts:
-            # Randomly generate int value for X and Y between 10 and 20
-            # Which will be provided to the Location Class
             location = Location(randint(start_location, end_location), randint(start_location, end_location))
 
-            # Checking if there is an empty space at that specific Location
-            if city.check_space_if_None(location):
-                # Looping through the List to see if there is a duplicate
-                # Probably worth looking for much efficient route
+            if self.__city.check_space_if_None(location):
 
                 for spare_location in spare_parts_locations:
 
-                    # If there's a match, go back to the start of the loop
                     if location == spare_location:
                         continue
-                # Once outside the loop, add to the List of valid Locations
+
                 spare_parts_locations.append(location)
 
-            # If there's something there, Generate Another Location
             else:
                 continue
 
-        # After Breaking out of the Loop,
-        # Call the city function to loop through the list and add to the environment
-        city.add_objects_to_map(spare_parts_locations, self)
+        self.__city.add_objects_to_map(spare_parts_locations, self)
 
 
 
