@@ -32,7 +32,7 @@ class Simulation:
                 None
         """
         self.__rechargeStation.set_location(Location(15,29))
-        pass
+
 
     def create_survivor_bots(self, total: int) -> List[SurvivorBot]:
         """
@@ -52,6 +52,7 @@ class Simulation:
 
 
     def survivor_bots_config(self):
+
         """
         Function responsible for configuring Survivor Bots
             Parameter:
@@ -60,13 +61,26 @@ class Simulation:
             Return:
                 None
         """
-        # self.__survivorBot.set_primary_recharge_station(self.__rechargeStation)
 
         for survivorBot in self.__survivorBots:
 
             survivorBot.set_primary_recharge_station(self.__rechargeStation)
 
+
+    def survivor_bots_add_environment(self):
+        """
+        Function responsible for adding the survivor bots to the Environment
+
+            Parameter:
+                None
+
+            Return:
+                None
+
+        """
+        for survivorBot in self.__survivorBots:
             self.__city_environment.set_agent(survivorBot, survivorBot.get_location())
+
 
     def survivor_bots_execute(self):
         """
@@ -81,6 +95,10 @@ class Simulation:
 
         for survivorBot in self.__survivorBots:
             survivorBot.act(self.__city_environment)
+            print(f"""
+            Survivor Bot: {survivorBot}
+            X Location: {survivorBot.get_location().get_x()} {survivorBot.get_location().get_y()}
+            Y Location: {survivorBot.get_location().get_x()} {survivorBot.get_location().get_y()}""")
 
     def create_malfunctioning_drones(self, total: int) -> List[MalfunctioningDrone]:
         """
@@ -139,15 +157,21 @@ class Simulation:
 
     def run(self):
 
+
         # Creating
         self.create_survivor_bots(5)
+
+        # Configs
         self.survivor_bots_config()
+        self.recharge_station_config()
+
         self.__city_environment.display_environment()
 
         while True:
             print("---")
-            self.__city_environment.display_environment()
+            # self.__city_environment.display_environment()
             self.survivor_bots_execute()
+            self.__city_environment.display_environment()
             time.sleep(1)
 
 
