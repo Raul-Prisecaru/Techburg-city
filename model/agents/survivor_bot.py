@@ -132,16 +132,15 @@ class SurvivorBot(Agent):
         """
 
         next_position = random.choice(available_freeSpots)
-
+        current_location = self.get_location()
 
         city.set_agent(self, next_position)
 
         self.set_location(next_position)
 
-        city.set_agent(None, self.get_location())
+        city.set_agent(None, current_location)
 
         self.__energy -= 5
-
 
 
     def __pick_up_spare_part(self, city: City, available_spareParts: List[Location]) -> None:
