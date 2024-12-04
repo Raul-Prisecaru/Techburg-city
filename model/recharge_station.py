@@ -11,17 +11,15 @@ if TYPE_CHECKING:
 
 
 class RechargeStation:
-    def __init__(self):
-        self.__location = None
+    def __init__(self, location: Location) -> None:
+        self.__location = location
+
         self.__spare_part = []
 
         self.__survivor_bot = []
 
     def get_location(self) -> Location:
         return self.__location
-
-    def set_location(self, new_Location: Location) -> Location:
-        self.__location = new_Location
 
     def add_spare_part(self, sparePart: SparePart) -> None:
         self.__spare_part.append(sparePart)
