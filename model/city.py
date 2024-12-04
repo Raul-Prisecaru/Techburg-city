@@ -5,7 +5,7 @@ from abc import ABC
 from model.environment import Environment
 from model.location import Location
 from model.agent import Agent
-from typing import override, Optional, List, TYPE_CHECKING
+from typing import override, Optional, List, TYPE_CHECKING, Union
 from model.agents.spare_part import SparePart
 
 from model.agents.malfunctioning_drone import MalfunctioningDrone
@@ -20,16 +20,9 @@ if TYPE_CHECKING:
 class City(Environment, ABC):
     def __init__(self, width: int, height: int) -> None:
         super().__init__(width, height)
-        # Environment where everything happens
-        self.__environment = []
-        # Storing Free available spaces
-        self.__free_spots = []
-        # Storing the coordinates of nearby Survivor Bot
-        self.__survivor_bot_nearby = []
-        # Storing the coordinates of nearby danger
-        self.__danger_nearby = []
-        # Storing the coordinates of nearby Spare Part
-        self.__spare_part_nearby = []
+
+        # Environment
+        self.__environment: List[Union[object, None]] = []
 
         self.__height = height
         self.__width = width
@@ -50,6 +43,9 @@ class City(Environment, ABC):
     def find_free_spot(self, location: Location) -> List[Location]:
         # "Coordinates" to indicate where to search for free spots
         # Implement logic to check for bot's status and apply appropriate offsets
+
+        free_spots: List[Location] = []
+
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
             (0, -1),            (0, 1),
@@ -66,13 +62,16 @@ class City(Environment, ABC):
 
             # Checking if there is something at those new coordinates
             if self.__environment[new_offset_y][new_offset_x] is None:
-                self.__free_spots.append(Location(new_offset_y, new_offset_x))
+                free_spots.append(Location(new_offset_y, new_offset_x))
 
-        return self.__free_spots
+        return free_spots
 
     def find_spare_part(self, location: Location) -> List[Location]:
         # "Coordinates" to indicate where to search for free spots
         # Implement logic to check for bot's status and apply appropriate offsets
+
+        spare_parts: List[Location] = []
+
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
             (0, -1),            (0, 1),
@@ -90,10 +89,10 @@ class City(Environment, ABC):
             new_offset_y = (location.get_y() + offset_y) % self.__height
 
             if isinstance(self.__environment[new_offset_y][new_offset_x], SparePart):
-                self.__spare_part_nearby.append(Location(new_offset_y, new_offset_x))
+                spare_parts.append(Location(new_offset_y, new_offset_x))
 
 
-        return self.__spare_part_nearby
+        return spare_parts
 
     def find_next_move_recharge_station(self, current_location: Location, recharge_location: Location) -> Location:
         next_move_x = None
@@ -121,6 +120,8 @@ class City(Environment, ABC):
     def find_danger_nearby(self, location: Location) -> List[Location]:
         # "Coordinates" to indicate where to search for free spots
         # Implement logic to check for bot's status and apply appropriate offsets
+
+        danger_nearby: List[Location] = []
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
             (0, -1),            (0, 1),
@@ -137,10 +138,10 @@ class City(Environment, ABC):
 
             # Checking if there is something at those new coordinates
             if self.__environment[new_offset_y][new_offset_x] is MalfunctioningDrone:
-                self.__danger_nearby.append(Location(new_offset_y, new_offset_x))
+                danger_nearby.append(Location(new_offset_y, new_offset_x))
 
         # return self.__free_spots, self.__survivor_bot_nearby, self.__malfunctioning_drone_nearby, self.__scavenger_swarm_nearby, self.__spare_part_nearby
-        return self.__danger_nearby
+        return danger_nearby
 
 
 
@@ -157,7 +158,7 @@ class City(Environment, ABC):
             return False
 
 
-    def add_objects_to_map(self, list_Location: List[Location], object_toAdd: Agent):
+    def add_objects_to_map(self, list_Location: List[Location], object_toAdd: object):
         for location in list_Location:
             self.__environment[location.get_y()][location.get_x()] = object_toAdd
 
