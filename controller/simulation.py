@@ -14,12 +14,13 @@ class Simulation:
     def __init__(self, width: int, height: int) -> None:
         self.__width = width
         self.__height = height
-        self.__sparePart = []
+
+        self.__city_environment = City(self.__width, self.__height)
+        self.__sparePart = SparePart(self.__city_environment)
         self.__survivorBots = []
         self.__MalfunctioningDrones = []
         self.__ScavengerSwarms = []
         self.__rechargeStation = []
-        self.__city_environment = City(self.__width, self.__height)
 
 
     def create_recharge_station(self, total: int) -> List[RechargeStation]:
@@ -58,6 +59,7 @@ class Simulation:
         """
         for rechargeStation in self.__rechargeStation:
             self.__city_environment.set_agent(rechargeStation, rechargeStation.get_location())
+
 
     def create_survivor_bots(self, total: int) -> List[SurvivorBot]:
         """
@@ -169,16 +171,19 @@ class Simulation:
         """
         pass
 
-    def spare_parts_config(self):
+    def scatter_spare_parts(self, total: int, start_location: int, end_location: int):
         """
-        Function responsible for configuring Spare Parts
+        Function responsible for creating and scattering Spare Parts across the environment
             Parameter:
-                None
+                Total (int): Total Numbers of Spare Parts to scatter
+                startLocation (int): Minimum width to add Spare Parts to
+                endLocation (int): Maximum width to add Spare Parts to
 
             Return:
                 None
         """
-        pass
+
+        self.__sparePart.randomly_scatter(total, start_location, end_location)
 
     def run(self):
 
@@ -194,6 +199,7 @@ class Simulation:
         # Adding
         self.survivor_bots_add_environment()
         self.recharge_station_add_environment()
+        self.scatter_spare_parts(10, 5, 20)
 
         self.__city_environment.display_environment()
 
@@ -203,9 +209,6 @@ class Simulation:
             self.survivor_bots_execute()
             self.__city_environment.display_environment()
             time.sleep(1)
-
-
-
 
 
 
