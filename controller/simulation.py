@@ -18,8 +18,25 @@ class Simulation:
         self.__survivorBots = []
         self.__MalfunctioningDrones = []
         self.__ScavengerSwarms = []
-        self.__rechargeStation = RechargeStation()
+        self.__rechargeStation = []
         self.__city_environment = City(self.__width, self.__height)
+
+
+    def create_recharge_station(self, total: int) -> List[RechargeStation]:
+        """
+        Function responsible for creating Recharge Station for the environment
+            Parameter:
+                total (int): Number of Recharge Station to be created
+
+            Return:
+                 List[RechargeStation]: List containing specified number of Recharge Stations
+
+        """
+
+        for number in range(total):
+            self.__rechargeStation.append(RechargeStation(Location((15 - number), 29)))
+
+        return self.__rechargeStation
 
 
     def recharge_station_config(self):
@@ -31,8 +48,16 @@ class Simulation:
             Return:
                 None
         """
-        self.__rechargeStation.set_location(Location(15,29))
 
+        pass
+
+
+    def recharge_station_add_environment(self):
+        """
+        Function responsible for adding the Recharge Stations to the environment
+        """
+        for rechargeStation in self.__rechargeStation:
+            self.__city_environment.set_agent(rechargeStation, rechargeStation.get_location())
 
     def create_survivor_bots(self, total: int) -> List[SurvivorBot]:
         """
@@ -160,10 +185,15 @@ class Simulation:
 
         # Creating
         self.create_survivor_bots(5)
+        self.create_recharge_station(1)
 
         # Configs
         self.survivor_bots_config()
         self.recharge_station_config()
+
+        # Adding
+        self.survivor_bots_add_environment()
+        self.recharge_station_add_environment()
 
         self.__city_environment.display_environment()
 
