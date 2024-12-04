@@ -1,12 +1,18 @@
-import os
+from __future__ import annotations
 
+import os
 from abc import ABC
 import random
-from model.city import City
+from typing import TYPE_CHECKING
+
 from model.agent import Agent
 from model.location import Location
 current_dir = os.path.dirname(__file__)
 move_up_dir = os.path.dirname(current_dir)
+
+if TYPE_CHECKING:
+    from model.city import City
+
 
 
 class MalfunctioningDrone(Agent):
