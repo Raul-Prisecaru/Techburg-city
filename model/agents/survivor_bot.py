@@ -194,6 +194,8 @@ class SurvivorBot(Agent):
             city.set_agent(self, next_move_station)
             self.set_location(next_move_station)
             city.set_agent(None, self.get_location())
+            self.__energy -= 5
+
 
 
     def get_inventory(self) -> Optional[List[SparePart]]:
