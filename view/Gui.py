@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 from typing import TYPE_CHECKING
 
-from controller.config import Config
+from controller.Config import Config
 from model.location import Location
 
 if TYPE_CHECKING:
