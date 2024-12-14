@@ -1,4 +1,3 @@
-import time
 import unittest
 
 from model.agents.survivor_bot import SurvivorBot
