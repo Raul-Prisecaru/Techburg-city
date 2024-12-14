@@ -7,3 +7,5 @@ class Config:
     SURVIVOR_BOT_COLOUR = "red"
     MALFUNCTIONING_DRONE_COLOUR = "blue"
     SCAVENGER_SWARM_COLOUR = "green"
+    RECHARGE_STATION_COLOUR = "purple"
+    SPARE_PART_COLOUR = "black"
