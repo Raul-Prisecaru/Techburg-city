@@ -53,19 +53,23 @@ class Gui(tk.Tk):
                 agent = self.__environment.get_agent(Location(col_index, row_index))
 
                 # TODO: Set the current agent colour
+                agent_colour = self.__agent_colours.get(agent.__class__, "white")
 
                 # TODO: Create a new Canvas object with appropriate attributes (width, height, background colour, border width, relief set to "solid")
+                cell = tk.Canvas(self.grid_frame, width= 5, height= 5, background=agent_colour, borderwidth=1, relief="solid")
 
                 # TODO: Add the cell to the grid
+                cell.grid(row=row_index, column=col_index)
 
                 # TODO: Add the cell to the row
+                row.append(cell)
 
         self.update()
         self.update_idletasks()
 
     def __init_gui(self):
         """Initialise GUI settings."""
-        self.title(Config.simulation_name)
+        self.title(Config.SIM_NAME)
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def __init_info(self):
