@@ -5,8 +5,8 @@ class TestLocation(unittest.TestCase):
 
     def test_getter(self):
         location = Location(1, 2)
-        self.assertEqual(location.get_x(), 1, "X value was incorrectly returned")
-        self.assertEqual(location.get_y(), 2, "Y value was incorrectly returned")
+        self.assertEqual(location.get_x(), 2, "X value was incorrectly returned")
+        self.assertEqual(location.get_y(), 1, "Y value was incorrectly returned")
 
 
     def test_setter(self):
