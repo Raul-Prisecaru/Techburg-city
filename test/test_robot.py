@@ -42,8 +42,6 @@ class TestRobotAgent(unittest.TestCase):
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
 
-        # city.set_agent(spare_part, spare_part.get_location())
-
         while len(survivor_bot.get_inventory()) != 1:
             survivor_bot.act(city)
 
@@ -71,7 +69,7 @@ class TestRobotAgent(unittest.TestCase):
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
 
-        city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
+        city.add_object(self.__recharge_Station.get_location(), self.__recharge_Station)
 
         while len(self.__recharge_Station.get_survivor_bot()) != 1:
             survivor_bot.act(city)
@@ -97,7 +95,8 @@ class TestRobotAgent(unittest.TestCase):
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
-        city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
+        city.add_object(self.__recharge_Station.get_location(), self.__recharge_Station)
+
 
         survivor_bot.set_energy(0)
         movements = []
@@ -125,7 +124,8 @@ class TestRobotAgent(unittest.TestCase):
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
 
-        city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
+        city.add_object(self.__recharge_Station.get_location(), self.__recharge_Station)
+
 
         survivor_bot.set_energy(0)
         movements = []
@@ -144,10 +144,9 @@ class TestRobotAgent(unittest.TestCase):
 
     def test_survivor_bot_consume_spare_part(self):
         """
-        Simple test to verify survivor bot disappears from grid after a few turns of no energy
+        Simple test to verify survivor bot can consume spare part
         """
         self.__recharge_Station = RechargeStation(Location(5, 9))
-        # self.__recharge_Station.set_location()
 
         city = City(10, 10)
         start_location = Location(5, 8)
@@ -158,7 +157,6 @@ class TestRobotAgent(unittest.TestCase):
         spare_part.add_specific_spot(Location(5,7))
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
-        # city.set_agent(spare_part, spare_part.get_location())
 
         survivor_bot.set_energy(5)
 
