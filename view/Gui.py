@@ -78,8 +78,6 @@ class Gui(tk.Tk):
         self.grid_frame = tk.Frame(self)
         self.grid_frame.grid(row=1, column=0)
 
-        # TODO: Redraw the grid
-
     def update_legend(self):
         """Update the legend panel with agent counts."""
         agent_counts = {}
