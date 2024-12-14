@@ -4,6 +4,6 @@ class Config:
     SIM_NAME = "Ocean Simulation"
     OCEAN_SIZE = 20
 
-    SHARK_COLOUR = "red"
-    SARDINE_COLOUR = "blue"
-    PLANKTON_COLOUR = "green"
+    SURVIVOR_BOT_COLOUR = "red"
+    MALFUNCTIONING_DRONE_COLOUR = "blue"
+    SCAVENGER_SWARM_COLOUR = "green"
