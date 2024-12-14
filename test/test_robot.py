@@ -1,6 +1,5 @@
 import time
 import unittest
-from unittest import SkipTest, skipIf
 
 from model.agents.survivor_bot import SurvivorBot
 from model.location import Location
@@ -15,8 +14,8 @@ class TestRobotAgent(unittest.TestCase):
         """
         Simple Test to verify survivor bot can move to a free location
         """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
+        self.__recharge_Station = RechargeStation(Location(5, 9))
+
         city = City(10, 10)
         start_location = Location(5,5)
         survivor_bot = SurvivorBot(start_location)
@@ -32,18 +31,18 @@ class TestRobotAgent(unittest.TestCase):
         """
         Simple Test to verify survivor bot can pick up a spare part
         """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
+        self.__recharge_Station = RechargeStation(Location(5, 9))
 
         city = City(20, 20)
         survivor_bot = SurvivorBot(Location(5,5))
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
-        spare_part = SparePart(Location(5,4))
+        spare_part = SparePart(city)
+        spare_part.add_specific_spot(Location(5, 4))
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
 
-        city.set_agent(spare_part, spare_part.get_location())
+        # city.set_agent(spare_part, spare_part.get_location())
 
         while len(survivor_bot.get_inventory()) != 1:
             survivor_bot.act(city)
@@ -59,19 +58,19 @@ class TestRobotAgent(unittest.TestCase):
         """
         Simple test to verify survivor bot can travel to a recharge station and store it's spare part to the recharge station
         """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
+        self.__recharge_Station = RechargeStation(Location(5, 9))
 
         city = City(10, 10)
         survivor_bot = SurvivorBot(Location(5,8))
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
 
-        spare_part = SparePart(Location(5,7))
+        spare_part = SparePart(city)
+        spare_part.add_specific_spot(Location(5,7))
+
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
 
-        city.set_agent(spare_part, spare_part.get_location())
         city.set_agent(self.__recharge_Station, self.__recharge_Station.get_location())
 
         while len(self.__recharge_Station.get_survivor_bot()) != 1:
@@ -89,8 +88,8 @@ class TestRobotAgent(unittest.TestCase):
         """
         Simple Test to verify survivor bot can and cannot move dependent on energy levels
         """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
+        self.__recharge_Station = RechargeStation(Location(5, 9))
+        # self.__recharge_Station.set_location()
 
         city = City(20, 20)
         start_location = Location(5, 8)
@@ -115,8 +114,8 @@ class TestRobotAgent(unittest.TestCase):
         """
         Simple test to verify survivor bot disappears from grid after a few turns of no energy
         """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
+        self.__recharge_Station = RechargeStation(Location(5, 9))
+        # self.__recharge_Station.set_location()
 
         city = City(10, 10)
         start_location = Location(5, 8)
@@ -147,18 +146,19 @@ class TestRobotAgent(unittest.TestCase):
         """
         Simple test to verify survivor bot disappears from grid after a few turns of no energy
         """
-        self.__recharge_Station = RechargeStation()
-        self.__recharge_Station.set_location(Location(5, 9))
+        self.__recharge_Station = RechargeStation(Location(5, 9))
+        # self.__recharge_Station.set_location()
 
         city = City(10, 10)
         start_location = Location(5, 8)
         survivor_bot = SurvivorBot(start_location)
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
-        spare_part = SparePart(Location(5,7))
+        spare_part = SparePart(city)
+        spare_part.add_specific_spot(Location(5,7))
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
-        city.set_agent(spare_part, spare_part.get_location())
+        # city.set_agent(spare_part, spare_part.get_location())
 
         survivor_bot.set_energy(5)
 
