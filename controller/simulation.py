@@ -1,5 +1,6 @@
 from typing import List
 
+from controller.Config import Config
 from model.agents.scavenger_swarm import ScavengerSwarm
 from model.city import City
 from model.location import  Location
@@ -7,6 +8,7 @@ from model.agents.survivor_bot import SurvivorBot
 from model.agents.malfunctioning_drone import MalfunctioningDrone
 from model.agents.spare_part import SparePart
 from model.recharge_station import RechargeStation
+from view.Gui import Gui
 import time
 
 
@@ -15,6 +17,8 @@ class Simulation:
         self.__width = width
         self.__height = height
 
+        self.__is_running = False
+
         self.__city_environment = City(self.__width, self.__height)
         self.__sparePart = SparePart(self.__city_environment)
         self.__survivorBots = []
@@ -22,6 +26,16 @@ class Simulation:
         self.__ScavengerSwarms = []
         self.__rechargeStation = []
 
+        # self.__agent_colours = {self.__survivorBots: Config.SURVIVOR_BOT_COLOUR, self.__MalfunctioningDrones: Config.MALFUNCTIONING_DRONE_COLOUR, self.__ScavengerSwarms: Config.SCAVENGER_SWARM_COLOUR}
+        self.__agent_colours = {
+            SurvivorBot: Config.SURVIVOR_BOT_COLOUR,
+            MalfunctioningDrone: Config.MALFUNCTIONING_DRONE_COLOUR,
+            ScavengerSwarm: Config.SCAVENGER_SWARM_COLOUR,
+            RechargeStation: Config.RECHARGE_STATION_COLOUR,
+            SparePart: Config.SPARE_PART_COLOUR}
+
+        self.__gui = Gui(self.__city_environment, self.__agent_colours)
+        self.__gui.render()
 
     def create_recharge_station(self, total: int) -> List[RechargeStation]:
         """
@@ -58,7 +72,7 @@ class Simulation:
         Function responsible for adding the Recharge Stations to the environment
         """
         for rechargeStation in self.__rechargeStation:
-            self.__city_environment.set_agent(rechargeStation, rechargeStation.get_location())
+            self.__city_environment.add_object(rechargeStation.get_location(), rechargeStation)
 
 
     def create_survivor_bots(self, total: int) -> List[SurvivorBot]:
@@ -185,8 +199,18 @@ class Simulation:
 
         self.__sparePart.randomly_scatter(total, start_location, end_location)
 
+    def __update(self):
+
+        self.survivor_bots_execute()
+        # for survivorBot in self.__survivorBots:
+        #     survivorBot.act(self.__city_environment)
+
+    def __render(self):
+        self.__gui.render()
+
     def run(self):
 
+        self.__is_running = True
 
         # Creating
         self.create_survivor_bots(5)
@@ -203,12 +227,22 @@ class Simulation:
 
         self.__city_environment.display_environment()
 
-        while True:
-            print("---")
-            # self.__city_environment.display_environment()
-            self.survivor_bots_execute()
-            self.__city_environment.display_environment()
+        while self.__is_running:
+            self.__update()
+            self.__render()
             time.sleep(1)
+            if self.__gui.is_closed():
+                self.__is_running = False
+
+
+
+
+
+            # print("---")
+            # # self.__city_environment.display_environment()
+            # self.survivor_bots_execute()
+            # self.__city_environment.display_environment()
+            # time.sleep(1)
 
 
 
