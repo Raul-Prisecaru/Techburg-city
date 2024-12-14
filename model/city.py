@@ -239,3 +239,6 @@ class City(Environment, ABC):
         for location in list_Location:
             self.__environment[location.get_y()][location.get_x()] = object_toAdd
 
+
+    def add_object(self, location: Location, objectAdd: object):
+        self.__environment[location.get_y()][location.get_x()] = objectAdd
