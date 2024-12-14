@@ -13,6 +13,10 @@ class SparePart:
     def __init__(self, city: City):
         self.__city = city
 
+
+    def add_specific_spot(self, location: Location):
+        self.__city.add_objects_to_map(location, self)
+
     def randomly_scatter(self, number_spare_parts: int, start_location: int, end_location: int) -> None:
         """
         Function responsible for randomly scattering Spare Part's Around the environment
