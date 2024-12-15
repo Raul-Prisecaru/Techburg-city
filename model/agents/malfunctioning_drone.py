@@ -37,9 +37,9 @@ class MalfunctioningDrone(Agent):
 
         """
         self.__free_position_list = city.find_free_spot(self.get_location())
-        self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
+        # self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
 
-        if self.__energy >= 20:
+        if self.__energy <= 20:
             self.__hibernate()
 
         if len(self.__survivor_bot_list) > 0:
