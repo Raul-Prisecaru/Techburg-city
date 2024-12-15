@@ -90,6 +90,42 @@ class City(Environment, ABC):
 
         return free_spots
 
+    def find_survivor_bot(self, location: Location):
+        """
+            Function responsible for finding Survivor Bot's around specified location
+
+            Parameter:
+                  location (Location): Location to check for Survivor bot's around
+
+            Result:
+                List[Location]: List of Survivor Bot Locations
+        """
+
+        survivor_bots: List[Location] = []
+
+        normal_offsets = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1),            (0, 1),
+            (1, -1),  (1, 0),  (1, 1)
+        ]
+
+
+
+        # For Loop to check for Free Space
+        for offset_x, offset_y in normal_offsets:
+
+            # Getting coordinates that reflect the position of the Agent
+            # E.g coordinates that are around the current Agent position
+            new_offset_x = (location.get_x() + offset_x) % self.__width
+            new_offset_y = (location.get_y() + offset_y) % self.__height
+
+            if isinstance(self.__environment[new_offset_y][new_offset_x], SurvivorBot):
+                survivor_bots.append(Location(new_offset_y, new_offset_x))
+
+
+        return survivor_bots
+
+
     def find_spare_part(self, location: Location) -> List[Location]:
         """
         Function Responsible for finding Spare Parts from specified location
