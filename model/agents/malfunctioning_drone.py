@@ -39,6 +39,9 @@ class MalfunctioningDrone(Agent):
         self.__free_position_list = city.find_free_spot(self.get_location())
         self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
 
+        if self.__energy >= 20:
+            self.__hibernate()
+
         if len(self.__survivor_bot_list) > 0:
             self.__move_towards_survivor_bot(city)
 
@@ -99,11 +102,47 @@ class MalfunctioningDrone(Agent):
 
 
     def get_energy(self) -> int:
+        """
+        Function responsible for returning current energy status
+
+            Parameter:
+                None
+
+            Return:
+                None
+        """
         return self.__energy
 
 
     def set_energy(self, new_energy: int) -> None:
+        """
+        Function responsible for overriding the current energy status
+
+            Parameter:
+                None
+
+            Return:
+                None
+        """
+
         self.__energy = new_energy
+
+
+    def __hibernate(self) -> None:
+        """
+        Function responsible for allowing the malfunction drone to hibernate and gain 10% energy
+
+            Parameter:
+                None
+
+            Return:
+                  None
+
+        """
+
+        # TODO: Perhaps introduce an Priority system to ensure that the Drone keeps hibernating till max charge
+
+        self.__energy += 10
 
 
 
