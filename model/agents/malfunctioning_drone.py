@@ -24,7 +24,16 @@ class MalfunctioningDrone(Agent):
 
 
     def act(self, city: City) -> None:
+        """
+        Function responsible for handling the logic of the Malfunctioning Drone
 
+            Parameter:
+                city (City): Environment where actions can be executed
+
+            Return:
+                None
+
+        """
         self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
 
         if len(self.__survivor_bot_list) > 0:
@@ -33,6 +42,17 @@ class MalfunctioningDrone(Agent):
         self.__move(city)
 
     def __move(self, city: City) -> None:
+        """
+        Function responsible for moving the malfunctioning drone to a free spot
+
+            Parameter:
+                city (City): environment to move around
+
+            Return:
+                None
+
+        """
+
         previous_location: Location = self.get_location()
         next_position_list = city.find_free_spot(previous_location)
         next_position: Location = random.choice(next_position_list)
@@ -45,6 +65,18 @@ class MalfunctioningDrone(Agent):
 
 
     def __move_towards_survivor_bot(self, city: City) -> None:
+        """
+        Function responsible for allowing the malfunctioning drone to chase after survivor bot
+
+            Parameter:
+                - city (city): environment to move around
+
+            Return:
+                - None
+        """
+
+
+
         current_location: Location = self.get_location()
 
         next_position: Location = random.choice(self.__survivor_bot_list)
