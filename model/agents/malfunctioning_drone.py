@@ -69,6 +69,8 @@ class MalfunctioningDrone(Agent):
 
         city.set_agent(None, previous_location)
 
+        self.__energy -= 5
+
 
     def __move_towards_survivor_bot(self, city: City) -> None:
         """
@@ -92,6 +94,8 @@ class MalfunctioningDrone(Agent):
         self.set_location(next_position)
 
         city.set_agent(None, current_location)
+
+        self.__energy -= 20
 
 
     def get_energy(self) -> int:
