@@ -19,6 +19,7 @@ class MalfunctioningDrone(Agent):
     def __init__(self, location: Location):
         super().__init__(location)
 
+        self.__free_position_list: List[Location] = []
         self.__survivor_bot_list: List[Location] = []
 
 
@@ -34,12 +35,16 @@ class MalfunctioningDrone(Agent):
                 None
 
         """
+        self.__free_position_list = city.find_free_spot(self.get_location())
         self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
 
         if len(self.__survivor_bot_list) > 0:
             self.__move_towards_survivor_bot(city)
 
-        self.__move(city)
+        if len(self.__free_position_list) > 0:
+            self.__move(city)
+
+
 
     def __move(self, city: City) -> None:
         """
@@ -54,8 +59,8 @@ class MalfunctioningDrone(Agent):
         """
 
         previous_location: Location = self.get_location()
-        next_position_list = city.find_free_spot(previous_location)
-        next_position: Location = random.choice(next_position_list)
+
+        next_position: Location = random.choice(self.__free_position_list)
 
         city.set_agent(self, next_position)
 
