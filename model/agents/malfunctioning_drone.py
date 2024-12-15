@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 class MalfunctioningDrone(Agent):
     def __init__(self, location: Location):
         super().__init__(location)
+        self.__energy = 100
 
         self.__free_position_list: List[Location] = []
         self.__survivor_bot_list: List[Location] = []
@@ -93,6 +94,12 @@ class MalfunctioningDrone(Agent):
         city.set_agent(None, current_location)
 
 
+    def get_energy(self) -> int:
+        return self.__energy
+
+
+    def set_energy(self, new_energy: int) -> None:
+        self.__energy = new_energy
 
 
 
