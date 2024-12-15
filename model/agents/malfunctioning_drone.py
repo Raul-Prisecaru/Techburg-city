@@ -38,15 +38,18 @@ class MalfunctioningDrone(Agent):
         """
         self.__free_position_list = city.find_free_spot(self.get_location())
         # self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
+        while True:
+            if self.__energy <= 20:
+                self.__hibernate()
+                break
 
-        if self.__energy <= 20:
-            self.__hibernate()
+            if len(self.__survivor_bot_list) > 0:
+                self.__move_towards_survivor_bot(city)
+                break
 
-        if len(self.__survivor_bot_list) > 0:
-            self.__move_towards_survivor_bot(city)
-
-        if len(self.__free_position_list) > 0:
-            self.__move(city)
+            if len(self.__free_position_list) > 0:
+                self.__move(city)
+                break
 
 
 
@@ -73,6 +76,7 @@ class MalfunctioningDrone(Agent):
         city.set_agent(None, previous_location)
 
         self.__energy -= 5
+
 
 
     def __move_towards_survivor_bot(self, city: City) -> None:
