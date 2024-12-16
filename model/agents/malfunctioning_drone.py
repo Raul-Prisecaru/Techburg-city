@@ -12,6 +12,8 @@ move_up_dir = os.path.dirname(current_dir)
 
 if TYPE_CHECKING:
     from model.city import City
+    from model.agents.survivor_bot import SurvivorBot
+
 
 
 
@@ -36,8 +38,11 @@ class MalfunctioningDrone(Agent):
                 None
 
         """
+
         self.__free_position_list = city.find_free_spot(self.get_location())
-        # self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
+
+        self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
+
         while True:
             if self.__energy <= 20:
                 self.__hibernate()
@@ -89,8 +94,6 @@ class MalfunctioningDrone(Agent):
             Return:
                 - None
         """
-
-
 
         current_location: Location = self.get_location()
 
@@ -147,6 +150,17 @@ class MalfunctioningDrone(Agent):
         # TODO: Perhaps introduce an Priority system to ensure that the Drone keeps hibernating till max charge
 
         self.__energy += 10
+
+
+    def __attack_bot(self, city: City, shock_attack: int) -> None:
+
+        bot_position: Location = random.choice(self.__survivor_bot_list)
+
+        survivor_bot: SurvivorBot = city.get_agent(bot_position)
+
+        survivor_bot.set_energy(survivor_bot.get_energy() - shock_attack)
+
+
 
 
 
