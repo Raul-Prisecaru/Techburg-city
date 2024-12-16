@@ -153,6 +153,16 @@ class MalfunctioningDrone(Agent):
 
 
     def __attack_bot(self, city: City, shock_attack: int) -> None:
+        """
+        Function responsible for allowing the malfunction drone to attack the survivor bot
+
+            Parameter:
+                city (City): environment to retrieve the survivor bot from
+                shock_attack: power of shock attack
+
+            Return:
+                None
+        """
 
         bot_position: Location = random.choice(self.__survivor_bot_list)
 
