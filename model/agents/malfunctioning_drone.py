@@ -50,6 +50,19 @@ class MalfunctioningDrone(Agent):
 
             if len(self.__survivor_bot_list) > 0:
                 self.__move_towards_survivor_bot(city)
+
+                if self.__energy >= 30:
+                    self.__attack_bot(city, 30)
+                    break
+
+                if self.__energy >= 20:
+                    self.__attack_bot(city, 20)
+                    break
+
+                if self.__energy >= 10:
+                    self.__attack_bot(city, 10)
+                    break
+
                 break
 
             if len(self.__free_position_list) > 0:
