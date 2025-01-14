@@ -7,6 +7,7 @@ from model.location import Location
 from model.agent import Agent
 from typing import Optional, List, TYPE_CHECKING, Union
 from model.agents.spare_part import SparePart
+from model.retrieve_offset import RetrieveOffset
 
 from model.agents.malfunctioning_drone import MalfunctioningDrone
 # Importing these files if they are being used for Type_checking
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
 class City(Environment, ABC):
     def __init__(self, width: int, height: int) -> None:
         super().__init__(width, height)
+        self.__retrieveOffset = RetrieveOffset()
 
         # Environment
         self.__environment: List[Union[object, None]] = []
@@ -29,6 +31,9 @@ class City(Environment, ABC):
         # Creating Grid with for loop based on provided width and heights
         for _ in range(self.__height):
             self.__environment.append([None] * self.__width)
+
+        self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: x <= 50, ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)))
+
 
     def get_agent(self, location: Location) -> Optional[Agent]:
         """
