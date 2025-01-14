@@ -49,21 +49,26 @@ class MalfunctioningDrone(Agent):
                 break
 
             if len(self.__survivor_bot_list) > 0:
+
+                for survivorBot in self.__survivor_bot_list:
+                    if city.check_if_agent_is_next_to_another_agent(self, survivorBot):
+                        if self.__energy >= 30:
+                            self.__attack_bot(city, 30)
+                            break
+
+                        if self.__energy >= 20:
+                            self.__attack_bot(city, 20)
+                            break
+
+                        if self.__energy >= 10:
+                            self.__attack_bot(city, 10)
+                            break
+
+
+
                 self.__move_towards_survivor_bot(city)
-
-                if self.__energy >= 30:
-                    self.__attack_bot(city, 30)
-                    break
-
-                if self.__energy >= 20:
-                    self.__attack_bot(city, 20)
-                    break
-
-                if self.__energy >= 10:
-                    self.__attack_bot(city, 10)
-                    break
-
                 break
+
 
             if len(self.__free_position_list) > 0:
                 self.__move(city)
@@ -182,8 +187,6 @@ class MalfunctioningDrone(Agent):
         survivor_bot: SurvivorBot = city.get_agent(bot_position)
 
         survivor_bot.set_energy(survivor_bot.get_energy() - shock_attack)
-
-
 
 
 
