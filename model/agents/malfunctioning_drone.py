@@ -21,6 +21,7 @@ class MalfunctioningDrone(Agent):
     def __init__(self, location: Location):
         super().__init__(location)
         self.__energy = 100
+        self.__priority = None
 
         self.__free_position_list: List[Location] = []
         self.__survivor_bot_list: List[Location] = []
@@ -44,7 +45,7 @@ class MalfunctioningDrone(Agent):
         self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
 
         while True:
-            if self.__energy <= 20:
+            if self.__energy <= 20 or self.__priority == "HIBERNATE":
                 self.__hibernate()
                 break
 
@@ -165,9 +166,11 @@ class MalfunctioningDrone(Agent):
 
         """
 
-        # TODO: Perhaps introduce an Priority system to ensure that the Drone keeps hibernating till max charge
 
         self.__energy += 10
+
+        if self.__priority != "HIBERNATE":
+            self.__priority = "HIBERNATE"
 
 
     def __attack_bot(self, city: City, shock_attack: int) -> None:
@@ -187,6 +190,4 @@ class MalfunctioningDrone(Agent):
         survivor_bot: SurvivorBot = city.get_agent(bot_position)
 
         survivor_bot.set_energy(survivor_bot.get_energy() - shock_attack)
-
-
 
