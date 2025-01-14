@@ -17,3 +17,8 @@ class RetrieveOffset:
             if condition(percentageValue):
                 return result
 
+
+    def display_rules(self):
+        for condition, result in self.__rules:
+            print("Condition:", condition)
+            print("Result:", result)
