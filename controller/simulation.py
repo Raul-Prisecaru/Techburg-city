@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 from controller.Config import Config
@@ -20,7 +21,7 @@ class Simulation:
         self.__is_running = False
 
         self.__city_environment = City(self.__width, self.__height)
-        self.__sparePart = SparePart(self.__city_environment)
+        self.__sparePart = []
         self.__survivorBots = []
         self.__malfunctioningDrones = []
         self.__ScavengerSwarms = []
@@ -53,6 +54,12 @@ class Simulation:
 
         return self.__rechargeStation
 
+
+    def create_spare_parts(self, total: int):
+        random_size = random.choice(["small", "medium", "large"])
+        random_enhancement = random.choice(["vision", "speed", "energy"])
+        for sparePart in range(total):
+            self.__sparePart.append(SparePart(self.__city_environment, random_size, random_enhancement))
 
     def recharge_station_config(self):
         """
@@ -197,7 +204,7 @@ class Simulation:
         """
         pass
 
-    def scatter_spare_parts(self, total: int, start_location: int, end_location: int):
+    def scatter_spare_parts(self, start_location: int, end_location: int):
         """
         Function responsible for creating and scattering Spare Parts across the environment
             Parameter:
@@ -208,8 +215,8 @@ class Simulation:
             Return:
                 None
         """
-
-        self.__sparePart.randomly_scatter(total, start_location, end_location)
+        for sparePart in self.__sparePart:
+            sparePart.randomly_scatter(start_location, end_location)
 
     def __update(self):
 
@@ -229,6 +236,7 @@ class Simulation:
         self.create_survivor_bots(5)
         self.create_malfunctioning_drones(1)
         self.create_recharge_station(1)
+        self.create_spare_parts(1)
 
         # Configs
         self.survivor_bots_config()
@@ -238,7 +246,7 @@ class Simulation:
         self.survivor_bots_add_environment()
         self.malfunctioning_drones_add_environment()
         self.recharge_station_add_environment()
-        self.scatter_spare_parts(10, 5, 20)
+        self.scatter_spare_parts(5, 20)
 
         self.__city_environment.display_environment()
 
