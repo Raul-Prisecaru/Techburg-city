@@ -48,7 +48,9 @@ class City(Environment, ABC):
             for y in range(-1, 2):
                 vision_1_cells.append((x, y))
 
-        self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: x <= 50, vision_3_cells)
+        self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: x <= 50, vision_1_cells)
+        self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: 51 <= x <= 100, vision_2_cells)
+        self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: 101<=x <= 150, vision_3_cells)
         self.__retrieveOffset.display_rules()
 
     def get_agent(self, location: Location) -> Optional[Agent]:
