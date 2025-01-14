@@ -52,15 +52,15 @@ class MalfunctioningDrone(Agent):
 
                 for survivorBot in self.__survivor_bot_list:
                     if city.check_if_agent_is_next_to_another_agent(self, survivorBot):
-                        if self.__energy >= 30:
+                        if self.__energy > 30:
                             self.__attack_bot(city, 30)
                             break
 
-                        if self.__energy >= 20:
+                        if self.__energy > 20:
                             self.__attack_bot(city, 20)
                             break
 
-                        if self.__energy >= 10:
+                        if self.__energy > 10:
                             self.__attack_bot(city, 10)
                             break
 
