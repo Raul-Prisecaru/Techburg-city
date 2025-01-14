@@ -1,19 +1,19 @@
 from __future__ import annotations
 from random import random, randint
 from typing import TYPE_CHECKING, List, Literal
-
+from model.location import Location
 if TYPE_CHECKING:
     from model.city import City
-    from model.location import Location
+
 
 
 class SparePart:
 
-    def __init__(self, city: City, size: Literal["Small", "Medium", "Large"], enhancement: Literal["Speed", "Vision", "Energy"]):
+    def __init__(self, city: City, size: Literal["small", "medium", "large"], enhancement: Literal["speed", "vision", "energy"]):
         self.__city: City = city
         self.__location: Location = None
-        self.__size: Literal["Small", "Medium", "Large"] = size
-        self.__enhancement: Literal["Speed", "Vision", "Energy"] = enhancement
+        self.__size: Literal["small", "medium", "large"] = size
+        self.__enhancement: Literal["speed", "vision", "energy"] = enhancement
 
     def get_location(self):
         return self.__location
@@ -23,13 +23,13 @@ class SparePart:
         return self.__size
 
 
-    def set_size(self, newSize: Literal["Small", "Medium", "Large"]):
+    def set_size(self, newSize: Literal["small", "medium", "large"]):
         self.__size = newSize
 
     def get_enhancement(self):
         return self.__enhancement
 
-    def set_enhancement(self, newEnhancement: Literal["Speed", "Vision", "Energy"]):
+    def set_enhancement(self, newEnhancement: Literal["speed", "vision", "energy"]):
         self.__enhancement = newEnhancement
 
 
@@ -38,7 +38,7 @@ class SparePart:
         self.__city.add_object(location, self)
 
 
-    def randomly_scatter(self, number_spare_parts: int, start_location: int, end_location: int) -> None:
+    def randomly_scatter(self, start_location: int, end_location: int) -> None:
         """
         Function responsible for randomly scattering Spare Part's Around the environment
             Parameter:
@@ -50,24 +50,15 @@ class SparePart:
                 None
         """
 
-        spare_parts_locations: List[Location] = []
-
-        while len(spare_parts_locations) != number_spare_parts:
+        while True:
             location = Location(randint(start_location, end_location), randint(start_location, end_location))
 
             if self.__city.check_space_if_None(location):
-
-                for spare_location in spare_parts_locations:
-
-                    if location == spare_location:
-                        continue
-
-                spare_parts_locations.append(location)
+                self.__city.add_object(location, self)
+                break
 
             else:
                 continue
-
-        self.__city.add_objects_to_map(spare_parts_locations, self)
 
 
 
