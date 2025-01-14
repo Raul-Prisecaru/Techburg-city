@@ -51,7 +51,6 @@ class City(Environment, ABC):
         self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: x <= 50, vision_1_cells)
         self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: 51 <= x <= 100, vision_2_cells)
         self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: 101<=x <= 150, vision_3_cells)
-        self.__retrieveOffset.display_rules()
 
     def get_agent(self, location: Location) -> Optional[Agent]:
         """
@@ -91,11 +90,7 @@ class City(Environment, ABC):
 
         free_spots: List[Location] = []
 
-        normal_offsets = [
-            (-1, -1), (-1, 0), (-1, 1),
-            (0, -1), (0, 1),
-            (1, -1), (1, 0), (1, 1)
-        ]
+        normal_offsets = self.__retrieveOffset.apply_rules_vision(0)
 
         # For Loop to check for Free Space
         for offset_x, offset_y in normal_offsets:
@@ -127,11 +122,7 @@ class City(Environment, ABC):
 
         survivor_bots: List[Location] = []
 
-        normal_offsets = [
-            (-1, -1), (-1, 0), (-1, 1),
-            (0, -1), (0, 1),
-            (1, -1), (1, 0), (1, 1)
-        ]
+        normal_offsets = self.__retrieveOffset.apply_rules_vision(150)
 
         # For Loop to check for Free Space
         for offset_x, offset_y in normal_offsets:
