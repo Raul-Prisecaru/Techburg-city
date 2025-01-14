@@ -10,19 +10,19 @@ class RetrieveOffset:
 
 
     def add_rule_for_speed_enhancement(self, condition: int, result: List[Tuple[int, int]]):
-        if "speed" is not self.__rules:
+        if "speed" not in self.__rules:
             self.__rules["speed"] = []
 
         self.__rules["speed"].append((condition, result))
 
     def add_rule_for_vision_enhancement(self, condition: int, result: List[Tuple[int, int]]):
-        if "vision" is not self.__rules:
+        if "vision" not in self.__rules:
             self.__rules["vision"] = []
 
         self.__rules["vision"].append((condition, result))
 
     def add_rule_for_energy_enhancement(self, condition: int, result: List[Tuple[int, int]]):
-        if "energy" is not self.__rules:
+        if "energy" not in self.__rules:
             self.__rules["energy"] = []
 
         self.__rules["energy"].append((condition, result))
@@ -34,6 +34,9 @@ class RetrieveOffset:
 
 
     def display_rules(self):
-        for condition, result in self.__rules:
-            print("Condition:", condition)
-            print("Result:", result)
+        for key, pair in self.__rules.items():
+            print(f"Rule Category: {key}")
+            for condition, result in pair:
+                print("Condition:", condition)
+                print("Result:", result)
+
