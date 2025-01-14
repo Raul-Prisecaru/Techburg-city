@@ -10,6 +10,7 @@ from model.agents.spare_part import SparePart
 from model.retrieve_offset import RetrieveOffset
 
 from model.agents.malfunctioning_drone import MalfunctioningDrone
+
 # Importing these files if they are being used for Type_checking
 # Helps to avoid circular Imports
 if TYPE_CHECKING:
@@ -32,8 +33,23 @@ class City(Environment, ABC):
         for _ in range(self.__height):
             self.__environment.append([None] * self.__width)
 
-        self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: x <= 50, ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)))
+        vision_1_cells = []
+        vision_2_cells = []
+        vision_3_cells = []
+        for x in range(-3, 4):
+            for y in range(-3, 4):
+                vision_3_cells.append((x, y))
 
+        for x in range(-2, 3):
+            for y in range(-2, 3):
+                vision_2_cells.append((x, y))
+
+        for x in range(-1, 2):
+            for y in range(-1, 2):
+                vision_1_cells.append((x, y))
+
+        self.__retrieveOffset.add_rule_for_vision_enhancement(lambda x: x <= 50, vision_3_cells)
+        self.__retrieveOffset.display_rules()
 
     def get_agent(self, location: Location) -> Optional[Agent]:
         """
@@ -71,13 +87,12 @@ class City(Environment, ABC):
                 List[Location]: List of Free Available Locations
         """
 
-
         free_spots: List[Location] = []
 
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),            (0, 1),
-            (1, -1),  (1, 0),  (1, 1)
+            (0, -1), (0, 1),
+            (1, -1), (1, 0), (1, 1)
         ]
 
         # For Loop to check for Free Space
@@ -112,11 +127,9 @@ class City(Environment, ABC):
 
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),            (0, 1),
-            (1, -1),  (1, 0),  (1, 1)
+            (0, -1), (0, 1),
+            (1, -1), (1, 0), (1, 1)
         ]
-
-
 
         # For Loop to check for Free Space
         for offset_x, offset_y in normal_offsets:
@@ -129,9 +142,7 @@ class City(Environment, ABC):
             if isinstance(self.__environment[new_offset_y][new_offset_x], SurvivorBot):
                 survivor_bots.append(Location(new_offset_y, new_offset_x))
 
-
         return survivor_bots
-
 
     def find_spare_part(self, location: Location) -> List[Location]:
         """
@@ -148,11 +159,9 @@ class City(Environment, ABC):
 
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),            (0, 1),
-            (1, -1),  (1, 0),  (1, 1)
+            (0, -1), (0, 1),
+            (1, -1), (1, 0), (1, 1)
         ]
-
-
 
         # For Loop to check for Free Space
         for offset_x, offset_y in normal_offsets:
@@ -164,7 +173,6 @@ class City(Environment, ABC):
 
             if isinstance(self.__environment[new_offset_y][new_offset_x], SparePart):
                 spare_parts.append(Location(new_offset_y, new_offset_x))
-
 
         return spare_parts
 
@@ -189,7 +197,8 @@ class City(Environment, ABC):
         if current_location.get_x() < recharge_location.get_x():
             next_move_x = current_location.get_x() + 1
 
-        else: next_move_x = current_location.get_x()
+        else:
+            next_move_x = current_location.get_x()
 
         if current_location.get_y() > recharge_location.get_y():
             next_move_y = current_location.get_y() - 1
@@ -197,7 +206,8 @@ class City(Environment, ABC):
         if current_location.get_y() < recharge_location.get_y():
             next_move_y = current_location.get_y() + 1
 
-        else: next_move_y = current_location.get_y()
+        else:
+            next_move_y = current_location.get_y()
 
         return Location(next_move_y, next_move_x)
 
@@ -216,8 +226,8 @@ class City(Environment, ABC):
         danger_nearby: List[Location] = []
         normal_offsets = [
             (-1, -1), (-1, 0), (-1, 1),
-            (0, -1),            (0, 1),
-            (1, -1),  (1, 0),  (1, 1)
+            (0, -1), (0, 1),
+            (1, -1), (1, 0), (1, 1)
         ]
 
         # For Loop to check for Free Space
@@ -234,8 +244,6 @@ class City(Environment, ABC):
 
         return danger_nearby
 
-
-
     # Display Environment
     def display_environment(self):
         """
@@ -249,7 +257,6 @@ class City(Environment, ABC):
         """
         for row in range(self.__height):
             print(self.__environment[row])
-
 
     def check_space_if_None(self, location: Location) -> bool:
         """
@@ -266,7 +273,6 @@ class City(Environment, ABC):
         else:
             return False
 
-
     def add_objects_to_map(self, list_Location: List[Location], object_toAdd: object):
         """
         Function Responsible for adding multiple objects to multiple locations
@@ -281,7 +287,6 @@ class City(Environment, ABC):
 
         for location in list_Location:
             self.__environment[location.get_y()][location.get_x()] = object_toAdd
-
 
     def add_object(self, location: Location, objectAdd: object):
         self.__environment[location.get_y()][location.get_x()] = objectAdd
