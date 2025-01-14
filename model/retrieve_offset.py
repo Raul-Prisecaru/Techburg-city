@@ -7,7 +7,7 @@ class RetrieveOffset:
 
 
 
-    def __add_rule(self, condition: int, result: List[Tuple[int, int]]):
+    def add_rule(self, condition: int, result: List[Tuple[int, int]]):
         self.__rules.append((condition, result))
 
 
