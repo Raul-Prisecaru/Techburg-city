@@ -22,7 +22,7 @@ class Simulation:
         self.__city_environment = City(self.__width, self.__height)
         self.__sparePart = SparePart(self.__city_environment)
         self.__survivorBots = []
-        self.__MalfunctioningDrones = []
+        self.__malfunctioningDrones = []
         self.__ScavengerSwarms = []
         self.__rechargeStation = []
 
@@ -150,7 +150,10 @@ class Simulation:
              Return:
                  List[MalfunctioningDrone]: List containing specified number of Malfunctioning Drones
         """
-        pass
+        for number in range(total):
+            self.__malfunctioningDrones.append(MalfunctioningDrone(Location(5, 5)))
+
+        return self.__malfunctioningDrones
 
     def malfunctioning_drones_config(self):
         """
@@ -162,6 +165,15 @@ class Simulation:
                 None
         """
         pass
+
+    def malfunctioning_drones_add_environment(self):
+        for malfunctioningDrone in self.__malfunctioningDrones:
+            self.__city_environment.set_agent(malfunctioningDrone, malfunctioningDrone.get_location())
+
+
+    def malfunctioning_drones_execute(self):
+        for malfunctioningDrone in self.__malfunctioningDrones:
+            malfunctioningDrone.act(self.__city_environment)
 
     def create_scavenger_swarms(self) -> List[ScavengerSwarm]:
         """
@@ -202,6 +214,7 @@ class Simulation:
     def __update(self):
 
         self.survivor_bots_execute()
+        self.malfunctioning_drones_execute()
         # for survivorBot in self.__survivorBots:
         #     survivorBot.act(self.__city_environment)
 
@@ -214,6 +227,7 @@ class Simulation:
 
         # Creating
         self.create_survivor_bots(5)
+        self.create_malfunctioning_drones(1)
         self.create_recharge_station(1)
 
         # Configs
@@ -222,6 +236,7 @@ class Simulation:
 
         # Adding
         self.survivor_bots_add_environment()
+        self.malfunctioning_drones_add_environment()
         self.recharge_station_add_environment()
         self.scatter_spare_parts(10, 5, 20)
 
