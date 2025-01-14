@@ -292,3 +292,27 @@ class City(Environment, ABC):
 
     def add_object(self, location: Location, objectAdd: object):
         self.__environment[location.get_y()][location.get_x()] = objectAdd
+
+
+    def check_if_agent_is_next_to_another_agent(self, agent1: Agent, agent2: Agent):
+        """
+        Function Responsible for checking if agent2 is next cell to agent1
+        :param agent1:
+        :param agent2:
+        :return:
+        """
+
+        offset = self.__retrieveOffset.apply_rules_vision(0)
+
+        for offset_x, offset_y in offset:
+
+            # Getting coordinates that reflect the position of the Agent
+            # E.g coordinates that are around the current Agent position
+            new_offset_x = (agent1.get_location().get_x() + offset_x) % self.__width
+            new_offset_y = (agent1.get_location().get_y() + offset_y) % self.__height
+
+            # Checking if there is something at those new coordinates
+            if self.__environment[new_offset_y][new_offset_x] is agent2:
+                return True
+
+            return False
