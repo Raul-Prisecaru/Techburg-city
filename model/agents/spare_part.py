@@ -9,11 +9,11 @@ if TYPE_CHECKING:
 
 class SparePart:
 
-    def __init__(self, city: City):
+    def __init__(self, city: City, size: Literal["Small", "Medium", "Large"], enhancement: Literal["Speed", "Vision", "Energy"]):
         self.__city: City = city
         self.__location: Location = None
-        self.__size: Literal["Small", "Medium", "Large"] = None
-        self.__enhancement: Literal["Speed", "Vision", "Energy"] = None
+        self.__size: Literal["Small", "Medium", "Large"] = size
+        self.__enhancement: Literal["Speed", "Vision", "Energy"] = enhancement
 
     def get_location(self):
         return self.__location
