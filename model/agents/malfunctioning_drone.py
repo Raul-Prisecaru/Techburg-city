@@ -45,9 +45,11 @@ class MalfunctioningDrone(Agent):
         self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
 
         while True:
+
             if self.__energy <= 20 or self.__priority == "HIBERNATE":
                 self.__hibernate()
                 break
+
 
             if len(self.__survivor_bot_list) > 0:
 
@@ -171,6 +173,9 @@ class MalfunctioningDrone(Agent):
 
         if self.__priority != "HIBERNATE":
             self.__priority = "HIBERNATE"
+
+        if self.__energy == 100:
+            self.__priority = None
 
 
     def __attack_bot(self, city: City, shock_attack: int) -> None:
