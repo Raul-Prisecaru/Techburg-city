@@ -391,8 +391,6 @@ class SurvivorBot(Agent):
         self.__recharge_station = recharge_station
 
 
-
-
-# Use Genetic Algorithm to determine how many Agents should be added by seeing which longest simulation is running
-# Measured in Steps ^^
-# ^^ Advanced
+    def drop_spare_part(self, city):
+        # Potential Bug, check if it get's removed from inventory
+        city.add_object(self.get_location(), self.get_inventory())
