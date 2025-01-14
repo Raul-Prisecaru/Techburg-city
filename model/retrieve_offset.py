@@ -28,9 +28,10 @@ class RetrieveOffset:
         self.__rules["energy"].append((condition, result))
 
     def retrieve_offset(self, percentageValue: int):
-        for condition, result in self.__rules:
-            if condition(percentageValue):
-                return result
+        for key, pair in self.__rules.items():
+            for condition, result in pair:
+                if condition(percentageValue):
+                    return result
 
 
     def display_rules(self):
