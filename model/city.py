@@ -5,7 +5,7 @@ from abc import ABC
 from model.environment import Environment
 from model.location import Location
 from model.agent import Agent
-from typing import override, Optional, List, TYPE_CHECKING, Union
+from typing import Optional, List, TYPE_CHECKING, Union
 from model.agents.spare_part import SparePart
 
 from model.agents.malfunctioning_drone import MalfunctioningDrone
@@ -89,7 +89,6 @@ class City(Environment, ABC):
 
         return free_spots
 
-    # TODO: Fix: MalfunctioningDrone is not undefined
     def find_survivor_bot(self, location: Location):
         """
             Function responsible for finding Survivor Bot's around specified location
