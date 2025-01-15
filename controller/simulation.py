@@ -71,7 +71,16 @@ class Simulation:
                 None
         """
 
+
         pass
+
+
+    def recharge_station_execute(self):
+
+        for rechargeStation in self.__rechargeStation:
+            for sparePart in rechargeStation.get_spare_part():
+                if sparePart.get_enhancementValue() != sparePart.get_size():
+                    sparePart.regenerate_enhancementValue()
 
 
     def recharge_station_add_environment(self):
@@ -222,8 +231,7 @@ class Simulation:
 
         self.survivor_bots_execute()
         self.malfunctioning_drones_execute()
-        # for survivorBot in self.__survivorBots:
-        #     survivorBot.act(self.__city_environment)
+        self.recharge_station_execute()
 
     def __render(self):
         self.__gui.render()
