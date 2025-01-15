@@ -171,38 +171,35 @@ class City(Environment, ABC):
 
     def find_next_move_recharge_station(self, current_location: Location, recharge_location: Location) -> Location:
         """
-        Function Responsible for finding the next best move to the recharge station
+        Function Responsible for finding the next best move to the recharge station on a toroidal grid.
 
             Parameter:
                 current_location (Location): Location to find the best move to the recharge station
-                recharge_location (Location): Recharge station the find next best move for
+                recharge_location (Location): Recharge station to find next best move for
 
             Result:
                 Location: Location of the next best move
         """
+        normal_offsets = self.__retrieveOffset.apply_rules_vision(0)
+        distance_value = float("inf")
+        position_value = None
 
-        next_move_x = None
-        next_move_y = None
 
-        if current_location.get_x() > recharge_location.get_x():
-            next_move_x = current_location.get_x() - 1
+        for offset_x, offset_y in normal_offsets:
 
-        if current_location.get_x() < recharge_location.get_x():
-            next_move_x = current_location.get_x() + 1
+            new_offset_x = (current_location.get_x() + offset_x) % self.__width
+            new_offset_y = (current_location.get_y() + offset_y) % self.__height
 
-        else:
-            next_move_x = current_location.get_x()
+            distance = ((new_offset_x - recharge_location.get_x()) ** 2 + (new_offset_y - recharge_location.get_y()) ** 2) ** 0.5
 
-        if current_location.get_y() > recharge_location.get_y():
-            next_move_y = current_location.get_y() - 1
 
-        if current_location.get_y() < recharge_location.get_y():
-            next_move_y = current_location.get_y() + 1
+            if distance < distance_value:
+                distance_value = distance
+                position_value = Location(new_offset_y, new_offset_x)
 
-        else:
-            next_move_y = current_location.get_y()
 
-        return Location(next_move_y, next_move_x)
+        return position_value
+
 
     # TODO: Fix: MalfunctioningDrone is not undefined
     def find_danger_nearby(self, location: Location) -> List[Location]:
