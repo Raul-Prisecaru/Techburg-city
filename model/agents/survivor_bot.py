@@ -72,8 +72,10 @@ class SurvivorBot(Agent):
 
                 # Checking Priority
 
-                if self.__priority == "DANGER":
+                if self.__priority == "DANGER" or self.__priority == "LACK OF ENERGY":
                     self.__move_to_recharge_station(city)
+                    print("going back to recharge station")
+                    break
 
                 # If you are in danger
                 if (len(danger_list)) > 0:
@@ -150,6 +152,12 @@ class SurvivorBot(Agent):
         self.__energy -= 5
 
 
+    def get_priority(self):
+        return self.__priority
+
+    def set_priority(self, newPriority: str):
+        self.__priority = newPriority
+
     def __pick_up_spare_part(self, city: City, available_spareParts: List[Location]) -> None:
         """
         Function that allows the survivor bot to move to a spot where Spare Part is located
@@ -160,7 +168,6 @@ class SurvivorBot(Agent):
             Returns:
                 None
         """
-
 
         next_position = random.choice(available_spareParts)
 
@@ -193,6 +200,7 @@ class SurvivorBot(Agent):
         if next_move_station.get_x() == self.__recharge_station.get_location().get_x() and next_move_station.get_y() == self.__recharge_station.get_location().get_y():
             city.set_agent(None, self.get_location())
             self.__recharge_station.add_survivor_bot(self)
+            self.__priority = None
 
             if len(self.__inventory) > 0:
                 self.__recharge_station.add_spare_part(self.__inventory[0])
@@ -281,6 +289,7 @@ class SurvivorBot(Agent):
             return True
 
         if self.__energy < total_energy_required:
+            self.__priority = "LACK OF ENERGY"
             return False
 
     def __consume_spare_part(self, inventory: List[SparePart]) -> None:
