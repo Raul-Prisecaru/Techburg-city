@@ -251,7 +251,7 @@ class Simulation:
         self.__is_running = True
 
         # Creating
-        self.create_survivor_bots(5)
+        self.create_survivor_bots(1)
         self.create_malfunctioning_drones(1)
         self.create_recharge_station(1)
         self.create_spare_parts(10)
