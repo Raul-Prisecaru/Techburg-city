@@ -75,12 +75,20 @@ class Simulation:
         pass
 
 
-    def recharge_station_execute(self):
+    def spare_part_execute(self):
 
-        for rechargeStation in self.__rechargeStation:
-            for sparePart in rechargeStation.get_spare_part():
-                if sparePart.get_enhancementValue() != sparePart.get_size():
-                    sparePart.regenerate_enhancementValue()
+        for sparePart in self.__sparePart:
+            for rechargeStation in self.__rechargeStation:
+
+                if sparePart.get_location() == rechargeStation.get_location():
+                    if sparePart.get_enhancementValue() != sparePart.get_size():
+                        sparePart.regenerate_enhancementValue()
+
+
+                if sparePart.get_location() != rechargeStation.get_location():
+                    if sparePart.get_enhancementValue() != 0:
+                        sparePart.corrode_enhancementValue()
+
 
 
     def recharge_station_add_environment(self):
@@ -231,7 +239,7 @@ class Simulation:
 
         self.survivor_bots_execute()
         self.malfunctioning_drones_execute()
-        self.recharge_station_execute()
+        self.spare_part_execute()
 
     def __render(self):
         self.__gui.render()
