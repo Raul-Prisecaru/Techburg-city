@@ -129,7 +129,7 @@ class Simulation:
 
         for survivorBot in self.__survivorBots:
 
-            survivorBot.set_primary_recharge_station(self.__rechargeStation)
+            survivorBot.set_primary_recharge_station(self.__rechargeStation[0])
 
 
     def survivor_bots_add_environment(self):
