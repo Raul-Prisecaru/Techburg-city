@@ -56,10 +56,10 @@ class Simulation:
 
 
     def create_spare_parts(self, total: int):
-        random_size = random.choice(["small", "medium", "large"])
-        random_enhancement = random.choice(["vision", "speed", "energy"])
+        random_size = random.choice([1, 2, 3])
+
         for sparePart in range(total):
-            self.__sparePart.append(SparePart(self.__city_environment, random_size, random_enhancement))
+            self.__sparePart.append(SparePart(self.__city_environment, random_size))
 
     def recharge_station_config(self):
         """
@@ -236,7 +236,7 @@ class Simulation:
         self.create_survivor_bots(5)
         self.create_malfunctioning_drones(1)
         self.create_recharge_station(1)
-        self.create_spare_parts(1)
+        self.create_spare_parts(10)
 
         # Configs
         self.survivor_bots_config()
