@@ -85,6 +85,12 @@ class SurvivorBot(Agent):
                     self.__move_to_recharge_station(city)
                     break
 
+
+                if not self.__does_robot_enough_energy_back(self.__recharge_station.get_location()):
+                    self.__priority = "LACK OF ENERGY"
+                    self.__move_to_recharge_station(city)
+                    break
+
                 # If you have a spare part in your inventory
                 if len(self.__inventory) > 0:
 
@@ -206,10 +212,10 @@ class SurvivorBot(Agent):
                 self.__recharge_station.add_spare_part(self.__inventory[0])
 
         else:
-            city.set_agent(self, next_move_station)
-            self.set_location(next_move_station)
             city.set_agent(None, self.get_location())
-            self.__energy -= 5
+            self.set_location(next_move_station)
+            city.set_agent(self, self.get_location())
+            # self.__energy -= 5
 
 
 
@@ -289,7 +295,6 @@ class SurvivorBot(Agent):
             return True
 
         if self.__energy < total_energy_required:
-            self.__priority = "LACK OF ENERGY"
             return False
 
     def __consume_spare_part(self, inventory: List[SparePart]) -> None:
