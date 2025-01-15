@@ -162,8 +162,10 @@ class Simulation:
             survivorBot.act(self.__city_environment)
             print(f"""
             Survivor Bot: {survivorBot}
-            X Location: {survivorBot.get_location().get_x()} {survivorBot.get_location().get_y()}
-            Y Location: {survivorBot.get_location().get_x()} {survivorBot.get_location().get_y()}""")
+            Location: {survivorBot.get_location().get_x()}  {survivorBot.get_location().get_y()}
+            Energy: {survivorBot.get_energy()}
+            Priority: {survivorBot.get_priority()}
+""")
 
     def create_malfunctioning_drones(self, total: int) -> List[MalfunctioningDrone]:
         """
