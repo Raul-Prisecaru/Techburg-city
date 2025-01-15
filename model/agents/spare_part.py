@@ -9,10 +9,10 @@ if TYPE_CHECKING:
 
 class SparePart:
 
-    def __init__(self, city: City, size: Literal[1, 2, 3]):
+    def __init__(self, city: City, size: Literal[3, 5, 7]):
         self.__city: City = city
         self.__location: Location = None
-        self.__size: Literal[1, 2, 3] = size
+        self.__size: Literal[3, 5, 7] = size
 
     def get_location(self):
         return self.__location
@@ -22,7 +22,7 @@ class SparePart:
         return self.__size
 
 
-    def set_size(self, newSize: Literal[1, 2, 3]):
+    def set_size(self, newSize: Literal[3, 5, 7]):
         self.__size = newSize
 
     def add_specific_spot(self, location: Location):

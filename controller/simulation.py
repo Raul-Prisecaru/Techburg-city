@@ -56,7 +56,7 @@ class Simulation:
 
 
     def create_spare_parts(self, total: int):
-        random_size = random.choice([1, 2, 3])
+        random_size = random.choice([3, 5, 7])
 
         for sparePart in range(total):
             self.__sparePart.append(SparePart(self.__city_environment, random_size))
