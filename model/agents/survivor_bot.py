@@ -27,6 +27,7 @@ class SurvivorBot(Agent):
         self.__inventory = []
         self.__energy = 100
         self.__no_energy_turn = 0
+        self.__priority = None
 
         self.__enhancements = {
             "speed":  0,
@@ -69,9 +70,15 @@ class SurvivorBot(Agent):
             # If Survivor Bot has Energy
             if self.__energy > 0:
 
+                # Checking Priority
+
+                if self.__priority == "DANGER":
+                    self.__move_to_recharge_station(city)
+
                 # If you are in danger
                 if (len(danger_list)) > 0:
 
+                    self.__priority = "DANGER"
                     # Go back to Recharge Station
                     self.__move_to_recharge_station(city)
                     break
