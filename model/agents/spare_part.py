@@ -13,6 +13,7 @@ class SparePart:
         self.__city: City = city
         self.__location: Location = None
         self.__size: Literal[3, 5, 7] = size
+        self.__enhancementValue = self.__size
 
     def get_location(self):
         return self.__location
@@ -21,6 +22,14 @@ class SparePart:
     def get_size(self):
         return self.__size
 
+    def get_enhancementValue(self):
+        return self.__enhancementValue
+
+    def regenerate_enhancementValue(self):
+        self.__enhancementValue += 0.1
+
+    def corrode_enhancementValue(self):
+        self.__enhancementValue -= 0.1
 
     def set_size(self, newSize: Literal[3, 5, 7]):
         self.__size = newSize
