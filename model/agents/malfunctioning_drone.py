@@ -46,6 +46,7 @@ class MalfunctioningDrone(Agent):
 
         while True:
 
+
             if self.__energy <= 20 or self.__priority == "HIBERNATE":
                 self.__hibernate()
                 break
@@ -53,8 +54,14 @@ class MalfunctioningDrone(Agent):
 
             if len(self.__survivor_bot_list) > 0:
 
-                for survivorBot in self.__survivor_bot_list:
-                    if city.check_if_agent_is_next_to_another_agent(self, survivorBot):
+
+                for survivorBotLocation in self.__survivor_bot_list:
+                    survivorBot: SurvivorBot = city.get_agent(survivorBotLocation)
+
+                    if survivorBot.get_priority() != "DANGER":
+                        survivorBot.set_priority("DANGER")
+
+                    if city.check_if_agent_is_next_to_another_agent(self, survivorBotLocation):
                         if self.__energy > 30:
                             self.__attack_bot(city, 30)
                             break
