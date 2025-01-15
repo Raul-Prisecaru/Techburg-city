@@ -22,7 +22,7 @@ class SparePart:
         return self.__size
 
 
-    def set_size(self, newSize: Literal["small", "medium", "large"]):
+    def set_size(self, newSize: Literal[1, 2, 3]):
         self.__size = newSize
 
     def add_specific_spot(self, location: Location):
