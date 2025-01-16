@@ -423,8 +423,8 @@ class SurvivorBot(Agent):
 
 
     def recharging(self):
-        self.__energy += 5
-
-        if self.__energy == 100 + self.get_energy_enhancement():
+        if self.__energy >= 100 + self.get_energy_enhancement():
             self.__priority = None
 
+        else:
+            self.__energy += 5
