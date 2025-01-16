@@ -2,7 +2,7 @@ import os
 
 from abc import ABC
 import random
-from typing import List, Optional
+from typing import List, Optional, Literal
 
 from model.agents.spare_part import SparePart
 from model.recharge_station import RechargeStation
@@ -14,7 +14,7 @@ move_up_dir = os.path.dirname(current_dir)
 
 
 class SurvivorBot(Agent):
-    def __init__(self, location: Location) -> None:
+    def __init__(self, location: Location, botType: Literal["GATHERER", "REPAIR"]) -> None:
         """
         Constructor to configure default values upon created
 
@@ -28,6 +28,7 @@ class SurvivorBot(Agent):
         self.__energy = 100
         self.__no_energy_turn = 0
         self.__priority = None
+        self.__bot_type = botType
 
         self.__enhancements = {
             "speed":  0,
