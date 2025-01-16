@@ -3,11 +3,9 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING, List
 
-
 if TYPE_CHECKING:
     from model.agents.spare_part import SparePart
     from model.location import Location
-    from model.agents.survivor_bot import SurvivorBot
 
 
 
@@ -65,8 +63,17 @@ class RechargeStation:
 
         if survivorBotGatherer is True and survivorBotRepair is True:
             randomValue = random.random()
-            if randomValue < 0.2:
-                return SurvivorBot(self.get_location(), "GATHERER")
+            from model.agents.survivor_bot import SurvivorBot
+
+            if randomValue <= 0.2:
+                newSurvivorBot = SurvivorBot(self.get_location(), "GATHERER")
+                newSurvivorBot.set_primary_recharge_station(self)
+                return newSurvivorBot
 
             elif randomValue < 0.05:
-                return SurvivorBot(self.get_location(), "REPAIR")
+                newSurvivorBot = SurvivorBot(self.get_location(), "REPAIR")
+                newSurvivorBot.set_primary_recharge_station(self)
+                return newSurvivorBot
+
+            else:
+                return None
