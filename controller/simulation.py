@@ -165,6 +165,7 @@ class Simulation:
             Location: {survivorBot.get_location().get_x()}  {survivorBot.get_location().get_y()}
             Energy: {survivorBot.get_energy()}
             Priority: {survivorBot.get_priority()}
+            Inventory: {survivorBot.get_inventory()}
 """)
 
     def create_malfunctioning_drones(self, total: int) -> List[MalfunctioningDrone]:
