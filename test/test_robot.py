@@ -36,7 +36,7 @@ class TestRobotAgent(unittest.TestCase):
         survivor_bot = SurvivorBot(Location(5,5))
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
-        spare_part = SparePart(city)
+        spare_part = SparePart(city, 3)
         spare_part.add_specific_spot(Location(5, 4))
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
@@ -62,7 +62,7 @@ class TestRobotAgent(unittest.TestCase):
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
 
-        spare_part = SparePart(city)
+        spare_part = SparePart(city, 3)
         spare_part.add_specific_spot(Location(5,7))
 
 
@@ -152,7 +152,7 @@ class TestRobotAgent(unittest.TestCase):
         survivor_bot = SurvivorBot(start_location)
         survivor_bot.set_primary_recharge_station(self.__recharge_Station)
 
-        spare_part = SparePart(city)
+        spare_part = SparePart(city, 3)
         spare_part.add_specific_spot(Location(5,7))
 
         city.set_agent(survivor_bot, survivor_bot.get_location())
