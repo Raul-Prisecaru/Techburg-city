@@ -119,7 +119,7 @@ class Simulation:
         """
 
         for number in range(total):
-            self.__survivorBots.append(SurvivorBot(Location((16 - number), 28)))
+            self.__survivorBots.append(SurvivorBot(Location((16 - number), 28), random.choice(["GATHERER", "REPAIR"])))
 
         return self.__survivorBots
 
