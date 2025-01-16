@@ -49,6 +49,13 @@ class SurvivorBot(Agent):
 
         self.__recharge_station: RechargeStation = None
 
+    def get_bot_type(self):
+        return self.__bot_type
+
+    def set_bot_type(self, newBotType: Literal["GATHERER", "REPAIR"]):
+        self.__bot_type = newBotType
+
+
     def act(self, city: City) -> None:
         """
         Function responsible for handling the logic of actions the survivor bot can execute
