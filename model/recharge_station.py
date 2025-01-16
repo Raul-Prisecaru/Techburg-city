@@ -47,4 +47,16 @@ class RechargeStation:
         else:
             print("Recharge Stations holds no Survivor Bots")
 
+    def bot_creating_chance(self):
+        survivorBotGatherer = False
+        survivorBotRepair = False
+        for survivorBot in self.__survivor_bot:
+            if survivorBotGatherer is False or survivorBotRepair is False:
+                if survivorBot.get_bot_type() == "GATHERER":
+                    survivorBotGatherer = True
 
+                if survivorBot.get_bot_type() == "REPAIR":
+                    survivorBotRepair = True
+
+            else:
+                break
