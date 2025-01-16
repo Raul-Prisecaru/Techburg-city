@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import random
 from typing import TYPE_CHECKING, List
 
 
@@ -60,3 +61,12 @@ class RechargeStation:
 
             else:
                 break
+
+
+        if survivorBotGatherer is True and survivorBotRepair is True:
+            randomValue = random.random()
+            if randomValue < 0.2:
+                return SurvivorBot(self.get_location(), "GATHERER")
+
+            elif randomValue < 0.05:
+                return SurvivorBot(self.get_location(), "REPAIR")
