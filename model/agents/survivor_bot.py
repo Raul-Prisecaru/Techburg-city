@@ -77,6 +77,11 @@ class SurvivorBot(Agent):
                     print("going back to recharge station")
                     break
 
+
+                if self.__priority == "RECHARGING":
+                    self.recharging()
+                    break
+
                 # If you are in danger
                 if (len(danger_list)) > 0:
 
@@ -206,7 +211,7 @@ class SurvivorBot(Agent):
         if next_move_station.get_x() == self.__recharge_station.get_location().get_x() and next_move_station.get_y() == self.__recharge_station.get_location().get_y():
             city.set_agent(None, self.get_location())
             self.__recharge_station.add_survivor_bot(self)
-            self.__priority = None
+            self.__priority = "RECHARGING"
 
             if len(self.__inventory) > 0:
                 self.__recharge_station.add_spare_part(self.__inventory[0])
@@ -415,3 +420,11 @@ class SurvivorBot(Agent):
     def drop_spare_part(self, city):
         # Potential Bug, check if it get's removed from inventory
         city.add_object(self.get_location(), self.get_inventory())
+
+
+    def recharging(self):
+        self.__energy += 5
+
+        if self.__energy == 100 + self.get_energy_enhancement():
+            self.__priority = None
+
