@@ -111,7 +111,7 @@ class Simulation:
         """
 
         for number in range(total):
-            self.__survivorBots.append(SurvivorBot(Location((15 - number), 28)))
+            self.__survivorBots.append(SurvivorBot(Location((16 - number), 28)))
 
         return self.__survivorBots
 
