@@ -171,6 +171,7 @@ class Simulation:
             print(f"""
             Survivor Bot: {survivorBot}
             Location: {survivorBot.get_location().get_x()}  {survivorBot.get_location().get_y()}
+            Type: {survivorBot.get_bot_type()}
             Energy: {survivorBot.get_energy()}
             Priority: {survivorBot.get_priority()}
             Inventory: {survivorBot.get_inventory()}
