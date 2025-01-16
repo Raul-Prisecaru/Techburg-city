@@ -184,11 +184,11 @@ class SurvivorBot(Agent):
 
         self.__inventory.append(city.get_agent(next_position))
 
+        city.set_agent(None, self.get_location())
+
         city.set_agent(self, next_position)
 
         self.set_location(next_position)
-
-        city.set_agent(None, self.get_location())
 
         self.__energy -= 5
 
@@ -215,7 +215,7 @@ class SurvivorBot(Agent):
 
             if len(self.__inventory) > 0:
                 self.__recharge_station.add_spare_part(self.__inventory[0])
-
+                self.__inventory.clear()
         else:
             city.set_agent(None, self.get_location())
             self.set_location(next_move_station)
