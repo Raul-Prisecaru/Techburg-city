@@ -265,7 +265,7 @@ class Simulation:
         self.survivor_bots_add_environment()
         self.malfunctioning_drones_add_environment()
         self.recharge_station_add_environment()
-        self.scatter_spare_parts(5, 20)
+        self.scatter_spare_parts(0, 29)
 
         self.__city_environment.display_environment()
 
