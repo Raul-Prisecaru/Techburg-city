@@ -99,6 +99,14 @@ class Simulation:
             self.__city_environment.add_object(rechargeStation.get_location(), rechargeStation)
 
 
+    def recharge_station_execute(self):
+
+        for rechargeStation in self.__rechargeStation:
+            survivor_bot_created = rechargeStation.bot_creating_chance()
+
+            if survivor_bot_created is not None:
+                self.__survivorBots.append(survivor_bot_created)
+
     def create_survivor_bots(self, total: int) -> List[SurvivorBot]:
         """
         Function responsible for creating survivor bots for the environment
@@ -243,6 +251,7 @@ class Simulation:
         self.survivor_bots_execute()
         self.malfunctioning_drones_execute()
         self.spare_part_execute()
+        self.recharge_station_execute()
 
     def __render(self):
         self.__gui.render()
