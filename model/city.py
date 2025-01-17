@@ -190,7 +190,7 @@ class City(Environment, ABC):
 
         return spare_parts
 
-    def find_next_move_recharge_station(self, current_location: Location, recharge_location: Location) -> Location:
+    def find_next_move_recharge_station(self, current_location: Location, recharge_location: Location, survivor_bot: SurvivorBot) -> Location:
         """
         Function Responsible for finding the next best move to the recharge station on a toroidal grid.
 
@@ -201,7 +201,7 @@ class City(Environment, ABC):
             Result:
                 Location: Location of the next best move
         """
-        normal_offsets = self.__retrieveOffset.apply_rules_vision(0)
+        normal_offsets = self.__retrieveOffset.apply_rules_vision(survivor_bot.get_vision_enhancement())
         distance_value = float("inf")
         position_value = None
 
