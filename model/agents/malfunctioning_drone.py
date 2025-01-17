@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from controller.Config import Config
 import os
 from abc import ABC
 import random
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class MalfunctioningDrone(Agent):
     def __init__(self, location: Location):
         super().__init__(location)
-        self.__energy = 100
+        self.__energy = Config.MALFUNCTIONING_DRONE_MAX_ENERGY
         self.__priority = None
 
         self.__free_position_list: List[Location] = []
@@ -39,50 +39,42 @@ class MalfunctioningDrone(Agent):
                 None
 
         """
-
         self.__free_position_list = city.find_free_spot(self.get_location())
 
         self.__survivor_bot_list = city.find_survivor_bot(self.get_location())
-
         while True:
-
 
             if self.__energy <= 20 or self.__priority == "HIBERNATE":
                 self.__hibernate()
                 break
 
-
             if len(self.__survivor_bot_list) > 0:
-
-
                 for survivorBotLocation in self.__survivor_bot_list:
                     survivorBot: SurvivorBot = city.get_agent(survivorBotLocation)
-
-                    if survivorBot.get_priority() != "DANGER":
-                        survivorBot.set_priority("DANGER")
-
-                    if city.check_if_agent_is_next_to_another_agent(self, survivorBotLocation):
-                        if self.__energy > 30:
-                            self.__attack_bot(city, 30)
-                            break
-
-                        if self.__energy > 20:
-                            self.__attack_bot(city, 20)
-                            break
-
-                        if self.__energy > 10:
-                            self.__attack_bot(city, 10)
-                            break
+                    if city.check_if_agent_is_next_to_another_agent(self, survivorBot):
+                        print("ATTACKED")
+                        break
+                        # if self.__energy > 30:
+                        #     self.__attack_bot(city, 30)
+                        #     break
+                        #
+                        # if self.__energy > 20:
+                        #     self.__attack_bot(city, 20)
+                        #     break
+                        #
+                        # if self.__energy > 10:
+                        #     self.__attack_bot(city, 10)
+                        #     break
 
 
 
-                self.__move_towards_survivor_bot(city)
-                break
+                    self.__move_towards_survivor_bot(city)
+                    break
 
 
-            if len(self.__free_position_list) > 0:
-                self.__move(city)
-                break
+                if len(self.__free_position_list) > 0:
+                    self.__move(city)
+                    break
 
 
 
@@ -125,13 +117,34 @@ class MalfunctioningDrone(Agent):
 
         current_location: Location = self.get_location()
 
-        next_position: Location = random.choice(self.__survivor_bot_list)
+        targetBotPosition: Location = random.choice(self.__survivor_bot_list)
 
-        city.set_agent(self, next_position)
+        if current_location.get_x() > targetBotPosition.get_x():
+            move_x = -1
+        elif current_location.get_x() < targetBotPosition.get_x():
+            move_x = 1
+        else:
+            move_x = 0
 
-        self.set_location(next_position)
+        if current_location.get_y() > targetBotPosition.get_y():
+            move_y = -1
+        elif current_location.get_y() < targetBotPosition.get_y():
+            move_y = 1
+        else:
+            move_y = 0
 
-        city.set_agent(None, current_location)
+        new_offset_x = (current_location.get_x() + move_x) % Config.GRID_WIDTH
+        new_offset_y = (current_location.get_y() + move_y) % Config.GRID_HEIGHT
+
+        newPosition = Location(new_offset_y, new_offset_x)
+
+        if newPosition != targetBotPosition:
+
+            city.set_agent(self, newPosition)
+
+            self.set_location(newPosition)
+
+            city.set_agent(None, current_location)
 
         self.__energy -= 20
 
@@ -176,12 +189,12 @@ class MalfunctioningDrone(Agent):
         """
 
 
-        self.__energy += 10
+        self.__energy += Config.MALFUNCTIONING_DRONE_RECHARGE_SPEED
 
         if self.__priority != "HIBERNATE":
             self.__priority = "HIBERNATE"
 
-        if self.__energy == 100:
+        if self.__energy == Config.MALFUNCTIONING_DRONE_MAX_ENERGY:
             self.__priority = None
 
 
