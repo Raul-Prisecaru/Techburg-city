@@ -14,9 +14,9 @@ import time
 
 
 class Simulation:
-    def __init__(self, width: int, height: int) -> None:
-        self.__width = width
-        self.__height = height
+    def __init__(self) -> None:
+        self.__width = Config.GRID_WIDTH
+        self.__height = Config.GRID_HEIGHT
 
         self.__is_running = False
 
@@ -168,7 +168,6 @@ class Simulation:
             Energy: {survivorBot.get_energy()}
             Priority: {survivorBot.get_priority()}
             Inventory: {survivorBot.get_inventory()}
-            Home: {survivorBot.get_home().get_location().get_x(), survivorBot.get_home().get_location().get_y()}
 """)
 
     def create_malfunctioning_drones(self, total: int) -> None:
@@ -280,16 +279,6 @@ class Simulation:
 
 
 
-
-
-            # print("---")
-            # # self.__city_environment.display_environment()
-            # self.survivor_bots_execute()
-            # self.__city_environment.display_environment()
-            # time.sleep(1)
-
-
-
 # Running the Simulation
-Simulation(30, 30).run()
+Simulation().run()
 
