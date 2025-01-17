@@ -52,16 +52,25 @@ class MalfunctioningDrone(Agent):
                 for survivorBotLocation in self.__survivor_bot_list:
                     survivorBot: SurvivorBot = city.get_agent(survivorBotLocation)
                     if city.check_if_agent_is_next_to_another_agent(self, survivorBot):
-                        print("ATTACKED")
-                        if self.__energy > 10:
-                            # self.__attack_bot(city, 10)
-                            self.__shock_attack(city, survivorBot)
+                        if self.__energy > 30:
+                            self.__destroy_attack(city, survivorBot)
+                            print("Destruction Attack")
+
+                        elif self.__energy > 20:
+                            self.__bigger_shock_attack(city, survivorBot)
+                            print("20% Attack")
                             break
 
+                        elif self.__energy > 10:
+                            self.__shock_attack(city, survivorBot)
+                            print("10% Attack")
+                            break
 
+                        else:
+                            continue
 
-                    self.__move_towards_survivor_bot(city)
-                    break
+                self.__move_towards_survivor_bot(city)
+                break
 
 
             if len(self.__free_position_list) > 0:
@@ -190,25 +199,18 @@ class MalfunctioningDrone(Agent):
             self.__priority = None
 
 
-    def __attack_bot(self, city: City, shock_attack: int) -> None:
-        """
-        Function responsible for allowing the malfunction drone to attack the survivor bot
-
-            Parameter:
-                city (City): environment to retrieve the survivor bot from
-                shock_attack: power of shock attack
-
-            Return:
-                None
-        """
-
-        bot_position: Location = random.choice(self.__survivor_bot_list)
-
-        survivor_bot: SurvivorBot = city.get_agent(bot_position)
-
-        survivor_bot.set_energy(survivor_bot.get_energy() - shock_attack)
-
-
     def __shock_attack(self, city: City, survivorBot: SurvivorBot) -> None:
         survivorBot.set_energy(survivorBot.get_energy() - 10)
         survivorBot.drop_spare_part(city)
+        self.__energy -= 10
+
+    def __bigger_shock_attack(self, city: City, survivorBot: SurvivorBot) -> None:
+        survivorBot.set_priority("PARALYSED")
+        survivorBot.set_energy(survivorBot.get_energy() - 20)
+        survivorBot.drop_spare_part(city)
+        self.__energy -= 20
+
+
+    def __destroy_attack(self, city: City, survivorBot: SurvivorBot) -> None:
+        city.remove_survivor_bot_from_list(survivorBot)
+        self.__energy -= 30
