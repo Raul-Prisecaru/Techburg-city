@@ -25,7 +25,7 @@ class SurvivorBot(Agent):
         super().__init__(location)
         # Inventory System. Only one slot available
         self.__inventory = []
-        self.__energy = 100
+        self.__energy = 10
         self.__no_energy_turn = 0
         self.__priority = None
         self.__bot_type = botType
@@ -67,7 +67,7 @@ class SurvivorBot(Agent):
                 None
 
         """
-
+        paralysed_counter = 0
         available_free_spots = city.find_free_spot(self.get_location())
         available_sparePart  = city.find_spare_part(self.get_location())
         danger_list = city.find_danger_nearby(self.get_location())
@@ -81,12 +81,26 @@ class SurvivorBot(Agent):
                 # Checking Priority
 
                 if self.__priority == "DANGER" or self.__priority == "LACK OF ENERGY":
+                    if len(available_sparePart) > 0 and self.__priority == "LACK OF ENERGY":
+
+                        # Move Towards the Spare Part and Pick it up
+                        self.__pick_up_spare_part(city, available_sparePart)
+                        break
+
                     self.__move_to_recharge_station(city)
                     break
 
 
                 if self.__priority == "RECHARGING":
                     self.recharging()
+                    break
+
+                if self.__priority == "PARALYSED":
+                    if paralysed_counter >= 2:
+                        paralysed_counter = 0
+                        self.__priority = "DANGER"
+
+                    paralysed_counter += 1
                     break
 
                 # If you are in danger
@@ -428,6 +442,7 @@ class SurvivorBot(Agent):
     def drop_spare_part(self, city):
         # Potential Bug, check if it get's removed from inventory
         city.add_object(self.get_location(), self.get_inventory())
+        self.__inventory.clear()
 
 
     def recharging(self):
