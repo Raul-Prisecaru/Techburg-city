@@ -21,11 +21,6 @@ class Simulation:
         self.__is_running = False
 
         self.__city_environment = City(self.__width, self.__height)
-        self.__sparePart = []
-        self.__survivorBots = []
-        self.__malfunctioningDrones = []
-        self.__ScavengerSwarms = []
-        self.__rechargeStation = []
 
         # self.__agent_colours = {self.__survivorBots: Config.SURVIVOR_BOT_COLOUR, self.__MalfunctioningDrones: Config.MALFUNCTIONING_DRONE_COLOUR, self.__ScavengerSwarms: Config.SCAVENGER_SWARM_COLOUR}
         self.__agent_colours = {
@@ -38,7 +33,7 @@ class Simulation:
         self.__gui = Gui(self.__city_environment, self.__agent_colours)
         self.__gui.render()
 
-    def create_recharge_station(self, total: int) -> List[RechargeStation]:
+    def create_recharge_station(self, total: int) -> None:
         """
         Function responsible for creating Recharge Station for the environment
             Parameter:
@@ -50,16 +45,15 @@ class Simulation:
         """
 
         for number in range(total):
-            self.__rechargeStation.append(RechargeStation(Location((15 - number), 29)))
-
-        return self.__rechargeStation
+            self.__city_environment.add_recharge_station_to_list(RechargeStation(Location((15 - number), 29)))
 
 
     def create_spare_parts(self, total: int):
         random_size = random.choice([3, 5, 7])
 
         for sparePart in range(total):
-            self.__sparePart.append(SparePart(self.__city_environment, random_size))
+            self.__city_environment.add_spare_parts_to_list(SparePart(self.__city_environment, random_size))
+
 
     def recharge_station_config(self):
         """
@@ -77,16 +71,16 @@ class Simulation:
 
     def spare_part_execute(self):
 
-        for sparePart in self.__sparePart:
-            for rechargeStation in self.__rechargeStation:
+        for sparePart in self.__city_environment.get_spare_parts_list():
+            for rechargeStation in self.__city_environment.get_recharge_station_list():
 
                 if sparePart.get_location() == rechargeStation.get_location():
-                    if sparePart.get_enhancementValue() != sparePart.get_size():
+                    if sparePart.get_enhancementValue() < sparePart.get_size():
                         sparePart.regenerate_enhancementValue()
 
 
                 if sparePart.get_location() != rechargeStation.get_location():
-                    if sparePart.get_enhancementValue() != 0:
+                    if sparePart.get_enhancementValue() > 0:
                         sparePart.corrode_enhancementValue()
 
 
@@ -95,19 +89,19 @@ class Simulation:
         """
         Function responsible for adding the Recharge Stations to the environment
         """
-        for rechargeStation in self.__rechargeStation:
+        for rechargeStation in self.__city_environment.get_recharge_station_list():
             self.__city_environment.add_object(rechargeStation.get_location(), rechargeStation)
 
 
     def recharge_station_execute(self):
 
-        for rechargeStation in self.__rechargeStation:
+        for rechargeStation in self.__city_environment.get_recharge_station_list():
             survivor_bot_created = rechargeStation.bot_creating_chance()
 
             if survivor_bot_created is not None:
-                self.__survivorBots.append(survivor_bot_created)
+                self.__city_environment.add_survivor_bot_to_list(survivor_bot_created)
 
-    def create_survivor_bots(self, total: int) -> List[SurvivorBot]:
+    def create_survivor_bots(self, total: int) -> None:
         """
         Function responsible for creating survivor bots for the environment
             Parameter:
@@ -119,9 +113,8 @@ class Simulation:
         """
 
         for number in range(total):
-            self.__survivorBots.append(SurvivorBot(Location((16 - number), 28), random.choice(["GATHERER", "REPAIR"])))
+            self.__city_environment.add_survivor_bot_to_list(SurvivorBot(Location((16 - number), 4), random.choice(["GATHERER", "REPAIR"])))
 
-        return self.__survivorBots
 
 
     def survivor_bots_config(self):
@@ -134,10 +127,10 @@ class Simulation:
             Return:
                 None
         """
+        rechargeStation: RechargeStation = self.__city_environment.get_recharge_station_list()[0]
+        for survivorBot in self.__city_environment.get_survivor_bot_list():
 
-        for survivorBot in self.__survivorBots:
-
-            survivorBot.set_primary_recharge_station(self.__rechargeStation[0])
+            survivorBot.set_primary_recharge_station(rechargeStation)
 
 
     def survivor_bots_add_environment(self):
@@ -151,7 +144,7 @@ class Simulation:
                 None
 
         """
-        for survivorBot in self.__survivorBots:
+        for survivorBot in self.__city_environment.get_survivor_bot_list():
             self.__city_environment.set_agent(survivorBot, survivorBot.get_location())
 
 
@@ -166,7 +159,7 @@ class Simulation:
                 None
         """
 
-        for survivorBot in self.__survivorBots:
+        for survivorBot in self.__city_environment.get_survivor_bot_list():
             survivorBot.act(self.__city_environment)
             print(f"""
             Survivor Bot: {survivorBot}
@@ -175,9 +168,10 @@ class Simulation:
             Energy: {survivorBot.get_energy()}
             Priority: {survivorBot.get_priority()}
             Inventory: {survivorBot.get_inventory()}
+            Home: {survivorBot.get_home().get_location().get_x(), survivorBot.get_home().get_location().get_y()}
 """)
 
-    def create_malfunctioning_drones(self, total: int) -> List[MalfunctioningDrone]:
+    def create_malfunctioning_drones(self, total: int) -> None:
         """
          Function responsible for creating Malfunctioning Drones for the environment
              Parameter:
@@ -187,9 +181,7 @@ class Simulation:
                  List[MalfunctioningDrone]: List containing specified number of Malfunctioning Drones
         """
         for number in range(total):
-            self.__malfunctioningDrones.append(MalfunctioningDrone(Location(5, 5)))
-
-        return self.__malfunctioningDrones
+            self.__city_environment.add_malfunctioning_drone_to_list(MalfunctioningDrone(Location(5, 5)))
 
     def malfunctioning_drones_config(self):
         """
@@ -203,12 +195,12 @@ class Simulation:
         pass
 
     def malfunctioning_drones_add_environment(self):
-        for malfunctioningDrone in self.__malfunctioningDrones:
+        for malfunctioningDrone in self.__city_environment.get_malfunctioning_drone_list():
             self.__city_environment.set_agent(malfunctioningDrone, malfunctioningDrone.get_location())
 
 
     def malfunctioning_drones_execute(self):
-        for malfunctioningDrone in self.__malfunctioningDrones:
+        for malfunctioningDrone in self.__city_environment.get_malfunctioning_drone_list():
             malfunctioningDrone.act(self.__city_environment)
 
     def create_scavenger_swarms(self) -> List[ScavengerSwarm]:
@@ -244,7 +236,7 @@ class Simulation:
             Return:
                 None
         """
-        for sparePart in self.__sparePart:
+        for sparePart in self.__city_environment.get_spare_parts_list():
             sparePart.randomly_scatter(start_location, end_location)
 
     def __update(self):
