@@ -340,5 +340,7 @@ class City(Environment, ABC):
             # Checking if there is something at those new coordinates
             if self.__environment[new_offset_y][new_offset_x] is agent2:
                 return True
+            else:
+                continue
 
-            return False
+            # return False
