@@ -24,8 +24,8 @@ class SurvivorBot(Agent):
         """
         super().__init__(location)
         # Inventory System. Only one slot available
-        self.__inventory = []
-        self.__energy = 10
+        self.__holding_item = None
+        self.__energy = 100
         self.__no_energy_turn = 0
         self.__priority = None
         self.__bot_type = botType
@@ -38,13 +38,13 @@ class SurvivorBot(Agent):
 
         self.__incident = {
             # if Attacked, should probably focus on speed enhancement
-            "attacked": 0,
+            "attacked": 1,
 
             # if encountered drone, should probably focus on vision enhancement
-            "drone-encounter": 0,
+            "drone-encounter": 1,
 
             # if ran out of energy in the field, should probably focus on energy enhancement
-            "out-of-energy": 0
+            "out-of-energy": 1
         }
 
         self.__recharge_station: RechargeStation = None
@@ -118,14 +118,14 @@ class SurvivorBot(Agent):
                     break
 
                 # If you have a spare part in your inventory
-                if len(self.__inventory) > 0:
+                if self.__holding_item is not None:
 
                     # Go To Recharge Station
                     self.__move_to_recharge_station(city)
                     break
 
                 # if there is a spare part in your vision
-                if len(available_sparePart) > 0 and len(self.__inventory) == 0:
+                if len(available_sparePart) > 0 and self.__holding_item is None:
 
                     # Move Towards the Spare Part and Pick it up
                     self.__pick_up_spare_part(city, available_sparePart)
@@ -141,10 +141,10 @@ class SurvivorBot(Agent):
             # If energy is lower or equals to 0
             if self.__energy <= 0:
                 # Check inventory if there is a spare part
-                if len(self.__inventory) > 0:
+                if self.__holding_item is not None:
 
                     # Consume Spare Part
-                    self.__consume_spare_part(self.__inventory)
+                    self.__consume_spare_part(self.__holding_item)
                     break
 
                 else:
@@ -201,7 +201,7 @@ class SurvivorBot(Agent):
 
         next_position = random.choice(available_spareParts)
 
-        self.__inventory.append(city.get_agent(next_position))
+        self.__holding_item = city.get_agent(next_position)
 
         city.set_agent(None, self.get_location())
 
@@ -232,9 +232,9 @@ class SurvivorBot(Agent):
             self.__recharge_station.add_survivor_bot(self)
             self.__priority = "RECHARGING"
 
-            if len(self.__inventory) > 0:
-                self.__recharge_station.add_spare_part(self.__inventory[0])
-                self.__inventory.clear()
+            if self.__holding_item is not None:
+                self.__recharge_station.add_spare_part(self.__holding_item)
+                self.__holding_item = None
         else:
             city.set_agent(None, self.get_location())
             self.set_location(next_move_station)
@@ -243,7 +243,7 @@ class SurvivorBot(Agent):
 
 
 
-    def get_inventory(self) -> Optional[List[SparePart]]:
+    def get_holding_item(self) -> Optional[List[SparePart]]:
         """
         Function responsible for retrieving the inventory of the survivor bot
 
@@ -253,7 +253,7 @@ class SurvivorBot(Agent):
             Return:
                 Optional[List[SparePart]] -> Returns the inventory which may contain a singular Spare Part or None
         """
-        return self.__inventory
+        return self.__holding_item
 
 
     def get_energy(self) -> int:
@@ -324,27 +324,27 @@ class SurvivorBot(Agent):
         if self.__energy < total_energy_required:
             return False
 
-    def __consume_spare_part(self, inventory: List[SparePart]) -> None:
-        """
-        function responsible managing survivor bot consuming Spare Parts from inventory
-            Parameters:
-                inventory (List[SparePart]): Inventory to take out spare part if available
+    def __consume_spare_part(self, holding_item: SparePart) -> None:
+        incident_to_enhancement = {
+            "attacked": "speed",
+            "drone-encounter": "vision",
+            "out-of-energy": "energy"
+        }
 
-            Return:
-                None
-        """
+        enhancements = []
+        weights = []
 
-        inventory.clear()
-        highest_key = max(self.__incident, key=self.__incident.get)
+        for incident, weight in self.__incident.items():
+            enhancement = incident_to_enhancement[incident]
+            enhancements.append(enhancement)
+            weights.append(weight)
 
-        if highest_key == "attacked":
-            self.__enhancements["speed"] += inventory[0].get_enhancementValue()
+        selected_enhancement = random.choices(enhancements, weights=weights, k=1)[0]
 
-        elif highest_key == "drone-encountered":
-            self.__enhancements["vision"] += inventory[0].get_enhancementValue()
+        self.__enhancements[selected_enhancement] = round(
+            self.__enhancements[selected_enhancement] + holding_item.get_enhancementValue(), 2
+        )
 
-        elif highest_key == "out-of-energy":
-            self.__enhancements["energy"] += inventory[0].get_enhancementValue()
 
 
         self.__energy = 100 + self.get_energy_enhancement()
@@ -451,8 +451,8 @@ class SurvivorBot(Agent):
 
     def drop_spare_part(self, city):
         # Potential Bug, check if it get's removed from inventory
-        city.add_object(self.get_location(), self.get_inventory())
-        self.__inventory.clear()
+        city.add_object(self.get_location(), self.get_holding_item())
+        self.__holding_item = None
 
 
     def recharging(self):
@@ -461,3 +461,10 @@ class SurvivorBot(Agent):
 
         else:
             self.__energy += 5
+
+            if len(self.__recharge_station.get_spare_part()) > 0:
+                for sparePart in self.__recharge_station.get_spare_part():
+
+                    self.__consume_spare_part(self.__recharge_station.get_spare_part()[0])
+                    # self.__recharge_station.get_spare_part().remove(self.__recharge_station.get_spare_part()[0])
+                    self.__recharge_station.get_spare_part().remove(sparePart)
