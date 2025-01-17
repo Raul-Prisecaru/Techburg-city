@@ -166,7 +166,7 @@ class TestRobotAgent(unittest.TestCase):
 
         # TODO: Ensure to test that the spare part is also removed from inventory because consumed
         self.assertGreater(survivor_bot.get_energy(), 0, "Energy has not increased after consuming part")
-        self.assertEqual(len(survivor_bot.get_inventory()), 0, "Spare Part has not been properly removed from inventory")
+        self.assertEqual(len(survivor_bot.get_holding_item()), 0, "Spare Part has not been properly removed from inventory")
 
     # def test_survivor_bot_not_enough_energy_travel_back(self):
     #     """
