@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
     from model.agents.spare_part import SparePart
     from model.location import Location
+    from model.agents.survivor_bot import SurvivorBot
 
 
 
