@@ -113,7 +113,7 @@ class Simulation:
         """
 
         for number in range(total):
-            self.__city_environment.add_survivor_bot_to_list(SurvivorBot(Location((16 - number), 4), random.choice(["GATHERER", "REPAIR"])))
+            self.__city_environment.add_survivor_bot_to_list(SurvivorBot(Location((18 - number), 28), random.choice(["GATHERER", "REPAIR"])))
 
 
 
@@ -180,7 +180,7 @@ class Simulation:
                  List[MalfunctioningDrone]: List containing specified number of Malfunctioning Drones
         """
         for number in range(total):
-            self.__city_environment.add_malfunctioning_drone_to_list(MalfunctioningDrone(Location(5, 5)))
+            self.__city_environment.add_malfunctioning_drone_to_list(MalfunctioningDrone(Location(10 - number, 5)))
 
     def malfunctioning_drones_config(self):
         """
@@ -241,7 +241,7 @@ class Simulation:
     def __update(self):
 
         self.survivor_bots_execute()
-        self.malfunctioning_drones_execute()
+        # self.malfunctioning_drones_execute()
         self.spare_part_execute()
         self.recharge_station_execute()
 
@@ -253,10 +253,10 @@ class Simulation:
         self.__is_running = True
 
         # Creating
-        self.create_survivor_bots(1)
-        self.create_malfunctioning_drones(1)
+        self.create_survivor_bots(Config.MAX_SURVIVOR_BOT)
+        self.create_malfunctioning_drones(Config.MAX_MALFUNCTIONING_DRONE)
         self.create_recharge_station(1)
-        self.create_spare_parts(10)
+        self.create_spare_parts(Config.MAX_SPARE_PARTS)
 
         # Configs
         self.survivor_bots_config()
@@ -264,7 +264,7 @@ class Simulation:
 
         # Adding
         self.survivor_bots_add_environment()
-        self.malfunctioning_drones_add_environment()
+        # self.malfunctioning_drones_add_environment()
         self.recharge_station_add_environment()
         self.scatter_spare_parts(0, 29)
 
@@ -273,7 +273,7 @@ class Simulation:
         while self.__is_running:
             self.__update()
             self.__render()
-            time.sleep(1)
+            time.sleep(Config.SIMULATION_TIMER)
             if self.__gui.is_closed():
                 self.__is_running = False
 

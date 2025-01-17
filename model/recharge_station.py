@@ -3,6 +3,8 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING, List
 
+from controller.Config import Config
+
 if TYPE_CHECKING:
     from model.agents.spare_part import SparePart
     from model.location import Location
@@ -48,6 +50,7 @@ class RechargeStation:
             print("Recharge Stations holds no Survivor Bots")
 
     def bot_creating_chance(self):
+        from model.agents.survivor_bot import SurvivorBot
         survivorBotGatherer = False
         survivorBotRepair = False
         for survivorBot in self.__survivor_bot:
@@ -64,14 +67,13 @@ class RechargeStation:
 
         if survivorBotGatherer is True and survivorBotRepair is True:
             randomValue = random.random()
-            from model.agents.survivor_bot import SurvivorBot
 
-            if randomValue <= 0.2:
+            if randomValue <= Config.PROBABILITY_NEW_GATHERER_BOT:
                 newSurvivorBot = SurvivorBot(self.get_location(), "GATHERER")
                 newSurvivorBot.set_primary_recharge_station(self)
                 return newSurvivorBot
 
-            elif randomValue < 0.05:
+            elif randomValue < Config.PROBABILITY_NEW_REPAIR_BOT:
                 newSurvivorBot = SurvivorBot(self.get_location(), "REPAIR")
                 newSurvivorBot.set_primary_recharge_station(self)
                 return newSurvivorBot
