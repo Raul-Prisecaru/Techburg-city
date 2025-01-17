@@ -79,7 +79,7 @@ class Simulation:
                         sparePart.regenerate_enhancementValue()
 
 
-                if sparePart.get_location() != rechargeStation.get_location():
+                elif sparePart.get_location() != rechargeStation.get_location():
                     if sparePart.get_enhancementValue() > 0:
                         sparePart.corrode_enhancementValue()
 
@@ -100,6 +100,7 @@ class Simulation:
 
             if survivor_bot_created is not None:
                 self.__city_environment.add_survivor_bot_to_list(survivor_bot_created)
+
 
     def create_survivor_bots(self, total: int) -> None:
         """
@@ -167,7 +168,10 @@ class Simulation:
             Type: {survivorBot.get_bot_type()}
             Energy: {survivorBot.get_energy()}
             Priority: {survivorBot.get_priority()}
-            Inventory: {survivorBot.get_inventory()}
+            Inventory: {survivorBot.get_holding_item()}
+            Energy Enhancements: {survivorBot.get_energy_enhancement()}
+            Speed Enhancements: {survivorBot.get_speed_enhancement()}
+            Vision Enhancements: {survivorBot.get_vision_enhancement()}
 """)
 
     def create_malfunctioning_drones(self, total: int) -> None:
