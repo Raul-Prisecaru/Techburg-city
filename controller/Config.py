@@ -4,8 +4,8 @@ class Config:
     # GUI Settings
     SIM_NAME = "Ocean Simulation"
     SIMULATION_TIMER = 1
-    GRID_WIDTH = 50
-    GRID_HEIGHT = 50
+    GRID_WIDTH = 30
+    GRID_HEIGHT = 30
 
     SURVIVOR_BOT_COLOUR = "red"
     MALFUNCTIONING_DRONE_COLOUR = "blue"
