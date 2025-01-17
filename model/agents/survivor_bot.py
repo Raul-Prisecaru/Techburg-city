@@ -298,7 +298,7 @@ class SurvivorBot(Agent):
             Return:
                 bool: Returns TRUE if survivor can make it back between two location else returns FALSE
         """
-        total_distance_station = abs(self.get_location().get_x() - go_back_location.get_x()) + abs(self.get_location().get_y() - go_back_location.get_y())
+        total_distance_station = ((self.get_location().get_x() - go_back_location.get_x()) ** 2 + (self.get_location().get_y() - go_back_location.get_y()) ** 2) ** 0.5
 
         total_distance = total_distance_station * 2
 
