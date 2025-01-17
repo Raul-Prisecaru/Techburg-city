@@ -82,7 +82,6 @@ class SurvivorBot(Agent):
 
                 if self.__priority == "DANGER" or self.__priority == "LACK OF ENERGY":
                     self.__move_to_recharge_station(city)
-                    print("going back to recharge station")
                     break
 
 
@@ -112,7 +111,7 @@ class SurvivorBot(Agent):
                     break
 
                 # if there is a spare part in your vision
-                if len(available_sparePart) > 0:
+                if len(available_sparePart) > 0 and len(self.__inventory) == 0:
 
                     # Move Towards the Spare Part and Pick it up
                     self.__pick_up_spare_part(city, available_sparePart)
@@ -121,8 +120,6 @@ class SurvivorBot(Agent):
                 # if there is a free spot in your vision
                 if len(available_free_spots):
 
-                    # Check Against the memory to see which location you haven't travelled
-
                     # Move towards that free spot
                     self.__move_to_free_spot(city, available_free_spots)
                     break
@@ -130,16 +127,16 @@ class SurvivorBot(Agent):
             # If energy is lower or equals to 0
             if self.__energy <= 0:
                 # Check inventory if there is a spare part
-                if len(self.__inventory):
+                if len(self.__inventory) > 0:
 
                     # Consume Spare Part
                     self.__consume_spare_part(self.__inventory)
                     break
 
                 else:
-                    # If no energy turns is less than 9
-                    if self.__no_energy_turn < 4:
-                        # Tracking amount of turns of no energy
+                    # If no energy turns is less than 10
+                    if self.__no_energy_turn <= 10:
+                        # Tracking amount turns of no energy
                         self.__no_energy_turn += 1
                         break
 
@@ -228,7 +225,7 @@ class SurvivorBot(Agent):
             city.set_agent(None, self.get_location())
             self.set_location(next_move_station)
             city.set_agent(self, self.get_location())
-            # self.__energy -= 5
+            self.__energy -= 5
 
 
 
