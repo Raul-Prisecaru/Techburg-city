@@ -3,7 +3,7 @@ import os
 from abc import ABC
 import random
 from typing import List, Optional, Literal
-
+from controller.Config import Config
 from model.agents.spare_part import SparePart
 from model.recharge_station import RechargeStation
 from model.city import City
@@ -293,11 +293,14 @@ class SurvivorBot(Agent):
                 go_back_location (Location): Location to compare against
 
             Return:
-                bool: Returns TRUE if survivor can make it back between two location else returns FALSE
+                    bool: Returns TRUE if survivor can make it back between two location else returns FALSE
         """
-        total_distance_station = ((self.get_location().get_x() - go_back_location.get_x()) ** 2 + (self.get_location().get_y() - go_back_location.get_y()) ** 2) ** 0.5
+        total_distance_station = (
+            min(abs(self.get_location().get_x() - go_back_location.get_x()), Config.GRID_WIDTH - abs(self.get_location().get_x() - go_back_location.get_x())) ** 2 +
+            min(abs(self.get_location().get_y() - go_back_location.get_y()), Config.GRID_HEIGHT - abs(self.get_location().get_y() - go_back_location.get_y())) ** 2
+        ) ** 0.5
 
-        total_distance = total_distance_station * 2
+        total_distance = total_distance_station * 2 + 1
 
         total_energy_required = total_distance * 5
 
