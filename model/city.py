@@ -14,6 +14,7 @@ from model.agents.malfunctioning_drone import MalfunctioningDrone
 # Importing these files if they are being used for Type_checking
 # Helps to avoid circular Imports
 if TYPE_CHECKING:
+    from model.recharge_station import RechargeStation
     from agents.scavenger_swarm import ScavengerSwarm
     from model.agents.survivor_bot import SurvivorBot
 
@@ -33,6 +34,8 @@ class City(Environment, ABC):
 
         self.__survivorBots: List[SurvivorBot] = []
         self.__malfunctioningDrone: List[MalfunctioningDrone] = []
+        self.__rechargeStation: List[RechargeStation] = []
+        self.__sparePart: List[SparePart] = []
 
         # Creating Grid with for loop based on provided width and heights
         for _ in range(self.__height):
@@ -97,6 +100,18 @@ class City(Environment, ABC):
 
     def add_malfunctioning_drone_to_list(self, newMalfunctioningDrone: MalfunctioningDrone) -> None:
         self.__malfunctioningDrone.append(newMalfunctioningDrone)
+
+    def get_recharge_station_list(self) -> List[RechargeStation]:
+        return self.__rechargeStation
+
+    def add_recharge_station_to_list(self, newRechargeStation: RechargeStation) -> None:
+        self.__rechargeStation.append(newRechargeStation)
+
+    def get_spare_parts_list(self) -> List[SparePart]:
+        return self.__sparePart
+
+    def add_spare_parts_to_list(self, newSparePart: SparePart) -> None:
+        self.__sparePart.append(newSparePart)
 
     def find_free_spot(self, location: Location) -> List[Location]:
         """
@@ -211,8 +226,10 @@ class City(Environment, ABC):
             new_offset_x = (current_location.get_x() + offset_x) % self.__width
             new_offset_y = (current_location.get_y() + offset_y) % self.__height
 
-            distance = ((new_offset_x - recharge_location.get_x()) ** 2 + (new_offset_y - recharge_location.get_y()) ** 2) ** 0.5
-
+            distance = (
+                min(abs(new_offset_x - recharge_location.get_x()), self.__width - abs(new_offset_x - recharge_location.get_x())) ** 2 +
+                min(abs(new_offset_y - recharge_location.get_y()), self.__height - abs(new_offset_y - recharge_location.get_y())) ** 2
+           ) ** 0.5
 
             if distance < distance_value:
                 distance_value = distance
