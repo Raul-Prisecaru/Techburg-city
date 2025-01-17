@@ -209,7 +209,7 @@ class SurvivorBot(Agent):
                 None
         """
 
-        next_move_station = city.find_next_move_recharge_station(self.get_location(), self.__recharge_station.get_location())
+        next_move_station = city.find_next_move_recharge_station(self.get_location(), self.__recharge_station.get_location(), self)
 
 
         # Checking if the next move is at the Recharge Station Location
