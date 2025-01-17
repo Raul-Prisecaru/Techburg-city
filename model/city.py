@@ -15,6 +15,8 @@ from model.agents.malfunctioning_drone import MalfunctioningDrone
 # Helps to avoid circular Imports
 if TYPE_CHECKING:
     from agents.scavenger_swarm import ScavengerSwarm
+    from model.agents.survivor_bot import SurvivorBot
+
 
 
 # TODO: Optimise off_sets to avoid repeating over and over and to take into consideration bot's enhancement
@@ -28,6 +30,9 @@ class City(Environment, ABC):
 
         self.__height = height
         self.__width = width
+
+        self.__survivorBots: List[SurvivorBot] = []
+        self.__malfunctioningDrone: List[MalfunctioningDrone] = []
 
         # Creating Grid with for loop based on provided width and heights
         for _ in range(self.__height):
@@ -76,6 +81,22 @@ class City(Environment, ABC):
 
         # TODO: Add check to ensure we do not override
         self.__environment[location.get_y()][location.get_x()] = agent
+
+
+    def get_survivor_bot_list(self) -> List[SurvivorBot]:
+        return self.__survivorBots
+
+    def add_survivor_bot_to_list(self, newSurvivorBot: SurvivorBot) -> None:
+        self.__survivorBots.append(newSurvivorBot)
+
+    def remove_survivor_bot_from_list(self, removeSurvivorBot: SurvivorBot) -> None:
+        self.__survivorBots.remove(removeSurvivorBot)
+
+    def get_malfunctioning_drone_list(self) -> List[MalfunctioningDrone]:
+        return self.__malfunctioningDrone
+
+    def add_malfunctioning_drone_to_list(self, newMalfunctioningDrone: MalfunctioningDrone) -> None:
+        self.__malfunctioningDrone.append(newMalfunctioningDrone)
 
     def find_free_spot(self, location: Location) -> List[Location]:
         """
