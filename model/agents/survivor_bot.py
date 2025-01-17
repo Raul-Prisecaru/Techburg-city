@@ -335,9 +335,19 @@ class SurvivorBot(Agent):
         """
 
         inventory.clear()
+        highest_key = max(self.__incident, key=self.__incident.get)
 
-        # TODO: Improve this so instead of setting to 100, it takes into consideration it's enhancement.
-        self.__energy = 100
+        if highest_key == "attacked":
+            self.__enhancements["speed"] += inventory[0].get_enhancementValue()
+
+        elif highest_key == "drone-encountered":
+            self.__enhancements["vision"] += inventory[0].get_enhancementValue()
+
+        elif highest_key == "out-of-energy":
+            self.__enhancements["energy"] += inventory[0].get_enhancementValue()
+
+
+        self.__energy = 100 + self.get_energy_enhancement()
 
 
     def get_energy_turn(self) -> int:
