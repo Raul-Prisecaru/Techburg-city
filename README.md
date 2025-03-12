@@ -33,4 +33,6 @@ npx ts-node server
 ```
 ---
 ## 📦 Video showcase
-(Link Soon)
+https://github.com/user-attachments/assets/a2818e50-5360-4169-bdf5-6d7a0af02349
+
+
